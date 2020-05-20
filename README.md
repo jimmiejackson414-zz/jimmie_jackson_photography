@@ -1,6 +1,6 @@
 # jimmie_jackson_photography
 
-> My dandy Nuxt.js project
+> Portfolio for Jimmie Jackson Photography using Vue/NuxtJS
 
 ## Build Setup
 
