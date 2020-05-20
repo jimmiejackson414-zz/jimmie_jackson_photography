@@ -1,86 +1,108 @@
 <template>
-  <v-layout
-column justify-center
-align-center>
-    <v-flex
-xs12 sm8
-md6>
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
+  <v-content
+    class="background"
+    :style="{
+      backgroundImage:
+        'url(' + require(`~/static/backgrounds/snow_mountain.jpg`) + ')'
+    }">
+    <div class="link-container">
+      <div class="nav-link first">
+        <nuxt-link
+          to="/portfolio"
+          class="display-3 grey--text text--darken-3">
+          Portfolio
+        </nuxt-link>
       </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>
-            Vuetify is a progressive Material Design component framework for
-            Vue.js. It was designed to empower developers to create amazing
-            applications.
-          </p>
-          <p>
-            For more information on Vuetify, check out the
-            <a href="https://vuetifyjs.com"
-target="_blank"> documentation </a>.
-          </p>
-          <p>
-            If you have questions, please join the official
-            <a
-href="https://chat.vuetifyjs.com/" target="_blank"
-title="chat">
-              discord </a
-            >.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              title="contribute"
-            >
-              issue board </a
-            >.
-          </p>
-          <p>
-            Thank you for developing with Vuetify and I look forward to bringing
-            more exciting features in the future.
-          </p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3" />
-          <a href="https://nuxtjs.org/"
-target="_blank">
-            Nuxt Documentation
-          </a>
-          <br />
-          <a href="https://github.com/nuxt/nuxt.js"
-target="_blank">
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-color="primary" nuxt
-to="/inspire">
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+      <div class="nav-link second">
+        <nuxt-link
+          to="/about"
+          class="display-3 grey--text text--darken-3">
+          About
+        </nuxt-link>
+      </div>
+      <div class="nav-link third">
+        <nuxt-link
+          to="/contact"
+          class="display-3 grey--text text--darken-3">
+          Contact
+        </nuxt-link>
+      </div>
+    </div>
+  </v-content>
 </template>
 
 <script>
-  import Logo from '~/components/Logo.vue'
-  import VuetifyLogo from '~/components/VuetifyLogo.vue'
+  export default {}
+</script>
 
-  export default {
-    components: {
-      Logo,
-      VuetifyLogo
+<style lang="scss" scoped>
+  .background {
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+    display: flex;
+    flex-flow: row wrap;
+    height: 100%;
+
+    .link-container {
+      align-items: center;
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      height: 100%;
+      justify-content: space-around;
+      margin: 0 auto;
+      width:75%;
+
+      .nav-link {
+        position: relative;
+
+        &:after {
+          border-radius: 2px;
+          content: '';
+          height: 5px;
+          left: 50%;
+          margin-top: 2rem;
+          position: absolute;
+          transform: translateX(-50%);
+          transition: width 0.4s;
+          transition-timing-function: cubic-bezier(1, -0.65, 0, 2.31);
+          top: calc(100% - 10%);
+          width: 0;
+        }
+
+        &:before {
+          background-color: transparent !important;
+        }
+
+        &:hover,
+        &:focus {
+          outline: none;
+
+          &:after {
+            width: calc(100% - 40px);
+          }
+
+          &:before {
+            background-color: transparent;
+          }
+        }
+
+        &.first {
+          &:after {
+            background: #5EA788;
+          }
+        }
+        &.second {
+          &:after {
+            background: #6279A2;
+          }
+        }
+        &.third {
+          &:after {
+            background: #F4A889;
+          }
+        }
+      }
     }
   }
-</script>
+</style>

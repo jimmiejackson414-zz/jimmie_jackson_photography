@@ -17,7 +17,9 @@ export default {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+    ]
   },
   /*
    ** Customize the progress-bar color
@@ -26,7 +28,9 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    '~/css/global.scss'
+  ],
   /*
    ** Plugins to load before mounting the App
    */
@@ -58,14 +62,15 @@ export default {
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    customVariables: ['~/css/variables.scss'],
+    treeShake: true,
     theme: {
-      dark: true,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
+        light: {
+          // primary: colors.blue.darken2,
+          primary: '#00348f',
+          accent: '#dfa707',
+          secondary: '#00d300',
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
@@ -81,6 +86,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
+    standalone: true,
     extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
