@@ -1,29 +1,33 @@
 <template>
+  <!-- <v-content v-if="loading">
+    Loading...
+  </v-content> -->
   <v-content
+    v-if="!loading"
     class="background"
     :style="{
       backgroundImage:
-        'url(' + require(`~/static/backgrounds/snow_mountain.jpg`) + ')'
+        'url(' + require(`~/static/backgrounds/${randBackground.src}`) + ')'
     }">
     <div class="link-container">
       <div class="nav-link first">
         <nuxt-link
           to="/portfolio"
-          class="display-3 grey--text text--darken-3">
+          :class="['display-3', randBackground.color]">
           Portfolio
         </nuxt-link>
       </div>
       <div class="nav-link second">
         <nuxt-link
           to="/about"
-          class="display-3 grey--text text--darken-3">
+          :class="['display-3', randBackground.color]">
           About
         </nuxt-link>
       </div>
       <div class="nav-link third">
         <nuxt-link
           to="/contact"
-          class="display-3 grey--text text--darken-3">
+          :class="['display-3', randBackground.color]">
           Contact
         </nuxt-link>
       </div>
@@ -32,7 +36,33 @@
 </template>
 
 <script>
-  export default {}
+  import { mapMutations, mapState } from 'vuex';
+
+  export default {
+    // data: () => ({
+    // }),
+    layout: 'homepage',
+    computed: {
+      ...mapState({
+        randBackground: state => state.homepage.background,
+        loading: state => state.homepage.loading,
+      }),
+    },
+
+    methods: {
+      ...mapMutations({
+        generateBackground: 'homepage/generateBackground',
+      })
+    },
+    mounted() {
+      this.generateBackground();
+    },
+    head() {
+      return {
+        title: 'Home | Jimmie Jackson Photography',
+      }
+    },
+  }
 </script>
 
 <style lang="scss" scoped>

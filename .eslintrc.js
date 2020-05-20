@@ -17,7 +17,6 @@ module.exports = {
   // add your custom rules here
   rules: {
     "vue/script-indent": ["error", 2, { "baseIndent": 1 }],
-    "vue/css-indent": [],
     "vue/max-attributes-per-line": [
       2,
       {

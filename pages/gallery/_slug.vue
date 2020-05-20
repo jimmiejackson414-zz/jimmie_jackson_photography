@@ -1,5 +1,5 @@
 <template>
-  <nuxt />
+  <h1>Gallery Slug</h1>
 </template>
 
 <script>

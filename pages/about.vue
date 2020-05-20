@@ -1,5 +1,5 @@
 <template>
-  <nuxt />
+  <h1>About</h1>
 </template>
 
 <script>
