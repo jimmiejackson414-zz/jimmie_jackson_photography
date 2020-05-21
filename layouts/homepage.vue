@@ -25,10 +25,9 @@
       </v-container>
     </v-content>
     <v-footer
-      absolute
-      class="custom"
-      dark
-      app>
+      app
+      tile
+      class="custom">
       <span class="subtitle-2">&copy; {{ new Date().getFullYear() }} Jimmie Jackson Photography</span>
     </v-footer>
   </v-app>
@@ -84,8 +83,9 @@
 
   footer.v-footer.custom {
     background-color: transparent;
+    color: white;
     display: flex;
     justify-content: center;
-    padding: 1rem;
+    padding: 2rem;
   }
 </style>

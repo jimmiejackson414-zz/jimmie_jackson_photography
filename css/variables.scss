@@ -7,7 +7,8 @@ $heading-font-family: 'Avenir Next', 'Lato', Roboto, 'Helvetica Neue',
 $headings: (
   'h1': (
     'size': 6rem,
-    'letter-spacing': 1px
+    'letter-spacing': 1px,
+    'font-weight': 700
   ),
   'h2': (
     'size': 4.8rem,
@@ -46,7 +47,6 @@ $headings: (
   //   'size': 1.6rem,
   //   'letter-spacing': 1px
   // ),
-
   'body-1': (
     'letter-spacing': 1px
   ),

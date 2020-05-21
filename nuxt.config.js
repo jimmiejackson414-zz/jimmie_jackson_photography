@@ -1,5 +1,4 @@
 import colors from 'vuetify/es5/util/colors'
-require('dotenv').config();
 
 export default {
   mode: 'universal',
@@ -19,6 +18,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700;800&display=swap'}
     ]
   },
   /*
@@ -34,7 +34,9 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/vue-unicons', mode: 'client' },
+  ],
   /*
    ** Nuxt.js dev-modules
    */
@@ -50,7 +52,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
   ],
   /*
    ** Axios module configuration
@@ -64,6 +66,9 @@ export default {
   vuetify: {
     customVariables: ['~/css/variables.scss'],
     treeShake: true,
+    icons: {
+      iconfont: 'vue-unicons',
+    },
     theme: {
       themes: {
         light: {

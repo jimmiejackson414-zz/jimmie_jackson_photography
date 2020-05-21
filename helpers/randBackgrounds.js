@@ -33,7 +33,7 @@ export const randBackgrounds = [
     color: 'grey--text text--lighten-3',
     logo: 'JJ_Logos_Black50_V2.png',
     src: 'wonderland_trail-2.jpg',
-    position: 'nter',
+    position: 'center',
   },
   {
     color: 'grey--text text--lighten-3',
