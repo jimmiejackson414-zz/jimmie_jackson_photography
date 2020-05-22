@@ -1,0 +1,13 @@
+@import '~vuetify/src/styles/styles.sass';
+
+@mixin breakpoint($point) {
+  @if $point == desktop {
+    @media #{map-get($display-breakpoints, 'md-and-up')} {
+      @content;
+    }
+  } @else if $point == mobile {
+    @media #{map-get($display-breakpoints, 'sm-and-down')} {
+      @content;
+    }
+  }
+}

@@ -9,7 +9,7 @@ export default {
     title: 'Jimmie Jackson Photography',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui' },
       {
         hid: 'description',
         name: 'description',
@@ -33,8 +33,10 @@ export default {
   ],
   /*
    ** Plugins to load before mounting the App
+   ** Icons can be found at https://antonreshetov.github.io/vue-unicons/
    */
   plugins: [
+    { src: '~/plugins/vuex-persist', mode: 'client' },
     { src: '~/plugins/vue-unicons', mode: 'client' },
   ],
   /*

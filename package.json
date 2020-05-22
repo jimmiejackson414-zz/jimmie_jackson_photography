@@ -16,7 +16,8 @@
     "@nuxtjs/dotenv": "^1.4.0",
     "cloudinary-vue": "^1.0.1",
     "nuxt": "^2.0.0",
-    "vue-unicons": "^2.1.0"
+    "vue-unicons": "^2.1.0",
+    "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",

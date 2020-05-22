@@ -29,41 +29,6 @@
         </nuxt-link>
       </div>
     </div>
-    <div class="social-container">
-      <div class="social facebook">
-        <a
-          href="https://www.facebook.com/jimmiejacksonphotography/"
-          target="_blank">
-          <unicon
-            name="facebook-f"
-            fill="white"
-            height="30px"
-            width="30px" />
-        </a>
-      </div>
-      <div class="social instagram">
-        <a
-          href="https://www.instagram.com/jimmie_photo/"
-          target="_blank">
-          <unicon
-            name="instagram-alt"
-            fill="white"
-            height="30px"
-            width="30px" />
-        </a>
-      </div>
-      <div class="social email">
-        <a
-          href="mailto:howdy@jimmiejacksonphotography.com"
-          target="_blank">
-          <unicon
-            name="envelope-alt"
-            fill="white"
-            height="30px"
-            width="30px" />
-        </a>
-      </div>
-    </div>
   </v-content>
 </template>
 
@@ -96,6 +61,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '~/css/breakpoints.scss';
+
   main.background {
     background-position: center center;
     background-attachment: fixed;
@@ -108,11 +75,16 @@
     .link-container {
       align-items: center;
       display: grid;
-      grid-template-columns: repeat(3, auto);
+      grid-template-columns: 1fr;
       height: 100%;
       justify-content: space-around;
       margin: 0 auto;
+      text-align: center;
       width:75%;
+
+      @include breakpoint(desktop) {
+        grid-template-columns: repeat(3, auto);
+      }
 
       .nav-link {
         position: relative;
@@ -166,47 +138,6 @@
 
         a {
           font-family: 'Open Sans' !important;
-        }
-      }
-    }
-
-    .social-container {
-      display: flex;
-      justify-content: center;
-
-      .social {
-        align-items: center;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        height: 46px;
-        justify-content: center;
-        line-height: 1 !important;
-        margin: 0 2rem;
-        width: 46px;
-
-        &.facebook {
-          transition: 0.2s background-color ease-in-out;
-
-          &:hover {
-            background-color: #3b5998;
-          }
-        }
-
-        &.instagram {
-          transition: 0.2s background-color ease-in-out;
-
-          &:hover {
-            background-color: #fbad50;
-          }
-        }
-
-        &.email {
-          transition: 0.2s background-color ease-in-out;
-
-          &:hover {
-            background-color: #21860c;
-          }
         }
       }
     }

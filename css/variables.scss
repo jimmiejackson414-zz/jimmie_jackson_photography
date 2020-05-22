@@ -6,37 +6,37 @@ $heading-font-family: 'Avenir Next', 'Lato', Roboto, 'Helvetica Neue',
   sans-serif !default;
 $headings: (
   'h1': (
-    'size': 6rem,
+    // 'size': 6rem,
     'letter-spacing': 1px,
     'font-weight': 700
   ),
   'h2': (
-    'size': 4.8rem,
+    // 'size': 4.8rem,
     'letter-spacing': 1px,
   ),
   'h3': (
-    'size': 3.6rem,
+    // 'size': 3.6rem,
     'letter-spacing': 1px
   ),
   'h4': (
-    'size': 2.4rem,
+    // 'size': 2.4rem,
     'letter-spacing': 1px
   ),
   'h5': (
-    'size': 1.8rem,
+    // 'size': 1.8rem,
     'letter-spacing': 1px
   ),
   'h6': (
-    'size': 1.6rem,
+    // 'size': 1.6rem,
     'letter-spacing': 1px
   ),
 
   'subtitle-1': (
-    'size': 1.6rem,
+    // 'size': 1.6rem,
     'letter-spacing': 1px
   ),
   'subtitle-2': (
-    'size': 1.2rem,
+    // 'size': 1.2rem,
     'letter-spacing': 1px
   ),
   // 'caption': (
@@ -54,5 +54,7 @@ $headings: (
     'letter-spacing': 1px
   )
 );
+
+$text-field-outlined-fieldset-border: 1px solid currentColor !default;
 
 @import '~vuetify/src/styles/styles.sass';
