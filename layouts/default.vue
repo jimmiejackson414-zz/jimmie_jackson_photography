@@ -62,7 +62,8 @@
 
     <home-drawer
       v-model="drawer"
-      :items="items" />
+      :items="items"
+      :cart-items="cartItems" />
     <v-content fluid>
       <nuxt />
     </v-content>
@@ -132,14 +133,45 @@
       },
     },
 
+    methods: {
+      delay(t) {
+        return new Promise(resolve => setTimeout(resolve, t));
+      }
+    },
+
+    watch: {
+      cartItems: function(newValue, oldValue) {
+        const badge = document.querySelector('.v-badge__badge');
+        if (newValue !== oldValue) {
+          badge.classList.add('bounce');
+          this.delay(500).then(() => {
+            badge.classList.remove('bounce');
+          });
+        }
+      }
+    },
+
     components: {
       HomeDrawer: () => import('~/components/Drawer'),
-    },
+    }
   }
 </script>
 
 <style lang="scss">
   @import '~/css/breakpoints.scss';
+
+  @mixin ballb($yaxis: 0) {
+    transform: translate3d(0, $yaxis, 0);
+  }
+
+  @keyframes bouncein {
+    0%, 50% { @include ballb(-3px); }
+    25%, 75%, 100% { @include ballb() }
+  }
+
+  .bounce {
+    animation: bouncein 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
 
   #home-app-bar {
     .logo {
