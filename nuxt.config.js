@@ -38,6 +38,8 @@ export default {
   plugins: [
     { src: '~/plugins/vuex-persist', mode: 'client' },
     { src: '~/plugins/vue-unicons', mode: 'client' },
+    { src: '~/plugins/masonry', mode: 'client' },
+    '~/plugins/custom-icons',
   ],
   /*
    ** Nuxt.js dev-modules

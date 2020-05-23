@@ -27,13 +27,14 @@
     <v-footer
       app
       tile
+      fixed
       class="custom flex-column">
       <div class="social-container">
         <div class="social facebook">
           <a
             href="https://www.facebook.com/jimmiejacksonphotography/"
             target="_blank">
-            <unicon
+            <icon
               name="facebook-f"
               fill="white"
               height="30px"
@@ -44,7 +45,7 @@
           <a
             href="https://www.instagram.com/jimmie_photo/"
             target="_blank">
-            <unicon
+            <icon
               name="instagram-alt"
               fill="white"
               height="30px"
@@ -55,7 +56,7 @@
           <a
             href="mailto:howdy@jimmiejacksonphotography.com"
             target="_blank">
-            <unicon
+            <icon
               name="envelope-alt"
               fill="white"
               height="30px"

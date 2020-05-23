@@ -22,7 +22,7 @@
           dense
           class="mb-3">
           <template v-slot:prepend>
-            <unicon
+            <icon
               name="search"
               fill="gray"
               height="20px"

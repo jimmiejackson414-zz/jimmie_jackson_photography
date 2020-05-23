@@ -1,16 +1,16 @@
 <template>
-  <v-app light>
+  <v-app
+    light
+    app>
     <v-app-bar
       id="home-app-bar"
-      absolute
+      fixed
       elevate-on-scroll
-      flat
-      color="white"
       app>
       <v-toolbar-title>
         <nuxt-link to="/">
           <v-img
-            src="/JJ_Logos_Black50_V2.png"
+            src="/JJP_Logo_Black_V2.png"
             class="logo" />
         </nuxt-link>
       </v-toolbar-title>
@@ -21,7 +21,7 @@
           icon
           :ripple="false"
           class="hidden-sm-and-down mr-4">
-          <unicon
+          <icon
             name="search"
             fill="gray"
             height="20px"
@@ -64,19 +64,22 @@
       v-model="drawer"
       :items="items"
       :cart-items="cartItems" />
-    <v-content fluid>
-      <nuxt />
+    <v-content>
+      <transition
+        name="fade"
+        mode="out-in">
+        <nuxt />
+      </transition>
     </v-content>
     <v-footer
       app
-      tile
       class="custom flex-column">
       <div class="social-container">
         <div class="social facebook">
           <a
             href="https://www.facebook.com/jimmiejacksonphotography/"
             target="_blank">
-            <unicon
+            <icon
               name="facebook-f"
               fill="grey"
               height="30px"
@@ -87,7 +90,7 @@
           <a
             href="https://www.instagram.com/jimmie_photo/"
             target="_blank">
-            <unicon
+            <icon
               name="instagram-alt"
               fill="grey"
               height="30px"
@@ -98,7 +101,7 @@
           <a
             href="mailto:howdy@jimmiejacksonphotography.com"
             target="_blank">
-            <unicon
+            <icon
               name="envelope-alt"
               fill="grey"
               height="30px"
@@ -157,65 +160,17 @@
   }
 </script>
 
-<style lang="scss">
-  @import '~/css/breakpoints.scss';
-
-  @mixin ballb($yaxis: 0) {
-    transform: translate3d(0, $yaxis, 0);
+<style lang="scss" scoped>
+  main.v-content {
+    padding: 100px 0 !important;
   }
-
-  @keyframes bouncein {
-    0%, 50% { @include ballb(-3px); }
-    25%, 75%, 100% { @include ballb() }
-  }
-
-  .bounce {
-    animation: bouncein 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  }
-
-  #home-app-bar {
-    .logo {
-      max-width: 200px;
-
-      @include breakpoint(desktop) {
-        max-width: 300px;
-      }
-    }
-
-    .right-menu-wrapper {
-      align-items: center;
-
-      .v-tabs-slider {
-        max-width: 50%;
-        margin: 0 auto;
-      }
-
-      .v-tab {
-        &:before {
-          display: none;
-        }
-      }
-
-      .nav-link {
-        color: rgba(0, 0, 0, 0.54);
-        font-size: 1rem;
-      }
-    }
-  }
-
-  .default-badge {
-    .v-badge__badge {
-      bottom: calc(100% - 5px) !important;
-      left: 100% !important;
-    }
-  }
-
   footer.v-footer.custom {
     background-color: transparent;
     color: white;
     display: flex;
     justify-content: center;
     padding: 2rem;
+    position: relative;
 
     .social-container {
       display: grid;
@@ -271,6 +226,78 @@
         }
       }
     }
+  }
+</style>
+
+<style lang="scss">
+  @import '~/css/breakpoints.scss';
+
+  #home-app-bar {
+    background-color: #fff;
+
+    .logo {
+      max-width: 200px;
+
+      @include breakpoint(desktop) {
+        max-width: 300px;
+      }
+    }
+
+    .right-menu-wrapper {
+      align-items: center;
+
+      .v-tabs-slider {
+        max-width: 50%;
+        margin: 0 auto;
+      }
+
+      .v-tab {
+        &:before {
+          display: none;
+        }
+      }
+
+      .nav-link {
+        color: rgba(0, 0, 0, 0.54);
+        font-size: 1rem;
+        letter-spacing: 2px;
+      }
+    }
+  }
+
+  .default-badge {
+    .v-badge__badge {
+      bottom: calc(100% - 5px) !important;
+      left: 100% !important;
+    }
+  }
+
+
+
+  .fade-enter {
+    opacity: 0;
+  }
+
+  .fade-enter-active {
+    transition: opacity 0.2s ease;
+  }
+
+  .fade-leave-active {
+    transition: opacity 0.2s ease;
+    opacity: 0;
+  }
+
+  @mixin ballb($yaxis: 0) {
+    transform: translate3d(0, $yaxis, 0);
+  }
+
+  @keyframes bouncein {
+    0%, 50% { @include ballb(-3px); }
+    25%, 75%, 100% { @include ballb() }
+  }
+
+  .bounce {
+    animation: bouncein 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   }
 
 </style>

@@ -1,23 +1,24 @@
 <template>
-  <v-content>
-    <div class="gallery-container">
-      <!-- Use v-lazy for scrolling large galleries -->
-      <button @click="addToCart({ id: 1, title: 'Test' })">
-        Add
-      </button>
-      <button @click="removeFromCart({ id: 1, title: 'Test'})">
-        Remove
-      </button>
-    </div>
-  </v-content>
+  <v-container class="pt-5">
+    <page-title text="Portfolio" />
+    <v-row
+      align="center"
+      justify="center">
+      <portfolio-card
+        v-for="(item, index) in 12"
+        :key="index" />
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-  import { mapMutations } from 'vuex';
+  import PageTitle from '~/components/PageTitle';
+  import PortfolioCard from '~/components/PortfolioCard';
 
   export default {
-    methods: {
-      ...mapMutations('cart', ['addToCart', 'removeFromCart']),
+    components: {
+      PageTitle,
+      PortfolioCard,
     }
   }
 </script>
