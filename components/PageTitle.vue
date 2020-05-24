@@ -1,19 +1,22 @@
 <template>
   <div class="page-title-wrapper">
-    <nuxt-link
+    <v-btn
       v-if="back"
-      :to="to"
-      class="back-wrapper">
+      text
+      :ripple="false"
+      nuxt
+      class="back-wrapper"
+      @click="to">
       <icon
         name="angle-left"
         fill="#9e9e9e"
         height="20px"
         width="20px"
         class="d-flex" />
-      <p class="display-1 grey--text">
+      <p class="body-1 grey--text">
         Back
       </p>
-    </nuxt-link>
+    </v-btn>
     <h1 class="display-3 text-center page-title">
       {{ text }}
     </h1>

@@ -3,21 +3,24 @@
     class="image-card"
     elevation="0"
     nuxt
+    :ripple="false"
     :to="{ name: 'images-slug', params: { slug: 'test' }}">
     <v-img
       class="white--text d-flex align-center text-center"
       height="200px"
       src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
       <div class="overlay" />
-      <v-btn
-        depressed
-        nuxt
-        :ripple="false"
-        color="info"
-        class="visit-btn"
-        :to="{ name: 'images-slug', params: { slug: 'test' }}">
-        View
-      </v-btn>
+      <div class="btn-wrapper">
+        <v-btn
+          depressed
+          nuxt
+          :ripple="false"
+          color="primary"
+          class="visit-btn"
+          :to="{ name: 'images-slug', params: { slug: 'test' }}">
+          View
+        </v-btn>
+      </div>
     </v-img>
   </v-card>
 </template>
@@ -31,15 +34,15 @@
       image() {
         return 'test';
       },
-    }
+    },
+
+
   }
 </script>
 
 <style lang="scss" scoped>
   .image-card {
     align-items: center;
-    background: url('/backgrounds/grand_canyon.jpg') no-repeat center center;
-    background-size: cover;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -60,14 +63,25 @@
       visibility: hidden;
     }
 
-    .visit-btn {
-      opacity: 0;
-      transition: 0.2s all ease-in-out;
-      visibility: hidden;
+    .btn-wrapper {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .visit-btn {
+        margin-bottom: 1rem;
+      }
+
+      .visit-btn, .add-to-cart-btn {
+        opacity: 0;
+        transition: 0.2s all ease-in-out;
+        visibility: hidden;
+      }
     }
 
     &:hover {
-      .overlay, .visit-btn {
+      .overlay, .visit-btn, .add-to-cart-btn {
         opacity: 100%;
         visibility: visible;
       }

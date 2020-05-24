@@ -122,17 +122,17 @@
 
         &.first {
           &:after {
-            background: #5EA788;
+            background: var(--v-primary-base);
           }
         }
         &.second {
           &:after {
-            background: #6279A2;
+            background: var(--v-secondary-base);
           }
         }
         &.third {
           &:after {
-            background: #F4A889;
+            background: var(--v-success-base);
           }
         }
 

@@ -17,7 +17,7 @@
           <v-btn
             depressed
             :ripple="false"
-            color="info"
+            color="primary"
             class="visit-btn"
             to="/galleries/arizona">
             Visit Gallery

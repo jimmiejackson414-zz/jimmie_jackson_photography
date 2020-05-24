@@ -74,16 +74,18 @@ export default {
       iconfont: 'vue-unicons',
     },
     theme: {
+      options: {
+        customProperties: true,
+      },
       themes: {
         light: {
-          // primary: colors.blue.darken2,
-          primary: '#00348f',
-          accent: '#dfa707',
-          secondary: '#00d300',
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+          primary: '#193B53', // water
+          secondary: '#8c3F0d', // rust
+          accent: '#b48125', // mustard
+          info: '#becbcf', // stone
+          warning: '#d57500', // orange
+          error: '#8c3F0d', // rust
+          success: '#668d3c', // green
         }
       }
     }

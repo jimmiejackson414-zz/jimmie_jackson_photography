@@ -47,19 +47,21 @@ $headings: (
     'color': '#4a4a4a',
     'letter-spacing': 1px
   ),
-  // 'caption': (
-  //   'size': 1.6rem,
-  //   'letter-spacing': 1px
-  // ),
+  'caption': (
+    'size': 1.4rem,
+    'letter-spacing': 1px
+  ),
   // 'overline': (
   //   'size': 1.6rem,
   //   'letter-spacing': 1px
   // ),
   'body-1': (
+    'size': 1.4rem,
     'color': '#4a4a4a',
     'letter-spacing': 1px
   ),
   'body-2': (
+    'size': 1.2rem,
     'color': '#4a4a4a',
     'letter-spacing': 1px
   )
@@ -73,5 +75,7 @@ $btn-font-sizes: (
 
 $btn-font-weight: 600;
 $btn-hover-opacity: 0.1 !default;
+
+$list-item-dense-title-font-size: 1.4rem;
 
 @import '~vuetify/src/styles/styles.sass';

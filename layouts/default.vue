@@ -194,10 +194,6 @@
 
           &:hover {
             background-color: #3b5998;
-
-            svg {
-              fill: white;
-            }
           }
         }
 
@@ -206,10 +202,6 @@
 
           &:hover {
             background-color: #fbad50;
-
-            svg {
-              fill: white;
-            }
           }
         }
 
@@ -218,10 +210,6 @@
 
           &:hover {
             background-color: #21860c;
-
-            svg {
-              fill: white;
-            }
           }
         }
       }
@@ -231,6 +219,14 @@
 
 <style lang="scss">
   @import '~/css/breakpoints.scss';
+
+  .social { // can't be scoped
+    &:hover {
+      svg {
+        fill: white;
+      }
+    }
+  }
 
   #home-app-bar {
     background-color: #fff;
