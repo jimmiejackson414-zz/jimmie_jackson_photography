@@ -12,7 +12,7 @@
           class="gallery-card">
           <div class="overlay" />
           <p class="display-3 font-weight-bold gallery-title">
-            Arizona
+            {{ gallery.name }}
           </p>
           <v-btn
             depressed
@@ -30,6 +30,13 @@
 
 <script>
   export default {
+    props: {
+      gallery: {
+        type: Object,
+        default: () => ({})
+      },
+    },
+
     data: () => ({
       isActive: false,
     })

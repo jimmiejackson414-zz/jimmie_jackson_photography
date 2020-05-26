@@ -23,6 +23,13 @@
   import PageTitle from '~/components/PageTitle';
 
   export default {
+
+    // async asyncData ({ $axios }) {
+    //   const data = await $axios.$get('/wp/v2/media?rml_folder=1');
+    //   console.log('data: ', data);
+    //   return { data };
+    // },
+
     data: () => ({
       options: {
         columnWidth: 400,

@@ -5,8 +5,9 @@
       align="center"
       justify="center">
       <portfolio-card
-        v-for="(item, index) in 12"
-        :key="index" />
+        v-for="(gallery, index) in galleries"
+        :key="index"
+        :gallery="gallery" />
     </v-row>
   </v-container>
 </template>
@@ -16,6 +17,10 @@
   import PortfolioCard from '~/components/PortfolioCard';
 
   export default {
+    async asyncData({ $axios }) {
+      let res = await $axios.$get('/realmedialibrary/v1/tree');
+      return { galleries: res.tree };
+    },
     components: {
       PageTitle,
       PortfolioCard,

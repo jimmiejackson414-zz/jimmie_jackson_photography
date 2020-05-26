@@ -1,4 +1,4 @@
-import colors from 'vuetify/es5/util/colors'
+require('dotenv').config();
 
 export default {
   mode: 'universal',
@@ -39,6 +39,7 @@ export default {
     { src: '~/plugins/vuex-persist', mode: 'client' },
     { src: '~/plugins/vue-unicons', mode: 'client' },
     { src: '~/plugins/masonry', mode: 'client' },
+    '~/plugins/axios',
     '~/plugins/custom-icons',
   ],
   /*
@@ -62,7 +63,9 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    https: true,
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -79,13 +82,13 @@ export default {
       },
       themes: {
         light: {
-          primary: '#193B53', // water
-          secondary: '#8c3F0d', // rust
-          accent: '#b48125', // mustard
-          info: '#becbcf', // stone
-          warning: '#d57500', // orange
-          error: '#8c3F0d', // rust
-          success: '#668d3c', // green
+          primary: '#0077be', // water
+          secondary: '#b7410e', // rust
+          accent: '#e1ad01', // mustard
+          info: '#759194', // stone
+          warning: '#f05e23', // orange
+          error: '#950714', // cranberry
+          success: '#228b22', // forrest
         }
       }
     }

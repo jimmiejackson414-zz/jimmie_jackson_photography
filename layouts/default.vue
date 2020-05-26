@@ -43,7 +43,7 @@
             text>
             <v-badge
               v-if="item.badge && hasCartItems"
-              color="red"
+              color="secondary"
               :content="cartItems"
               :value="cartItems"
               class="default-badge"
