@@ -1,12 +1,30 @@
 <template>
-  <div>
-    <h1>Portfolio</h1>
-  </div>
+  <v-container class="pt-5">
+    <page-title text="Portfolio" />
+    <v-row
+      align="center"
+      justify="center">
+      <portfolio-card
+        v-for="(gallery, index) in galleries"
+        :key="index"
+        :gallery="gallery" />
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-  export default {
+  import PageTitle from '~/components/PageTitle';
+  import PortfolioCard from '~/components/PortfolioCard';
 
+  export default {
+    async asyncData({ $axios }) {
+      let res = await $axios.$get('/realmedialibrary/v1/tree');
+      return { galleries: res.tree };
+    },
+    components: {
+      PageTitle,
+      PortfolioCard,
+    }
   }
 </script>
 

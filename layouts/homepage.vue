@@ -7,11 +7,11 @@
       app
       :class="['transparent', position]">
       <v-toolbar-title>
-        <router-link to="/">
+        <nuxt-link to="/">
           <v-img
             :src="randBackground.logo"
             max-width="300" />
-        </router-link>
+        </nuxt-link>
       </v-toolbar-title>
     </v-app-bar>
     <v-content :style="{ padding: 0 }">
@@ -27,7 +27,43 @@
     <v-footer
       app
       tile
-      class="custom">
+      fixed
+      class="custom flex-column">
+      <div class="social-container">
+        <div class="social facebook">
+          <a
+            href="https://www.facebook.com/jimmiejacksonphotography/"
+            target="_blank">
+            <icon
+              name="facebook-f"
+              fill="white"
+              height="30px"
+              width="30px" />
+          </a>
+        </div>
+        <div class="social instagram">
+          <a
+            href="https://www.instagram.com/jimmie_photo/"
+            target="_blank">
+            <icon
+              name="instagram-alt"
+              fill="white"
+              height="30px"
+              width="30px" />
+          </a>
+        </div>
+        <div class="social email">
+          <a
+            href="mailto:howdy@jimmiejacksonphotography.com"
+            target="_blank">
+            <icon
+              name="envelope-alt"
+              fill="white"
+              height="30px"
+              width="30px" />
+          </a>
+        </div>
+      </div>
       <span class="subtitle-2">&copy; {{ new Date().getFullYear() }} Jimmie Jackson Photography</span>
     </v-footer>
   </v-app>
@@ -55,6 +91,8 @@
 </script>
 
 <style lang="scss">
+  @import '~/css/breakpoints.scss';
+
   .container.container--fluid {
     height: 100%;
     padding: 0;
@@ -64,7 +102,11 @@
     background-color: transparent;
       &.left {
         .v-toolbar__content {
-          justify-content: start;
+          justify-content: center;
+
+          @include breakpoint(desktop) {
+            justify-content: start;
+          }
         }
       }
 
@@ -87,5 +129,48 @@
     display: flex;
     justify-content: center;
     padding: 2rem;
+
+    .social-container {
+      display: grid;
+      justify-content: center;
+      grid-gap: 2rem;
+      grid-template-columns: repeat(3, auto);
+      margin-bottom: 1rem;
+
+      .social {
+        align-items: center;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        height: 46px;
+        justify-content: center;
+        line-height: 1 !important;
+        width: 46px;
+
+        &.facebook {
+          transition: 0.2s background-color ease-in-out;
+
+          &:hover {
+            background-color: #3b5998;
+          }
+        }
+
+        &.instagram {
+          transition: 0.2s background-color ease-in-out;
+
+          &:hover {
+            background-color: #fbad50;
+          }
+        }
+
+        &.email {
+          transition: 0.2s background-color ease-in-out;
+
+          &:hover {
+            background-color: #21860c;
+          }
+        }
+      }
+    }
   }
 </style>

@@ -1,6 +1,15 @@
 import Vue from 'vue';
 import Unicon from 'vue-unicons';
-import { uniFacebookF, uniInstagramAlt, uniEnvelopeAlt } from 'vue-unicons/src/icons';
+import {
+  uniAngleLeft,
+  uniCheckCircle,
+  uniEnvelopeAlt,
+  uniExpandArrowsAlt,
+  uniFacebookF,
+  uniInstagramAlt,
+  uniMultiply,
+  uniSearch
+} from 'vue-unicons/src/icons';
 
-Unicon.add([uniFacebookF, uniInstagramAlt, uniEnvelopeAlt]);
+Unicon.add([uniAngleLeft, uniCheckCircle, uniEnvelopeAlt, uniExpandArrowsAlt, uniFacebookF, uniInstagramAlt, uniMultiply, uniSearch]);
 Vue.use(Unicon);
