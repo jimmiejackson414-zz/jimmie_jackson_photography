@@ -7,9 +7,10 @@
       :options="{ threshold: .5 }"
       min-height="200"
       transition="fade-transition">
-      <nuxt-link to="/galleries/arizona">
+      <nuxt-link :to="{ name: 'galleries-slug', params: { slug: gallery.slug } }">
         <div
-          class="gallery-card">
+          class="gallery-card"
+          @contextmenu.prevent>
           <div class="overlay" />
           <p class="display-3 font-weight-bold gallery-title">
             {{ gallery.name }}
@@ -19,7 +20,7 @@
             :ripple="false"
             color="primary"
             class="visit-btn"
-            to="/galleries/arizona">
+            :to="{ name: 'galleries-slug', params: { slug: gallery.slug }}">
             Visit Gallery
           </v-btn>
         </div>

@@ -2,12 +2,12 @@
   <div class="page-wrapper">
     <v-container>
       <page-title
-        text="Individual Image Page"
+        :text="pageTitle"
         back />
     </v-container>
     <v-container
       fluid
-      class="pt-5">
+      class="pa-5">
       <v-row
         align="center"
         justify="center">
@@ -16,8 +16,20 @@
           md="6"
           class="image-container">
           <v-img
-            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-            max-width="800px" />
+            :src="imageSrc"
+            max-width="800px"
+            @contextmenu.prevent>
+            <v-btn
+              class="expand-btn"
+              icon
+              @click.stop="openModal">
+              <icon
+                name="expand-arrows-alt"
+                fill="#fff"
+                height="20px"
+                width="20px" />
+            </v-btn>
+          </v-img>
         </v-col>
         <v-col
           sm="12"
@@ -31,10 +43,10 @@
             :key="index"
             class="detail">
             <p class="body-1 font-weight-bold">
-              {{ detail.title }}
+              {{ detail.title }}:
             </p>
             <p class="body-1">
-              {{ detail.value }}
+              {{ detail.value | strippedTags }}
             </p>
           </div>
           <v-form
@@ -45,7 +57,7 @@
               v-model="chosenSize"
               dense
               :items="availableSizes"
-              label="Available Sizes"
+              label="Please choose a size"
               outlined
               style="maxWidth: 50%;"
               required
@@ -87,14 +99,24 @@
           width="20px" />
       </v-btn>
     </v-snackbar>
+    <full-screen-image
+      :image="image"
+      :open="isModalOpen"
+      @handle-close-dialog="isModalOpen = false" />
   </div>
 </template>
 
 <script>
   import { mapMutations } from 'vuex';
+  import FullScreenImage from '~/components/modals/FullScreenImage';
   import PageTitle from '~/components/PageTitle';
 
   export default {
+    async asyncData ({ $axios, params }) {
+      const image = await $axios.$get(`/wp/v2/media?slug=${params.slug}`);
+      return { image: image[0] };
+    },
+
     data: () => ({
       availableSizes: [
         { text: '500dpi', value: '1' },
@@ -104,29 +126,33 @@
         { text: 'Full Resolution', value: '5' },
       ],
       chosenSize: null,
-      details: [
-        { title: 'Title: ', value: 'Morning Glory' },
-        { title: 'Location: ', value: 'Arizona' },
-        { title: 'Description: ', value: "There's a cool story about this photo."},
-      ],
+      isModalOpen: false,
       snackbar: false,
       valid: false,
     }),
 
     computed: {
-      test() {
-        return this.$refs.imageFormRef.isValid;
+      details() {
+        return [
+          { title: 'Title', value: this.image.title.rendered },
+          { title: 'Location', value: this.image.acf.location },
+          { title: 'Description', value: this.image.caption.rendered }
+        ]
+      },
+      imageSrc() {
+        return this.image.media_details.sizes.large.source_url;
+      },
+      pageTitle() {
+        return this.image.title.rendered;
       }
     },
 
     methods: {
       ...mapMutations('cart', ['addToCart']),
 
-      // handleSelectChange() {
-      //   console.log('this.chosenSize: ', this.chosenSize);
-      //   if (this.chosenSize) this.isFormValid = true;
-      //   else this.isFormValid = false;
-      // },
+      openModal() {
+        this.isModalOpen = true;
+      },
 
       validateAndAddToCart() {
         if (this.$refs.form.validate()) {
@@ -136,7 +162,14 @@
       },
     },
 
+    filters: {
+      strippedTags(string) {
+        return string.replace(/<\/?[^>]+>/ig, "");
+      }
+    },
+
     components: {
+      FullScreenImage,
       PageTitle,
     },
   }
@@ -148,6 +181,22 @@
   .image-container {
     .v-image {
       margin: 0 auto;
+
+      .expand-btn {
+        cursor: pointer;
+        float: right;
+        opacity: 0;
+        padding: 1rem;
+        transition: 0.2s all ease-in-out;
+        visibility: hidden;
+      }
+
+      &:hover {
+        .expand-btn {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
     }
 
     @include breakpoint(desktop) {

@@ -5,7 +5,8 @@
     :style="{
       backgroundImage:
         'url(' + require(`~/static/backgrounds/${randBackground.src}`) + ')'
-    }">
+    }"
+    @contextmenu.prevent>
     <div class="link-container">
       <div class="nav-link first">
         <nuxt-link

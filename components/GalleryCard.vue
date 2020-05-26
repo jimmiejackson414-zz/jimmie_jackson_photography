@@ -4,11 +4,13 @@
     elevation="0"
     nuxt
     :ripple="false"
-    :to="{ name: 'images-slug', params: { slug: 'test' }}">
+    :to="{ name: 'images-slug', params: { slug: image.slug }}">
     <v-img
       class="white--text d-flex align-center text-center"
-      height="200px"
-      src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+      contain
+      min-width="100%"
+      :src="imageSrc"
+      @contextmenu.prevent>
       <div class="overlay" />
       <div class="btn-wrapper">
         <v-btn
@@ -17,7 +19,7 @@
           :ripple="false"
           color="primary"
           class="visit-btn"
-          :to="{ name: 'images-slug', params: { slug: 'test' }}">
+          :to="{ name: 'images-slug', params: { slug: image.slug }}">
           View
         </v-btn>
       </div>
@@ -27,13 +29,17 @@
 
 <script>
   export default {
+    props: {
+      image: {
+        type: Object,
+        default: () => ({})
+      }
+    },
+
     computed: {
-      gallery() {
-        return 'arizona';
-      },
-      image() {
-        return 'test';
-      },
+      imageSrc() {
+        return this.image.media_details.sizes.medium.source_url;
+      }
     },
 
 
