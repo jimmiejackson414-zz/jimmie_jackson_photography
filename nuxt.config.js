@@ -1,4 +1,4 @@
-import colors from 'vuetify/es5/util/colors'
+require('dotenv').config();
 
 export default {
   mode: 'universal',
@@ -9,7 +9,7 @@ export default {
     title: 'Jimmie Jackson Photography',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui' },
       {
         hid: 'description',
         name: 'description',
@@ -24,7 +24,10 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: {
+    color: '#0077be',
+    height: '3px'
+  },
   /*
    ** Global CSS
    */
@@ -33,9 +36,14 @@ export default {
   ],
   /*
    ** Plugins to load before mounting the App
+   ** Icons can be found at https://antonreshetov.github.io/vue-unicons/
    */
   plugins: [
+    { src: '~/plugins/vuex-persist', mode: 'client' },
     { src: '~/plugins/vue-unicons', mode: 'client' },
+    { src: '~/plugins/masonry', mode: 'client' },
+    '~/plugins/axios',
+    '~/plugins/custom-icons',
   ],
   /*
    ** Nuxt.js dev-modules
@@ -58,7 +66,9 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    https: true,
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -70,16 +80,18 @@ export default {
       iconfont: 'vue-unicons',
     },
     theme: {
+      options: {
+        customProperties: true,
+      },
       themes: {
         light: {
-          // primary: colors.blue.darken2,
-          primary: '#00348f',
-          accent: '#dfa707',
-          secondary: '#00d300',
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+          primary: '#0077be', // water
+          secondary: '#b7410e', // rust
+          accent: '#e1ad01', // mustard
+          info: '#759194', // stone
+          warning: '#f05e23', // orange
+          error: '#950714', // cranberry
+          success: '#228b22', // forrest
         }
       }
     }

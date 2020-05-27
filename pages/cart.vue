@@ -1,5 +1,7 @@
 <template>
-  <h1>Gallery Slug</h1>
+  <div>
+    <h1>Cart</h1>
+  </div>
 </template>
 
 <script>
