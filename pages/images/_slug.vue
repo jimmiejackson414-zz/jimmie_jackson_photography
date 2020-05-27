@@ -51,8 +51,7 @@
           </div>
           <v-form
             ref="form"
-            v-model="valid"
-            lazy-validation>
+            v-model="valid">
             <v-select
               v-model="chosenSize"
               dense

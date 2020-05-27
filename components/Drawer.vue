@@ -12,7 +12,7 @@
     <v-list
       color="white"
       shaped>
-      <v-list-item>
+      <!-- <v-list-item>
         <v-text-field
           label="Search"
           outlined
@@ -29,7 +29,7 @@
               width="20px" />
           </template>
         </v-text-field>
-      </v-list-item>
+      </v-list-item> -->
       <v-list-item
         v-for="item in items"
         :key="item.title"

@@ -17,7 +17,7 @@
       <v-spacer />
       <div
         class="right-menu-wrapper d-flex align-items-center mr-4">
-        <v-btn
+        <!-- <v-btn
           icon
           :ripple="false"
           class="hidden-sm-and-down mr-4">
@@ -26,7 +26,7 @@
             fill="gray"
             height="20px"
             width="20px" />
-        </v-btn>
+        </v-btn> -->
         <v-tabs
           class="hidden-sm-and-down"
           optional>
