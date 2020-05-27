@@ -67,7 +67,7 @@
               color="accent"
               class="add-to-cart-btn"
               :disabled="!valid"
-              @click="validateAndAddToCart">
+              @click="submit">
               Add To Cart
             </v-btn>
           </v-form>
@@ -153,7 +153,7 @@
         this.isModalOpen = true;
       },
 
-      validateAndAddToCart() {
+      submit() {
         if (this.$refs.form.validate()) {
           this.addToCart({ id: 2, title: 'Titties' });
           this.snackbar = true;
