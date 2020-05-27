@@ -61,7 +61,7 @@
       background-color: rgba(255, 255, 255, 0.3);
       bottom: 0;
       left: 0;
-      opacity: 0%;
+      opacity: 0;
       position: absolute;
       right: 0;
       top: 0;
@@ -83,7 +83,7 @@
 
     &:hover {
       .overlay, .visit-btn {
-        opacity: 100%;
+        opacity: 1;
         visibility: visible;
       }
     }

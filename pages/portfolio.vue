@@ -21,10 +21,11 @@
       let res = await $axios.$get(`${env.WP_API_URL}/realmedialibrary/v1/tree`);
       return { galleries: res.tree };
     },
+
     components: {
       PageTitle,
       PortfolioCard,
-    }
+    },
   }
 </script>
 
