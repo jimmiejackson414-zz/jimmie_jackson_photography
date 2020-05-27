@@ -2,6 +2,12 @@ require('dotenv').config();
 
 export default {
   mode: 'universal',
+  env: {
+    BASE_URL: process.env.BASE_URL,
+    WP_API_URL: process.env.WP_API_URL,
+    WP_USERNAME: process.env.WP_USERNAME,
+    WP_PASSWORD: process.env.WP_PASSWORD
+  },
   /*
    ** Headers of the page
    */
@@ -17,7 +23,10 @@ export default {
       }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'apple-touch-icon', sizes: "180x180", href: '/apple-touch-icon.png'},
+      { rel: 'icon', type: 'image/png', sizes: "32x32", href: '/favicon-32x32.png'},
+      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png'},
+      { rel: 'manifest', href: '/site.webmanifest' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700;800&display=swap'}
     ]
   },
