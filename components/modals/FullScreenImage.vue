@@ -4,10 +4,10 @@
     hide-overlay
     fullscreen
     persistent
-    class="dialog-wrapper"
+    content-class="dialog-wrapper"
     @click:outside="closeModal"
     @keydown.esc="closeModal">
-    <v-card>
+    <v-card style="min-height: fit-content">
       <v-img
         :src="image.media_details.sizes.full.source_url"
         @contextmenu.prevent>
@@ -50,8 +50,15 @@
 
 <style lang="scss">
   .dialog-wrapper {
-    .v-img {
-      pointer-events: none;
+    padding: 2rem;
+
+    .v-card {
+      min-height: fit-content;
+
+      .v-img {
+        pointer-events: none;
+      }
     }
+
   }
 </style>

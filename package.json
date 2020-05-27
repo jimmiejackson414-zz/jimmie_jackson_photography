@@ -14,6 +14,8 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.10.3",
     "@nuxtjs/dotenv": "^1.4.0",
+    "express": "^4.17.1",
+    "nodemailer": "^6.4.6",
     "nuxt": "^2.0.0",
     "vue-masonry": "^0.11.8",
     "vue-masonry-css": "^1.0.3",

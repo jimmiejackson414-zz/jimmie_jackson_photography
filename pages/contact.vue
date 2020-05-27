@@ -8,7 +8,12 @@
         <v-form
           v-if="!submitted"
           ref="form"
-          v-model="valid">
+          v-model="valid"
+          name="contactForm"
+          data-netlify="true"
+          data-netlify-honeypot="bot-field"
+          method="POST"
+          @submit.prevent="submit">
           <v-content>
             <v-row>
               <v-col sm="6">
@@ -52,14 +57,20 @@
               <v-col
                 sm="12"
                 class="text-center">
+                <p class="d-none">
+                  <label for="bot-field">Don't fill this out: </label>
+                  <input
+                    type="text"
+                    name="bot-field">
+                </p>
                 <v-btn
-                  :disabled="!valid"
+                  :disabled="!valid || sendingForm"
                   color="accent"
                   depressed
                   :ripple="false"
                   x-large
-                  @click="submit">
-                  Submit
+                  type="submit">
+                  {{ sendingForm ? 'Loading...' : 'Submit' }}
                 </v-btn>
               </v-col>
             </v-row>
@@ -91,22 +102,25 @@
       firstName: '',
       lastName: '',
       message: '',
+      sendingForm: false,
       submitted: false,
       valid: false,
     }),
 
     methods: {
-      submit() {
+      async submit() {
+        this.sendingForm = true;
         if (this.$refs.form.validate()) {
-          this.$axios.$post('', {
-            email: this.post,
-            firstName: this.firstName,
-            lastName: this.lastName,
-            message: this.message,
-          });
-
+          this.$refs.form.submit();
+          // await this.$axios.$post('/api/contact', {
+          //   email: this.post,
+          //   firstName: this.firstName,
+          //   lastName: this.lastName,
+          //   message: this.message,
+          // });
           this.submitted = true;
         }
+        this.sendingForm = false;
       }
     },
 
