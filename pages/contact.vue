@@ -26,6 +26,7 @@
                 v-model="form.firstName"
                 color="primary"
                 label="First Name *"
+                name="firstName"
                 outlined
                 :rules="nameRules"
                 required />
@@ -37,6 +38,7 @@
                 v-model="form.lastName"
                 color="primary"
                 label="Last Name *"
+                name="lastName"
                 outlined
                 :rules="nameRules"
                 required />
@@ -48,6 +50,7 @@
                 v-model="form.email"
                 color="primary"
                 label="Email *"
+                name="email"
                 type="email"
                 :rules="emailRules"
                 outlined
@@ -59,8 +62,8 @@
               <v-textarea
                 v-model="form.message"
                 color="primary"
-                name="input-7-4"
                 label="Message *"
+                name="message"
                 outlined
                 :rules="nameRules"
                 required />
@@ -136,6 +139,7 @@
           .join("&");
       },
       submit () {
+        console.log('this.refs: ', this.$refs.form);
         this.sendingForm = true;
 
         const axiosConfig = {
