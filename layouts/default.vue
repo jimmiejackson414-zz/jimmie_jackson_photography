@@ -160,10 +160,17 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+  @import '~/css/breakpoints';
+
   main.v-content {
-    padding: 100px 0 !important;
+    padding: 50px 0 !important;
+
+    @include breakpoint(desktop) {
+      padding: 100px 0 !important;
+    }
   }
+
   footer.v-footer.custom {
     background-color: transparent;
     color: white;

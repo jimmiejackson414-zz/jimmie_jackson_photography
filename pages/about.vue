@@ -5,6 +5,7 @@
       align="center"
       justify="center">
       <v-col
+        cols="12"
         sm="12"
         md="6"
         lg="4">
@@ -13,9 +14,11 @@
           max-width="800px" />
       </v-col>
       <v-col
+        cols="12"
         sm="12"
         md="6"
-        lg="8">
+        lg="8"
+        class="d-flex flex-column">
         <p class="display-1 font-weight-bold">
           My first camera was an iPhone.
         </p>
@@ -31,6 +34,12 @@
         <p class="body-1">
           I want to take pictures like Ansel Adams and Chris Burkard. I want to see new things. I want to meet new people and tell stories. Photography is something you can never master, only learn more of. And I am constantly learning.
         </p>
+        <v-btn
+          outlined
+          color="primary"
+          :ripple="false">
+          Contact Me
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -47,5 +56,13 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '~/css/breakpoints';
 
+  .v-btn {
+    margin: 0 auto;
+
+    @include breakpoint(desktop) {
+      margin: 0 auto 0 0;
+    }
+  }
 </style>

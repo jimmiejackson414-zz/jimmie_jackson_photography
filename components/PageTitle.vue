@@ -46,14 +46,27 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '~/css/breakpoints';
+
   .page-title-wrapper {
     display: flex;
-    margin-bottom: 4rem;
+    flex-direction: column;
+    margin-bottom: 2rem;
+
+    @include breakpoint(desktop) {
+      flex-direction: row;
+      margin-bottom: 4rem;
+    }
 
     .back-wrapper {
       align-items: center;
       display: flex;
       justify-content: flex-start;
+      margin-bottom: 1rem;
+
+      @include breakpoint(desktop) {
+        margin-bottom: 0;
+      }
 
       p {
         margin: 0;
