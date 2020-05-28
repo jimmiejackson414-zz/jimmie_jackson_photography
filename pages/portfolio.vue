@@ -17,14 +17,15 @@
   import PortfolioCard from '~/components/PortfolioCard';
 
   export default {
-    async asyncData({ $axios }) {
-      let res = await $axios.$get('/realmedialibrary/v1/tree');
+    async asyncData({ $axios, env }) {
+      let res = await $axios.$get(`${env.WP_API_URL}/realmedialibrary/v1/tree`);
       return { galleries: res.tree };
     },
+
     components: {
       PageTitle,
       PortfolioCard,
-    }
+    },
   }
 </script>
 

@@ -111,8 +111,8 @@
   import PageTitle from '~/components/PageTitle';
 
   export default {
-    async asyncData ({ $axios, params }) {
-      const image = await $axios.$get(`/wp/v2/media?slug=${params.slug}`);
+    async asyncData ({ $axios, params, env }) {
+      const image = await $axios.$get(`${env.WP_API_URL}/wp/v2/media?slug=${params.slug}`);
       return { image: image[0] };
     },
 

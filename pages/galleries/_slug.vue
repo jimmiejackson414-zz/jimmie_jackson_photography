@@ -27,8 +27,8 @@
   import { formatSlug, rmlFolders } from '~/helpers';
 
   export default {
-    async asyncData ({ $axios, params }) {
-      const images = await $axios.$get(`/wp/v2/media?rml_folder=${rmlFolders(params.slug)}`);
+    async asyncData ({ $axios, params, env }) {
+      const images = await $axios.$get(`${env.WP_API_URL}/wp/v2/media?rml_folder=${rmlFolders(params.slug)}`);
       return { images };
     },
 
