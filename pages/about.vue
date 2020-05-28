@@ -37,6 +37,8 @@
         <v-btn
           outlined
           color="primary"
+          nuxt
+          to="/contact"
           :ripple="false">
           Contact Me
         </v-btn>
