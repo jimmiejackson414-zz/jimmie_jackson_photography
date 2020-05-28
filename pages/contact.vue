@@ -23,7 +23,7 @@
               cols="12"
               md="6">
               <v-text-field
-                v-model="firstName"
+                v-model="form.firstName"
                 color="primary"
                 label="First Name *"
                 outlined
@@ -34,7 +34,7 @@
               cols="12"
               md="6">
               <v-text-field
-                v-model="lastName"
+                v-model="form.lastName"
                 color="primary"
                 label="Last Name *"
                 outlined
@@ -45,7 +45,7 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="email"
+                v-model="form.email"
                 color="primary"
                 label="Email *"
                 type="email"
@@ -57,7 +57,7 @@
           <v-row justify="center">
             <v-col cols="12">
               <v-textarea
-                v-model="message"
+                v-model="form.message"
                 color="primary"
                 name="input-7-4"
                 label="Message *"
@@ -109,14 +109,16 @@
 
   export default {
     data: () => ({
-      email: '',
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
-      firstName: '',
-      lastName: '',
-      message: '',
+      form: {
+        email: '',
+        firstName: '',
+        lastName: '',
+        message: '',
+      },
       nameRules: [
         v => !!v || 'Name is required.',
       ],
@@ -140,16 +142,15 @@
           header: { 'Content-Type': 'application/x-www-form-urlencoded' }
         };
 
-        const payload = this.encode({
-          'form-name': 'contactForm',
-          email: this.email,
-          firstName: this.firstName,
-          lastName: this.lastName,
-          message: this.message
-        });
-
         axios
-          .post('/', payload, axiosConfig)
+          .post(
+            '/',
+            this.encode({
+              'form-name': 'contactForm',
+              ...this.form
+            }),
+            axiosConfig
+          )
           .then(() => this.submitted = true)
           .catch(err => console.log(err))
           .finally(() => this.sendingForm = false);
