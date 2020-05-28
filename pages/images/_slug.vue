@@ -1,13 +1,13 @@
 <template>
   <div class="page-wrapper">
-    <v-container>
+    <v-container class="pb-0">
       <page-title
         :text="pageTitle"
         back />
     </v-container>
     <v-container
       fluid
-      class="pa-5">
+      class="px-5">
       <v-row
         align="center"
         justify="center">
@@ -58,7 +58,6 @@
               :items="availableSizes"
               label="Please choose a size"
               outlined
-              style="maxWidth: 50%;"
               required
               :rules="[v => !!v || 'Selection is required']" />
             <v-btn
@@ -211,6 +210,16 @@
 
       p:first-of-type {
         margin-right: 1rem;
+      }
+    }
+
+    form {
+      .v-input {
+        max-width: 75%;
+
+        @include breakpoint(desktop) {
+          max-width: 50%;
+        }
       }
     }
   }

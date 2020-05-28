@@ -1,6 +1,7 @@
 <template>
   <v-col
-    cols="6"
+    cols="12"
+    md="6"
     class="px-1 py-1">
     <v-lazy
       v-model="isActive"
