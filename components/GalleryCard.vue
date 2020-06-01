@@ -38,7 +38,7 @@
 
     computed: {
       imageSrc() {
-        return this.image.media_details.sizes.medium.source_url;
+        return this.image.media_details.sizes.large.source_url;
       }
     },
 

@@ -5,10 +5,10 @@
       back />
     <v-row
       align="center"
-      justify="center">
+      justify="start">
       <client-only>
         <masonry
-          :cols="{default: 3, 1000: 3, 700: 2, 400: 1}"
+          :cols="{default: 2, 1000: 3, 700: 2, 400: 1}"
           :gutter="{default: '10px', 700: '10px'}"
           style="width: 100%;">
           <gallery-card
@@ -22,15 +22,14 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
+  import fetchGalleries from '~/mixins/fetchGalleries';
+  import { formatSlug } from '~/helpers';
   import GalleryCard from '~/components/GalleryCard';
   import PageTitle from '~/components/PageTitle';
-  import { formatSlug, rmlFolders } from '~/helpers';
 
   export default {
-    async asyncData ({ $axios, params, env }) {
-      const images = await $axios.$get(`${env.WP_API_URL}/wp/v2/media?rml_folder=${rmlFolders(params.slug)}`);
-      return { images };
-    },
+    mixins: [fetchGalleries],
 
     data: () => ({
       options: {
@@ -39,8 +38,12 @@
     }),
 
     computed: {
+      ...mapGetters('portfolio', ['fetchGallery']),
       pageTitle() {
         return formatSlug(this.$route.params.slug);
+      },
+      images() {
+        return this.fetchGallery(this.$route.params.slug);
       }
     },
 

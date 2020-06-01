@@ -2,26 +2,28 @@
   <v-col
     cols="12"
     md="6"
+    xl="4"
     class="px-1 py-1">
     <v-lazy
       v-model="isActive"
       :options="{ threshold: .5 }"
       min-height="200"
       transition="fade-transition">
-      <nuxt-link :to="{ name: 'galleries-slug', params: { slug: gallery.slug } }">
+      <nuxt-link :to="{ name: 'galleries-slug', params: { slug: gallerySlug } }">
         <div
-          class="gallery-card"
+          class="portfolio-card"
+          :style="{background: `url(${imageSrc}) no-repeat center center`}"
           @contextmenu.prevent>
           <div class="overlay" />
           <p class="display-3 font-weight-bold gallery-title">
-            {{ gallery.name }}
+            {{ galleryName }}
           </p>
           <v-btn
             depressed
             :ripple="false"
             color="primary"
             class="visit-btn"
-            :to="{ name: 'galleries-slug', params: { slug: gallery.slug }}">
+            :to="{ name: 'galleries-slug', params: { slug: gallerySlug }}">
             Visit Gallery
           </v-btn>
         </div>
@@ -34,21 +36,32 @@
   export default {
     props: {
       gallery: {
-        type: Object,
-        default: () => ({})
+        type: Array,
+        default: () => ([])
       },
     },
 
     data: () => ({
       isActive: false,
-    })
+    }),
+
+    computed: {
+      galleryName() {
+        return this.gallery[0].acf.category.name;
+      },
+      gallerySlug() {
+        return this.gallery[0].acf.category.slug;
+      },
+      imageSrc() {
+        return this.gallery[0].media_details.sizes.large.source_url || 'https://via.placeholder.com/500';
+      }
+    }
   }
 </script>
 
 <style lang="scss" scoped>
-  .gallery-card {
+  .portfolio-card {
     align-items: center;
-    background: url('/backgrounds/grand_canyon.jpg') no-repeat center center;
     background-size: cover;
     cursor: pointer;
     display: flex;

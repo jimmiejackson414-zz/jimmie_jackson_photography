@@ -59,6 +59,7 @@
               label="Please choose a size"
               outlined
               required
+              return-object
               :rules="[v => !!v || 'Selection is required']" />
             <v-btn
               depressed
@@ -105,15 +106,13 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex';
+  import { mapGetters, mapMutations } from 'vuex';
+  import fetchGalleries from '~/mixins/fetchGalleries';
   import FullScreenImage from '~/components/modals/FullScreenImage';
   import PageTitle from '~/components/PageTitle';
 
   export default {
-    async asyncData ({ $axios, params, env }) {
-      const image = await $axios.$get(`${env.WP_API_URL}/wp/v2/media?slug=${params.slug}`);
-      return { image: image[0] };
-    },
+    mixins: [fetchGalleries],
 
     data: () => ({
       availableSizes: [
@@ -130,12 +129,16 @@
     }),
 
     computed: {
+      ...mapGetters('portfolio', ['fetchImage']),
       details() {
         return [
           { title: 'Title', value: this.image.title.rendered },
           { title: 'Location', value: this.image.acf.location },
           { title: 'Description', value: this.image.caption.rendered }
         ]
+      },
+      image() {
+        return this.fetchImage(this.$route.params.slug);
       },
       imageSrc() {
         return this.image.media_details.sizes.large.source_url;
@@ -154,7 +157,14 @@
 
       submit() {
         if (this.$refs.form.validate()) {
-          this.addToCart({ id: 2, title: 'Titties' });
+          const payload = {
+            id: this.image.id,
+            chosenSize: this.chosenSize,
+            image: this.image.media_details.sizes.thumbnail.source_url,
+            quantity: 1,
+            title: this.image.title.rendered,
+          };
+          this.addToCart(payload);
           this.snackbar = true;
         }
       },

@@ -3,7 +3,7 @@
     <page-title text="Portfolio" />
     <v-row
       align="center"
-      justify="center">
+      justify="start">
       <portfolio-card
         v-for="(gallery, index) in galleries"
         :key="index"
@@ -13,14 +13,14 @@
 </template>
 
 <script>
+  import fetchGalleries from '~/mixins/fetchGalleries';
   import PageTitle from '~/components/PageTitle';
   import PortfolioCard from '~/components/PortfolioCard';
 
   export default {
-    async asyncData({ $axios, env }) {
-      let res = await $axios.$get(`${env.WP_API_URL}/realmedialibrary/v1/tree`);
-      return { galleries: res.tree };
-    },
+    name: 'Portfolio',
+
+    mixins: [fetchGalleries],
 
     components: {
       PageTitle,

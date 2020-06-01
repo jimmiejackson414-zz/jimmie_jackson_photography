@@ -8,7 +8,9 @@ export default {
     BASE_URL: process.env.BASE_URL,
     WP_API_URL: process.env.WP_API_URL,
     WP_USERNAME: process.env.WP_USERNAME,
-    WP_PASSWORD: process.env.WP_PASSWORD
+    WP_PASSWORD: process.env.WP_PASSWORD,
+    STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
   },
   /*
    ** Headers of the page
@@ -121,15 +123,19 @@ export default {
      ** You can extend webpack config here
      */
     standalone: true,
-    extend(config, ctx) {
+    extend(config, { isDev, isClient }) {
       // Run ESLint on save
-      if (ctx.isDev && ctx.isClient) {
+      if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/
         })
+      }
+
+      if (!isDev && isClient) {
+        config.plugins.push({ src: '~/plugins/logrocket', mode: 'client' });
       }
     }
   }
