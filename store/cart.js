@@ -13,6 +13,6 @@ export const mutations = {
     state.items.push(item);
   },
   removeFromCart(state, item) {
-    state.items.splice(state.items.indexOf(item), 1);
+    state.items = state.items.filter(i => i.id !== item.id);
   },
 };

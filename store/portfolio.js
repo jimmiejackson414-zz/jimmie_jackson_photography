@@ -5,11 +5,10 @@ export const state = () => ({
 export const actions = {
   async fetchGalleries({ commit }) {
     let res = await this.$axios.$get(`${process.env.WP_API_URL}/wp/v2/media`);
-    const data = res.reduce((images, item) => {
-      const image = images[item.acf.category.slug] || [];
-      image.push(item);
-      images[item.acf.category.slug] = image;
-      return images;
+    const data = res.reduce((acc, item) => {
+      const { slug } = item.acf.category;
+      (acc[slug] || (acc[slug] = [])).push(item);
+      return acc;
     }, {});
 
     commit('setGalleries', data);
