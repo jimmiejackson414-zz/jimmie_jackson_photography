@@ -119,13 +119,15 @@
   import { mapGetters } from 'vuex';
 
   export default {
+    name: 'Default',
+
     data: () => ({
       drawer: null,
       items: [
         {title: 'Portfolio', to: '/portfolio', badge: false},
         {title: 'About', to: '/about', badge: false},
         {title: 'Contact', to: '/contact', badge: false},
-        {title: 'Cart', to: '/cart', badge: true}
+        // {title: 'Cart', to: '/cart', badge: true}
       ]
     }),
 
@@ -142,17 +144,17 @@
       }
     },
 
-    watch: {
-      cartItems: function(newValue, oldValue) {
-        const badge = document.querySelector('.v-badge__badge');
-        if (newValue !== oldValue) {
-          badge.classList.add('bounce');
-          this.delay(500).then(() => {
-            badge.classList.remove('bounce');
-          });
-        }
-      }
-    },
+    // watch: {
+    //   cartItems: function(newValue, oldValue) {
+    //     const badge = document.querySelector('.v-badge__badge');
+    //     if (newValue !== oldValue) {
+    //       badge.classList.add('bounce');
+    //       this.delay(500).then(() => {
+    //         badge.classList.remove('bounce');
+    //       });
+    //     }
+    //   }
+    // },
 
     components: {
       HomeDrawer: () => import('~/components/Drawer'),

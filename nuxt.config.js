@@ -8,7 +8,9 @@ export default {
     BASE_URL: process.env.BASE_URL,
     WP_API_URL: process.env.WP_API_URL,
     WP_USERNAME: process.env.WP_USERNAME,
-    WP_PASSWORD: process.env.WP_PASSWORD
+    WP_PASSWORD: process.env.WP_PASSWORD,
+    STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
   },
   /*
    ** Headers of the page
@@ -73,6 +75,10 @@ export default {
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
   ],
+  stripe: {
+    version: 'v3',
+    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
@@ -120,10 +126,13 @@ export default {
     /*
      ** You can extend webpack config here
      */
+    transpile: [
+      './plugins/stripe'
+    ],
     standalone: true,
-    extend(config, ctx) {
+    extend(config, { isDev, isClient }) {
       // Run ESLint on save
-      if (ctx.isDev && ctx.isClient) {
+      if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -131,6 +140,10 @@ export default {
           exclude: /(node_modules)/
         })
       }
-    }
+
+      if (!isDev && isClient) {
+        config.plugins.push({ src: '~/plugins/logrocket', mode: 'client' });
+      }
+    },
   }
 }
