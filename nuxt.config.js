@@ -134,9 +134,9 @@ export default {
         })
       }
 
-      if (!isDev && isClient) {
-        config.plugins.push({ src: '~/plugins/logrocket', mode: 'client' });
-      }
+      // if (!isDev && isClient) {
+      //   config.plugins.push({ src: '~/plugins/logrocket', mode: 'client' });
+      // }
     },
   }
 }
