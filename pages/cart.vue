@@ -54,16 +54,15 @@
             <p class="display-1 section-title">
               Payment Details
             </p>
-            <card
-              :class="['stripe-card', { complete }]"
-              :stripe="stripeKey"
-              @change="complete = $event.complete" />
             <v-btn
               color="primary"
-              :disabled="!complete"
-              @click="purchase">
-              Pay {{ orderTotal }}
+              refs="checkoutBtn"
+              :disabled="!isStripeLoaded || !complete"
+              @click="checkout">
+              <span v-if="!loading">Continue to Checkout</span>
+              <Spinner v-else />
             </v-btn>
+            <span class="error">{{ error }}</span>
           </div>
         </div>
       </v-col>
@@ -76,10 +75,14 @@
             Order Details
           </p>
           <span v-if="hasOrderItems">
-            <order-item
-              v-for="(item, index) in orderItems"
-              :key="index"
-              :item="item" />
+            <transition-group
+              tag="ul"
+              name="list">
+              <order-item
+                v-for="item in orderItems"
+                :key="item.id"
+                :item="item" />
+            </transition-group>
           </span>
           <span v-else>
             <p class="body-1">You have no items in your cart. Visit my portfolio to add items to your cart.</p>
@@ -98,53 +101,94 @@
 
 <script>
   import { mapState } from 'vuex';
-  import { Card, createToken } from 'vue-stripe-elements-plus';
   import OrderItem from '~/components/OrderItem';
   import PageTitle from '~/components/PageTitle';
+  import Spinner from '~/components/Spinner';
 
   export default {
+    name: 'Cart',
+
     data: () => ({
-      complete: false,
+      canceledResult: false,
       email: '',
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
+      error: null,
       firstName: '',
       isStripeLoaded: false,
       lastName: '',
+      loading: false,
       nameRules: [
         v => !!v || 'Name is required.',
       ],
-      stripeKey: process.env.STRIPE_PUBLISHABLE_KEY,
+      stripe: null,
+      successfulResult: false,
     }),
 
     computed: {
       ...mapState({
         orderItems: state => state.cart.items,
       }),
+      complete() {
+        return this.email && this.firstName && this.lastName;
+      },
       hasOrderItems() {
         return this.orderItems.length > 0;
       },
-      orderTotal() {
-        return '$10';
+      flattenedLineItems() {
+        return this.orderItems.reduce((acc, item) => {
+          const found = acc.some(a => a.price === item.chosenSize.value);
+          if (!found) acc.push({ price: item.chosenSize.value, quantity: item.quantity })
+          else acc.find(a => a.price === item.chosenSize.value).quantity++;
+          return acc;
+        }, []);
       }
     },
 
     methods: {
-      async purchase() {
-        // let result = await stripe.createToken(card);
-        createToken()
-          .then(data => console.log(data.token))
-          .catch(err => console.log(err));
+      checkout() {
+        this.loading = true;
+        // when the customer clicks on the button, redirect them to checkout
+        this.stripe.redirectToCheckout({
+          lineItems: this.flattenedLineItems,
+          mode: 'payment',
+          customerEmail: this.email,
+          // do not rely on the redirect to the successUrl for fulfilling purchases, customers
+          // may not always reach the successUrl after a successful payment.
+          // instead use one of the strategies described in https://stripe.com/docs/payments/checkout/fulfillment
+          successUrl: 'https://www.jimmiejacksonphotography.com/cart',
+          cancelUrl: 'https://www.jimmiejacksonphotography.com/cart',
+        })
+          .then(result => {
+            console.log('result: ', result);
+            this.loading = false;
+            if (result.error) {
+              // if `redirectToCheckout` fails due to a browser or network error, display the localized
+              // error message to your customer
+              this.error = result.error.message;
+            }
+          })
+      },
+      initializeStripe() {
+        // eslint-disable-next-line no-undef
+        this.stripe = Stripe(process.env.STRIPE_PUBLISHABLE_KEY);
+      }
+    },
+
+    watch: {
+      isStripeLoaded() {
+        if (this.isStripeLoaded) this.initializeStripe();
       }
     },
 
     components: {
-      Card,
       OrderItem,
       PageTitle,
+      Spinner,
     },
+
 
     head() {
       return {
@@ -189,10 +233,33 @@
           }
         }
       }
-
-      .order-details-wrapper {
-
-      }
     }
+  }
+
+  .list-enter-active,
+  .list-leave-active,
+  .list-move {
+    transition: 250ms cubic-bezier(0.59, 0.12, 0.34, 0.95);
+    transition-property: opacity, transform;
+  }
+
+  .list-enter {
+    opacity: 0;
+    transform: translateX(50px) scaleY(0.5);
+  }
+
+  .list-enter-to {
+    opacity: 1;
+    transform: translateX(0) scaleY(1);
+  }
+
+  .list-leave-active {
+    position: absolute;
+  }
+
+  .list-leave-to {
+    opacity: 0;
+    transform: translateX(50px) scaleY(0);
+    transform-origin: center top;
   }
 </style>

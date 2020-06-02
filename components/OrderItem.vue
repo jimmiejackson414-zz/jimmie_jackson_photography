@@ -1,5 +1,5 @@
 <template>
-  <div class="item-wrapper">
+  <li class="item-wrapper">
     <v-img
       :src="item.image"
       max-width="100px" />
@@ -8,7 +8,7 @@
         {{ item.title }}
       </p>
       <p class="body-2">
-        {{ item.chosenSize.text }}
+        {{ item.chosenSize.label }}
       </p>
     </div>
     <div class="quantity">
@@ -26,14 +26,14 @@
       <v-btn
         icon
         :ripple="false"
-        @click.stop="removeFromCart">
+        @click.stop="remove">
         <icon
           name="multiply"
           height="30px"
           width="30px" />
       </v-btn>
     </div>
-  </div>
+  </li>
 </template>
 
 <script>
@@ -52,7 +52,10 @@
     }),
 
     methods: {
-      ...mapMutations('cart', ['removeFromCart'])
+      ...mapMutations('cart', ['removeFromCart']),
+      remove() {
+        this.removeFromCart(this.item);
+      }
     }
   }
 </script>

@@ -75,6 +75,10 @@ export default {
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
   ],
+  stripe: {
+    version: 'v3',
+    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
@@ -122,6 +126,9 @@ export default {
     /*
      ** You can extend webpack config here
      */
+    transpile: [
+      './plugins/stripe'
+    ],
     standalone: true,
     extend(config, { isDev, isClient }) {
       // Run ESLint on save
@@ -137,6 +144,6 @@ export default {
       if (!isDev && isClient) {
         config.plugins.push({ src: '~/plugins/logrocket', mode: 'client' });
       }
-    }
+    },
   }
 }
