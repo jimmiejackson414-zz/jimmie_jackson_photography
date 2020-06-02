@@ -8,7 +8,7 @@
         {{ item.title }}
       </p>
       <p class="body-2">
-        {{ item.chosenSize.text }}
+        {{ item.chosenSize.label }}
       </p>
     </div>
     <div class="quantity">

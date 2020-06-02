@@ -49,7 +49,7 @@
               {{ detail.value | strippedTags }}
             </p>
           </div>
-          <v-form
+          <!-- <v-form
             ref="form"
             v-model="valid">
             <v-select
@@ -60,6 +60,8 @@
               outlined
               required
               return-object
+              item-text="label"
+              item-value="value"
               :rules="[v => !!v || 'Selection is required']" />
             <v-btn
               depressed
@@ -70,7 +72,7 @@
               @click="submit">
               Add To Cart
             </v-btn>
-          </v-form>
+          </v-form> -->
         </v-col>
       </v-row>
     </v-container>
@@ -115,13 +117,13 @@
     mixins: [fetchGalleries],
 
     data: () => ({
-      availableSizes: [
-        { text: '500dpi', value: '1' },
-        { text: '1000dpi', value: '2' },
-        { text: '1500dpi', value: '3' },
-        { text: '2000dpi', value: '4' },
-        { text: 'Full Resolution', value: '5' },
-      ],
+      // availableSizes: [
+      //   { text: '500dpi', value: '1' },
+      //   { text: '1000dpi', value: '2' },
+      //   { text: '1500dpi', value: '3' },
+      //   { text: '2000dpi', value: '4' },
+      //   { text: 'Full Resolution', value: '5' },
+      // ],
       chosenSize: null,
       isModalOpen: false,
       snackbar: false,
@@ -130,6 +132,9 @@
 
     computed: {
       ...mapGetters('portfolio', ['fetchImage']),
+      availableSizes() {
+        return this.image.acf.stripe;
+      },
       details() {
         return [
           { title: 'Title', value: this.image.title.rendered },

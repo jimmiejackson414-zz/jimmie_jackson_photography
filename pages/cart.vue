@@ -57,8 +57,9 @@
             <v-btn
               color="primary"
               refs="checkoutBtn"
+              :disabled="!isStripeLoaded || !complete"
               @click="checkout">
-              <span v-if="!loading">Pay ${{ amount / 100 }}</span>
+              <span v-if="!loading">Continue to Checkout</span>
               <Spinner v-else />
             </v-btn>
             <span class="error">{{ error }}</span>
@@ -130,27 +131,35 @@
       ...mapState({
         orderItems: state => state.cart.items,
       }),
+      complete() {
+        return this.email && this.firstName && this.lastName;
+      },
       hasOrderItems() {
         return this.orderItems.length > 0;
       },
-      amount() {
-        return 1000;
+      flattenedLineItems() {
+        return this.orderItems.reduce((acc, item) => {
+          const found = acc.some(a => a.price === item.chosenSize.value);
+          if (!found) acc.push({ price: item.chosenSize.value, quantity: item.quantity })
+          else acc.find(a => a.price === item.chosenSize.value).quantity++;
+          return acc;
+        }, []);
       }
     },
 
     methods: {
       checkout() {
-        console.log('checkout');
         this.loading = true;
         // when the customer clicks on the button, redirect them to checkout
         this.stripe.redirectToCheckout({
-          lineItems: [{ price: 'price_HO9S89fpcCB1CJ', quantity: 1 }],
+          lineItems: this.flattenedLineItems,
           mode: 'payment',
+          customerEmail: this.email,
           // do not rely on the redirect to the successUrl for fulfilling purchases, customers
           // may not always reach the successUrl after a successful payment.
           // instead use one of the strategies described in https://stripe.com/docs/payments/checkout/fulfillment
-          successUrl: window.location.protocol + '//www.jimmiejacksonphotography.com/cart',
-          cancelUrl: window.location.protocol + '//www.jimmiejacksonphotography.com/cart',
+          successUrl: 'https://www.jimmiejacksonphotography.com/cart',
+          cancelUrl: 'https://www.jimmiejacksonphotography.com/cart',
         })
           .then(result => {
             console.log('result: ', result);
