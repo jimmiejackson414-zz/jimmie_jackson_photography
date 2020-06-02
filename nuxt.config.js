@@ -126,9 +126,6 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    transpile: [
-      './plugins/stripe'
-    ],
     standalone: true,
     extend(config, { isDev, isClient }) {
       // Run ESLint on save
