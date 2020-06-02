@@ -75,10 +75,6 @@ export default {
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
   ],
-  stripe: {
-    version: 'v3',
-    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
-  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
