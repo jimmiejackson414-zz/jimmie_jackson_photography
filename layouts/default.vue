@@ -17,7 +17,7 @@
       <v-spacer />
       <div
         class="right-menu-wrapper d-flex align-items-center mr-4">
-        <!-- <v-btn
+        <v-btn
           icon
           :ripple="false"
           class="hidden-sm-and-down mr-4">
@@ -26,7 +26,7 @@
             fill="gray"
             height="20px"
             width="20px" />
-        </v-btn> -->
+        </v-btn>
         <v-tabs
           class="hidden-sm-and-down"
           optional>
@@ -127,7 +127,7 @@
         {title: 'Portfolio', to: '/portfolio', badge: false},
         {title: 'About', to: '/about', badge: false},
         {title: 'Contact', to: '/contact', badge: false},
-        // {title: 'Cart', to: '/cart', badge: true}
+        {title: 'Cart', to: '/cart', badge: true}
       ]
     }),
 
@@ -144,17 +144,17 @@
       }
     },
 
-    // watch: {
-    //   cartItems: function(newValue, oldValue) {
-    //     const badge = document.querySelector('.v-badge__badge');
-    //     if (newValue !== oldValue) {
-    //       badge.classList.add('bounce');
-    //       this.delay(500).then(() => {
-    //         badge.classList.remove('bounce');
-    //       });
-    //     }
-    //   }
-    // },
+    watch: {
+      cartItems: function(newValue, oldValue) {
+        const badge = document.querySelector('.v-badge__badge');
+        if (newValue !== oldValue) {
+          badge.classList.add('bounce');
+          this.delay(500).then(() => {
+            badge.classList.remove('bounce');
+          });
+        }
+      }
+    },
 
     components: {
       HomeDrawer: () => import('~/components/Drawer'),

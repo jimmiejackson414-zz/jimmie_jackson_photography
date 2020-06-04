@@ -49,7 +49,7 @@
               {{ detail.value | strippedTags }}
             </p>
           </div>
-          <!-- <v-form
+          <v-form
             ref="form"
             v-model="valid">
             <v-select
@@ -72,7 +72,7 @@
               @click="submit">
               Add To Cart
             </v-btn>
-          </v-form> -->
+          </v-form>
         </v-col>
       </v-row>
     </v-container>
@@ -155,13 +155,6 @@
     mixins: [fetchGalleries],
 
     data: () => ({
-      // availableSizes: [
-      //   { text: '500dpi', value: '1' },
-      //   { text: '1000dpi', value: '2' },
-      //   { text: '1500dpi', value: '3' },
-      //   { text: '2000dpi', value: '4' },
-      //   { text: 'Full Resolution', value: '5' },
-      // ],
       chosenSize: null,
       isModalOpen: false,
       snackbar: false,
@@ -171,7 +164,7 @@
     computed: {
       ...mapGetters('portfolio', ['fetchImage', 'fetchImageNavigationSlugs']),
       availableSizes() {
-        return this.image.acf.stripe;
+        return this.image.acf.stripe.sizes;
       },
       backSlug() {
         return `/galleries/${this.image.acf.category.slug}`;

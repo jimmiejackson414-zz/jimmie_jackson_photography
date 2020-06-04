@@ -16,6 +16,9 @@ export default {
    ** Headers of the page
    */
   head: {
+    htmlAttrs: {
+      lang: 'en',
+    },
     title: 'Jimmie Jackson Photography',
     titleTemplate: '%s | Jimmie Jackson Photography',
     meta: [
