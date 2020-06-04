@@ -3,7 +3,7 @@
     <v-container class="pb-0">
       <page-title
         :text="pageTitle"
-        back />
+        :back-slug="backSlug" />
     </v-container>
     <v-container
       fluid
@@ -76,6 +76,44 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-container>
+      <v-row
+        align="center"
+        class="prev-next-wrapper">
+        <v-btn
+          text
+          :ripple="false"
+          small
+          nuxt
+          :to="prevSlug"
+          :disabled="!prevSlug"
+          color="info">
+          <icon
+            :disabled="!prevSlug"
+            name="angle-left"
+            fill="grey"
+            height="20px"
+            width="20px" />
+          Previous Photo
+        </v-btn>
+        <v-btn
+          text
+          :ripple="false"
+          small
+          nuxt
+          :to="nextSlug"
+          :disabled="!nextSlug"
+          color="info">
+          Next Photo
+          <icon
+            :disabled="!nextSlug"
+            name="angle-right"
+            fill="grey"
+            height="20px"
+            width="20px" />
+        </v-btn>
+      </v-row>
+    </v-container>
     <v-snackbar
       v-model="snackbar"
       bottom
@@ -131,9 +169,12 @@
     }),
 
     computed: {
-      ...mapGetters('portfolio', ['fetchImage']),
+      ...mapGetters('portfolio', ['fetchImage', 'fetchImageNavigationSlugs']),
       availableSizes() {
         return this.image.acf.stripe;
+      },
+      backSlug() {
+        return `/galleries/${this.image.acf.category.slug}`;
       },
       details() {
         return [
@@ -148,8 +189,14 @@
       imageSrc() {
         return this.image.media_details.sizes.large.source_url;
       },
+      nextSlug() {
+        return this.fetchImageNavigationSlugs(this.image).next;
+      },
       pageTitle() {
         return this.image.title.rendered;
+      },
+      prevSlug() {
+        return this.fetchImageNavigationSlugs(this.image).previous;
       }
     },
 
@@ -185,6 +232,12 @@
       FullScreenImage,
       PageTitle,
     },
+
+    head() {
+      return {
+        title: this.pageTitle
+      }
+    }
   }
 </script>
 
@@ -237,5 +290,10 @@
         }
       }
     }
+  }
+
+  .prev-next-wrapper {
+    display: flex;
+    justify-content: space-between;
   }
 </style>

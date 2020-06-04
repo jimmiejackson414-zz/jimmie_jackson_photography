@@ -26,6 +26,12 @@
       PageTitle,
       PortfolioCard,
     },
+
+    head() {
+      return {
+        title: 'Portfolio'
+      }
+    },
   }
 </script>
 

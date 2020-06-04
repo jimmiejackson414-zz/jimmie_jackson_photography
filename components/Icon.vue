@@ -1,9 +1,10 @@
 <template>
   <client-only>
     <unicon
+      :style="styles"
       :class="customClass"
       :name="name"
-      :fill="fill"
+      :fill="fillStyles"
       :height="height"
       :width="width" />
   </client-only>
@@ -16,6 +17,10 @@
         type: String,
         default: '',
         required: false,
+      },
+      disabled: {
+        type: Boolean,
+        default: false,
       },
       name: {
         type: String,
@@ -37,10 +42,21 @@
         default: '20px',
         required: false,
       }
+    },
+
+    computed: {
+      fillStyles() {
+        return this.disabled ? '#cccccc' : this.fill;
+      },
+      styles() {
+        return {
+          height: this.height,
+          width: this.width,
+        }
+      },
     }
   }
 </script>
 
 <style lang="scss" scoped>
-
 </style>

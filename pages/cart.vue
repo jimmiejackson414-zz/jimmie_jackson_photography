@@ -199,7 +199,8 @@
             defer: true,
             callback: () => { this.isStripeLoaded = true }
           }
-        ]
+        ],
+        title: 'Cart'
       }
     }
   }

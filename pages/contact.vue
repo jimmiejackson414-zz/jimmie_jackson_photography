@@ -163,6 +163,12 @@
 
     components: {
       PageTitle,
+    },
+
+    head() {
+      return {
+        title: 'Contact'
+      }
     }
   }
 </script>

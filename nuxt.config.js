@@ -17,13 +17,14 @@ export default {
    */
   head: {
     title: 'Jimmie Jackson Photography',
+    titleTemplate: '%s | Jimmie Jackson Photography',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui' },
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
+        content: 'Jimmie Jackson Photography - Seattle Based Landscape and Travel Photographer'
       }
     ],
     link: [

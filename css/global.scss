@@ -21,7 +21,14 @@ a {
 
 button,
 a {
-  &:hover {
+  &:hover,
+  &:active {
+    &:before {
+      background: transparent !important;
+    }
+  }
+
+  &.v-btn--active {
     &:before {
       background: transparent;
     }

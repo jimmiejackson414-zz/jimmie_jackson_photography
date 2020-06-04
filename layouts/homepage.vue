@@ -76,6 +76,7 @@
     data: () => ({
       logo: null,
     }),
+
     computed: {
       ...mapState({
         randBackground: state => state.homepage.background,
