@@ -1,12 +1,12 @@
 <template>
   <div class="page-title-wrapper">
     <v-btn
-      v-if="back"
+      v-if="backSlug"
       text
       :ripple="false"
       nuxt
       class="back-wrapper"
-      @click="to">
+      :to="backSlug">
       <icon
         name="angle-left"
         fill="#9e9e9e"
@@ -27,21 +27,15 @@
 <script>
   export default {
     props: {
-      back: {
-        type: Boolean,
-        default: false,
+      backSlug: {
+        type: String,
+        default: '/portfolio',
       },
       text: {
         type: String,
         default: 'Page'
       }
     },
-
-    methods: {
-      to() {
-        this.$router.go(-1);
-      },
-    }
   }
 </script>
 

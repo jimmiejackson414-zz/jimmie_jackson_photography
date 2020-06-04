@@ -53,6 +53,12 @@
   export default {
     components: {
       PageTitle,
+    },
+
+    head() {
+      return {
+        title: 'About'
+      }
     }
   }
 </script>
