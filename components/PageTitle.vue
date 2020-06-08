@@ -1,5 +1,5 @@
 <template>
-  <div class="page-title-wrapper">
+  <div class="row page-title-wrapper">
     <v-btn
       v-if="backSlug"
       text
@@ -29,7 +29,7 @@
     props: {
       backSlug: {
         type: String,
-        default: '/portfolio',
+        default: '',
       },
       text: {
         type: String,
@@ -57,6 +57,7 @@
       display: flex;
       justify-content: flex-start;
       margin-bottom: 1rem;
+      position: absolute;
 
       @include breakpoint(desktop) {
         margin-bottom: 0;

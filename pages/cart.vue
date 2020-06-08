@@ -108,6 +108,8 @@
   export default {
     name: 'Cart',
 
+    transition: 'page-fade',
+
     data: () => ({
       canceledResult: false,
       email: '',

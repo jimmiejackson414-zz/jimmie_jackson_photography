@@ -111,6 +111,8 @@
   import PageTitle from '~/components/PageTitle';
 
   export default {
+    transition: 'page-fade',
+
     data: () => ({
       emailRules: [
         v => !!v || 'E-mail is required',

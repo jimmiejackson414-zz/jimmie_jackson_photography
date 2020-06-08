@@ -16,6 +16,9 @@ export default {
    ** Headers of the page
    */
   head: {
+    htmlAttrs: {
+      lang: 'en',
+    },
     title: 'Jimmie Jackson Photography',
     titleTemplate: '%s | Jimmie Jackson Photography',
     meta: [
@@ -58,6 +61,7 @@ export default {
     { src: '~/plugins/masonry', mode: 'client' },
     '~/plugins/axios',
     '~/plugins/custom-icons',
+    '~/plugins/click-outside',
   ],
   /*
    ** Nuxt.js dev-modules
@@ -139,5 +143,5 @@ export default {
       //   config.plugins.push({ src: '~/plugins/logrocket', mode: 'client' });
       // }
     },
-  }
+  },
 }

@@ -4,10 +4,10 @@ export const state = () => ({
 
 export const actions = {
   async fetchGalleries({ commit }) {
-    let res = await this.$axios.$get(`${process.env.WP_API_URL}/wp/v2/media`);
+    let res = await this.$axios.$get(`${process.env.WP_API_URL}/wc/v3/products?consumer_key=${process.env.WC_CONSUMER_KEY}&consumer_secret=${process.env.WC_CONSUMER_SECRET}`);
     const data = Object.values(res.reduce((carry, item) => ({
       ...carry,
-      [item.acf.category.slug]: (carry[item.acf.category.slug] || []).concat(item)
+      [item.categories[0].slug]: (carry[item.categories[0].slug] || []).concat(item),
     }), {}));
 
     commit('setGalleries', data);
@@ -25,7 +25,7 @@ export const getters = {
     let selectedGallery;
     state.galleries.forEach(gallery => {
       gallery.forEach(image => {
-        if (image.acf.category.slug === slug) return selectedGallery = gallery;
+        if (image.categories[0].slug === slug) return selectedGallery = gallery;
       })
     })
     return selectedGallery;
@@ -45,7 +45,7 @@ export const getters = {
 
     state.galleries.forEach(gallery => {
       gallery.forEach(image => {
-        if (image.acf.category.slug === currentImage.acf.category.slug) return selectedGallery = gallery;
+        if (image.categories[0].slug === currentImage.categories[0].slug) return selectedGallery = gallery;
       })
     })
 
@@ -68,7 +68,7 @@ export const getters = {
     let steps = { next: null, previous: null };
     state.galleries.forEach(gallery => {
       gallery.forEach(image => {
-        if (image.acf.category.slug === slug) return selectedGallery = gallery;
+        if (image.categories[0].slug === slug) return selectedGallery = gallery;
       })
     })
 
@@ -76,12 +76,12 @@ export const getters = {
 
     // if a next gallery exists
     if (state.galleries[currentGalleryIndex + 1]) {
-      steps['next'] = `/galleries/${state.galleries[currentGalleryIndex + 1][0].acf.category.slug}`;
+      steps['next'] = `/galleries/${state.galleries[currentGalleryIndex + 1][0].categories[0].slug}`;
     }
 
     // if a previous gallery exists
     if (state.galleries[currentGalleryIndex - 1]) {
-      steps['previous'] = `/galleries/${state.galleries[currentGalleryIndex - 1][0].acf.category.slug}`;
+      steps['previous'] = `/galleries/${state.galleries[currentGalleryIndex - 1][0].categories[0].slug}`;
     }
 
     return steps;

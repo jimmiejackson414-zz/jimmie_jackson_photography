@@ -38,11 +38,9 @@
 
     computed: {
       imageSrc() {
-        return this.image.media_details.sizes.large.source_url;
+        return this.image.images[0].src;
       }
     },
-
-
   }
 </script>
 
