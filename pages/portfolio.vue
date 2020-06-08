@@ -1,6 +1,7 @@
 <template>
   <v-container class="pt-5">
-    <page-title text="Portfolio" />
+    <page-title
+      text="Portfolio" />
     <v-row
       align="center"
       justify="start">
@@ -21,6 +22,8 @@
     name: 'Portfolio',
 
     mixins: [fetchGalleries],
+
+    transition: 'page-fade',
 
     components: {
       PageTitle,

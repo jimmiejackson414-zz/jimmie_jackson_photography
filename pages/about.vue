@@ -17,7 +17,7 @@
         cols="12"
         sm="12"
         md="6"
-        lg="8"
+        lg="4"
         class="d-flex flex-column">
         <p class="display-1 font-weight-bold">
           My first camera was an iPhone.
@@ -51,6 +51,8 @@
   import PageTitle from '~/components/PageTitle';
 
   export default {
+    transition: 'page-fade',
+
     components: {
       PageTitle,
     },

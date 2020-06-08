@@ -13,6 +13,14 @@ $dark-grey: #4a4a4a;
 html,
 body {
   color: $dark-grey;
+  height: 100%;
+}
+
+#__nuxt,
+#__layout,
+#app,
+.v-application--wrap {
+  height: 100%;
 }
 
 a {
@@ -35,13 +43,13 @@ a {
   }
 }
 
-.page-enter-active,
-.page-leave-active {
+.page-fade-enter-active,
+.page-fade-leave-active {
   transition: opacity 0.5s;
 }
 
-.page-enter,
-.page-leave-to {
+.page-fade-enter,
+.page-fade-leave-to {
   opacity: 0;
 }
 

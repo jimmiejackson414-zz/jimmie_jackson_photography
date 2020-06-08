@@ -47,13 +47,13 @@
 
     computed: {
       galleryName() {
-        return this.gallery[0].acf.category.name;
+        return this.gallery[0].categories[0].name;
       },
       gallerySlug() {
-        return this.gallery[0].acf.category.slug;
+        return this.gallery[0].categories[0].slug;
       },
       imageSrc() {
-        return this.gallery[0].media_details.sizes.large.source_url || 'https://via.placeholder.com/500';
+        return this.gallery[0].images[0].src || 'https://via.placeholder.com/500';
       }
     }
   }

@@ -12,6 +12,7 @@ export default {
   },
 
   async fetch() {
+    if (this.galleries.length) return;
     await this.fetchGalleries();
   }
 }

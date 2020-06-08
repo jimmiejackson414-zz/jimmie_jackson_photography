@@ -7,5 +7,11 @@ export default ({ store }) => {
       storage: window.localStorage,
       modules: ['cart'],
     }).plugin(store);
+
+    new VuexPersistence({
+      key: 'search',
+      storage: window.localStorage,
+      modules: ['search'],
+    }).plugin(store);
   })
 }
