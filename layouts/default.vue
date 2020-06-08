@@ -17,18 +17,66 @@
       <v-spacer />
       <div
         class="right-menu-wrapper d-flex align-items-center mr-4">
-        <v-btn
-          icon
-          :ripple="false"
-          class="hidden-sm-and-down mr-4">
-          <icon
-            name="search"
-            fill="gray"
-            height="20px"
-            width="20px" />
-        </v-btn>
+        <transition name="slide-fade">
+          <v-text-field
+            v-show="searchIsOpen"
+            ref="searchField"
+            v-model="searchTerm"
+            type="search"
+            color="primary"
+            dense
+            hide-details
+            full-width
+            outlined
+            @keypress.enter="performSearch">
+            <template v-slot:append>
+              <v-btn
+                icon
+                :ripple="false"
+                small
+                @click="performSearch">
+                <icon
+                  name="search"
+                  fill="gray"
+                  height="20px"
+                  width="20px" />
+              </v-btn>
+            </template>
+          </v-text-field>
+        </transition>
+        <transition
+          name="fade"
+          mode="out-in">
+          <v-btn
+            v-if="!searchIsOpen"
+            key="open"
+            icon
+            :ripple="false"
+            class="hidden-sm-and-down mr-4"
+            @click.prevent="toggleSearchInput">
+            <icon
+              name="search"
+              fill="gray"
+              height="20px"
+              width="20px" />
+          </v-btn>
+          <v-btn
+            v-else
+            key="close"
+            icon
+            :ripple="false"
+            class="hidden-sm-and-down mr-4"
+            @click.prevent="toggleSearchInput">
+            <icon
+              name="multiply"
+              fill="rgb(183, 65, 14)"
+              height="20px"
+              width="20px" />
+          </v-btn>
+        </transition>
         <v-tabs
           class="hidden-sm-and-down"
+          :style="{ width: 'auto' }"
           optional>
           <v-tab
             v-for="(item, i) in items"
@@ -63,7 +111,8 @@
     <home-drawer
       v-model="drawer"
       :items="items"
-      :cart-items="cartItems" />
+      :cart-items="cartItems"
+      @handle-search="performSearch" />
     <v-content>
       <transition
         name="fade"
@@ -116,7 +165,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
   export default {
     name: 'Default',
@@ -128,7 +177,9 @@
         {title: 'About', to: '/about', badge: false},
         {title: 'Contact', to: '/contact', badge: false},
         {title: 'Cart', to: '/cart', badge: true}
-      ]
+      ],
+      searchIsOpen: false,
+      searchTerm: null,
     }),
 
     computed: {
@@ -139,9 +190,25 @@
     },
 
     methods: {
+      ...mapActions('search', ['setQuery']),
       delay(t) {
         return new Promise(resolve => setTimeout(resolve, t));
-      }
+      },
+      performSearch() {
+        this.setQuery(this.searchTerm);
+        this.searchIsOpen = false;
+
+        // have to refresh page if user is already on search page
+        if (this.$router.currentRoute.name === 'search') this.$router.go()
+        else this.$router.push({ name: 'search' });
+      },
+      toggleSearchInput() {
+        this.searchIsOpen = !this.searchIsOpen;
+        this.$nextTick(() => {
+          this.$refs.searchField.focus();
+          if (!this.searchIsOpen) this.searchTerm = null;
+        })
+      },
     },
 
     watch: {
@@ -224,6 +291,15 @@
       }
     }
   }
+
+  .slide-fade-enter-active, .slide-fade-leave-active {
+    transition: all .3s ease;
+  }
+
+  .slide-fade-enter, .slide-fade-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
+  }
 </style>
 
 <style lang="scss">
@@ -277,8 +353,6 @@
     }
   }
 
-
-
   .fade-enter {
     opacity: 0;
   }
@@ -291,6 +365,8 @@
     transition: opacity 0.2s ease;
     opacity: 0;
   }
+
+
 
   @mixin ballb($yaxis: 0) {
     transform: translate3d(0, $yaxis, 0);

@@ -9,7 +9,7 @@
         justify="start">
         <client-only>
           <masonry
-            :cols="{default: 2, 1000: 3, 700: 2, 400: 1}"
+            :cols="{default: 3, 700: 2, 400: 1}"
             :gutter="{default: '10px', 700: '10px'}"
             style="width: 100%;">
             <gallery-card
@@ -69,7 +69,11 @@
   import PageTitle from '~/components/PageTitle';
 
   export default {
+    name: 'GallerySlug',
+
     mixins: [fetchGalleries],
+
+    transtiion: 'page-fade',
 
     data: () => ({
       options: {

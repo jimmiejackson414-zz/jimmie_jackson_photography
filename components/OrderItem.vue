@@ -7,9 +7,6 @@
       <p class="font-weight-bold display-1 mb-1">
         {{ item.title }}
       </p>
-      <p class="body-2">
-        {{ item.chosenSize.label }}
-      </p>
     </div>
     <div class="quantity">
       <v-text-field

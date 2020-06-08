@@ -36,6 +36,12 @@
           md="6"
           class="details-container">
           <h1 class="display-2 font-weight-bold mb-3">
+            Story Time
+          </h1>
+          <p class="body-1 story">
+            {{ image.short_description | strippedTags }}
+          </p>
+          <h1 class="display-2 font-weight-bold mb-3">
             Details
           </h1>
           <div
@@ -49,30 +55,14 @@
               {{ detail.value | strippedTags }}
             </p>
           </div>
-          <v-form
-            ref="form"
-            v-model="valid">
-            <v-select
-              v-model="chosenSize"
-              dense
-              :items="availableSizes"
-              label="Please choose a size"
-              outlined
-              required
-              return-object
-              item-text="label"
-              item-value="value"
-              :rules="[v => !!v || 'Selection is required']" />
-            <v-btn
-              depressed
-              :ripple="false"
-              color="accent"
-              class="add-to-cart-btn"
-              :disabled="!valid"
-              @click="submit">
-              Add To Cart
-            </v-btn>
-          </v-form>
+          <v-btn
+            depressed
+            :ripple="false"
+            color="accent"
+            class="add-to-cart-btn"
+            @click="submit">
+            Add To Cart
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -152,41 +142,42 @@
   import PageTitle from '~/components/PageTitle';
 
   export default {
+    name: 'ImageSlug',
+
     mixins: [fetchGalleries],
 
+    transition: 'page-fade',
+
     data: () => ({
-      chosenSize: null,
       isModalOpen: false,
       snackbar: false,
-      valid: false,
     }),
 
     computed: {
       ...mapGetters('portfolio', ['fetchImage', 'fetchImageNavigationSlugs']),
-      availableSizes() {
-        return this.image.acf.stripe.sizes;
-      },
       backSlug() {
-        return `/galleries/${this.image.acf.category.slug}`;
+        return `/galleries/${this.image.categories[0].slug}`;
       },
       details() {
         return [
-          { title: 'Title', value: this.image.title.rendered },
+          { title: 'Title', value: this.image.name },
           { title: 'Location', value: this.image.acf.location },
-          { title: 'Description', value: this.image.caption.rendered }
+          { title: 'Taken', value: this.image.acf.taken },
+          { title: 'Size', value: this.image.attributes.length ? this.image.attributes[0].options[0] : '' },
+          { title: 'Price', value: `$${this.image.price}` },
         ]
       },
       image() {
         return this.fetchImage(this.$route.params.slug);
       },
       imageSrc() {
-        return this.image.media_details.sizes.large.source_url;
+        return this.image.images[0].src;
       },
       nextSlug() {
         return this.fetchImageNavigationSlugs(this.image).next;
       },
       pageTitle() {
-        return this.image.title.rendered;
+        return this.image.name;
       },
       prevSlug() {
         return this.fetchImageNavigationSlugs(this.image).previous;
@@ -201,23 +192,20 @@
       },
 
       submit() {
-        if (this.$refs.form.validate()) {
-          const payload = {
-            id: this.image.id,
-            chosenSize: this.chosenSize,
-            image: this.image.media_details.sizes.thumbnail.source_url,
-            quantity: 1,
-            title: this.image.title.rendered,
-          };
-          this.addToCart(payload);
-          this.snackbar = true;
-        }
+        const payload = {
+          id: this.image.id,
+          image: this.image.images[0].src,
+          quantity: 1,
+          title: this.image.name,
+        };
+        this.addToCart(payload);
+        this.snackbar = true;
       },
     },
 
     filters: {
       strippedTags(string) {
-        return string.replace(/<\/?[^>]+>/ig, "");
+        return string ? string.replace(/<\/?[^>]+>/ig, "") : string;
       }
     },
 
@@ -264,6 +252,10 @@
   }
 
   .details-container {
+    .story {
+      margin-bottom: 5rem;
+    }
+
     .detail {
       align-items: center;
       display: flex;
@@ -271,16 +263,6 @@
 
       p:first-of-type {
         margin-right: 1rem;
-      }
-    }
-
-    form {
-      .v-input {
-        max-width: 75%;
-
-        @include breakpoint(desktop) {
-          max-width: 50%;
-        }
       }
     }
   }

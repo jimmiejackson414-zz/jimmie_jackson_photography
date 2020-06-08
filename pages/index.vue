@@ -38,6 +38,9 @@
 
   export default {
     layout: 'homepage',
+
+    transition: 'page-fade',
+
     computed: {
       ...mapState({
         randBackground: state => state.homepage.background,

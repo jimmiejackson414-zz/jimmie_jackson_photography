@@ -61,6 +61,7 @@ export default {
     { src: '~/plugins/masonry', mode: 'client' },
     '~/plugins/axios',
     '~/plugins/custom-icons',
+    '~/plugins/click-outside',
   ],
   /*
    ** Nuxt.js dev-modules
@@ -142,5 +143,5 @@ export default {
       //   config.plugins.push({ src: '~/plugins/logrocket', mode: 'client' });
       // }
     },
-  }
+  },
 }

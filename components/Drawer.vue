@@ -12,7 +12,7 @@
     <v-list
       color="white"
       shaped>
-      <!-- <v-list-item>
+      <v-list-item>
         <v-text-field
           label="Search"
           outlined
@@ -20,16 +20,23 @@
           color="primary"
           hide-details
           dense
-          class="mb-3">
+          class="mb-3"
+          @keypress.enter="performSearch">
           <template v-slot:prepend>
-            <icon
-              name="search"
-              fill="gray"
-              height="20px"
-              width="20px" />
+            <v-btn
+              icon
+              :ripple="false"
+              small
+              @click="performSearch">
+              <icon
+                name="search"
+                fill="gray"
+                height="20px"
+                width="20px" />
+            </v-btn>
           </template>
         </v-text-field>
-      </v-list-item> -->
+      </v-list-item>
       <v-list-item
         v-for="item in items"
         :key="item.title"
@@ -70,6 +77,12 @@
       items: {
         type: Array,
         default: () => ([]),
+      },
+    },
+
+    methods: {
+      performSearch() {
+        this.$emit('handle-search');
       },
     },
   }
