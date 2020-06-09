@@ -1,0 +1,26 @@
+query Galleries {
+  galleries {
+    id
+    name
+    slug
+
+    cover_image {
+      url
+    }
+
+    images {
+      id
+      name
+      slug
+      description
+      location
+      date_taken
+      price
+
+      src {
+        url
+        formats
+      }
+    }
+  }
+}
