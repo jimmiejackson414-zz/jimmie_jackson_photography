@@ -36,8 +36,8 @@
   export default {
     props: {
       gallery: {
-        type: Array,
-        default: () => ([])
+        type: Object,
+        default: () => ({})
       },
     },
 
@@ -47,13 +47,13 @@
 
     computed: {
       galleryName() {
-        return this.gallery[0].categories[0].name;
+        return this.gallery.name;
       },
       gallerySlug() {
-        return this.gallery[0].categories[0].slug;
+        return this.gallery.slug;
       },
       imageSrc() {
-        return this.gallery[0].images[0].src || 'https://via.placeholder.com/500';
+        return this.gallery.coverImage.formats.small.url || 'https://via.placeholder.com/500';
       }
     }
   }

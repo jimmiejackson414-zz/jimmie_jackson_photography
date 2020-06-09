@@ -1,14 +1,19 @@
+import axios from 'axios';
+
 export const state = () => ({
   galleries: [],
 });
 
 export const actions = {
   async fetchGalleries({ commit }) {
-    let res = await this.$axios.$get(`${process.env.WP_API_URL}/wc/v3/products?consumer_key=${process.env.WC_CONSUMER_KEY}&consumer_secret=${process.env.WC_CONSUMER_SECRET}`);
-    const data = Object.values(res.reduce((carry, item) => ({
-      ...carry,
-      [item.categories[0].slug]: (carry[item.categories[0].slug] || []).concat(item),
-    }), {}));
+    // let res = await this.$axios.$get(`${process.env.WP_API_URL}/wc/v3/products?consumer_key=${process.env.WC_CONSUMER_KEY}&consumer_secret=${process.env.WC_CONSUMER_SECRET}`);
+    const { data } = await axios.get(`${process.env.STRAPI_BACKEND_URL}/galleries`);
+    // console.log('res: ', res.data);
+    // const data = Object.values(res.data.reduce((carry, item) => ({
+    //   ...carry,
+    //   [item.categories[0].slug]: (carry[item.categories[0].slug] || []).concat(item),
+    // }), {}));
+    console.log('data: ', data);
 
     commit('setGalleries', data);
   }
