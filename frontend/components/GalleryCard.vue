@@ -38,7 +38,7 @@
 
     computed: {
       imageSrc() {
-        return this.image.images[0].src;
+        return this.image.src.formats.medium.url;
       }
     },
   }

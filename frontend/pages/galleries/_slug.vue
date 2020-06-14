@@ -13,7 +13,7 @@
             :gutter="{default: '10px', 700: '10px'}"
             style="width: 100%;">
             <gallery-card
-              v-for="(image, index) in images"
+              v-for="(image, index) in gallery.images"
               :key="index"
               :image="image" />
           </masonry>
@@ -64,7 +64,6 @@
 <script>
   import { mapGetters } from 'vuex';
   import fetchGalleries from '~/mixins/fetchGalleries';
-  import { formatSlug } from '~/helpers';
   import GalleryCard from '~/components/GalleryCard';
   import PageTitle from '~/components/PageTitle';
 
@@ -87,16 +86,16 @@
         return '/portfolio';
       },
       pageTitle() {
-        return formatSlug(this.$route.params.slug);
+        return this.gallery.name;
       },
-      images() {
+      gallery() {
         return this.fetchGallery(this.$route.params.slug);
       },
       nextSlug() {
-        return this.fetchGalleryNavigationSlugs(this.$route.params.slug).next;
+        return this.fetchGalleryNavigationSlugs(this.gallery).next;
       },
       prevSlug() {
-        return this.fetchGalleryNavigationSlugs(this.$route.params.slug).previous;
+        return this.fetchGalleryNavigationSlugs(this.gallery).previous;
       }
     },
 

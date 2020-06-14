@@ -36,6 +36,18 @@
     },
     "tags": {
       "collection": "tag"
+    },
+    "location": {
+      "type": "string"
+    },
+    "dateTaken": {
+      "type": "date",
+      "required": true
+    },
+    "price": {
+      "type": "integer",
+      "required": true,
+      "default": 200
     }
   }
 }

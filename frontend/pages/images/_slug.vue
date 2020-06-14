@@ -39,7 +39,7 @@
             Story Time
           </h1>
           <p class="body-1 story">
-            {{ image.short_description | strippedTags }}
+            {{ image.description }}
           </p>
           <h1 class="display-2 font-weight-bold mb-3">
             Details
@@ -52,7 +52,7 @@
               {{ detail.title }}:
             </p>
             <p class="body-1">
-              {{ detail.value | strippedTags }}
+              {{ detail.value }}
             </p>
           </div>
           <v-btn
@@ -137,6 +137,7 @@
 
 <script>
   import { mapGetters, mapMutations } from 'vuex';
+  import dayjs from 'dayjs';
   import fetchGalleries from '~/mixins/fetchGalleries';
   import FullScreenImage from '~/components/modals/FullScreenImage';
   import PageTitle from '~/components/PageTitle';
@@ -156,14 +157,15 @@
     computed: {
       ...mapGetters('portfolio', ['fetchImage', 'fetchImageNavigationSlugs']),
       backSlug() {
-        return `/galleries/${this.image.categories[0].slug}`;
+        let parentGallery = this.galleries.find(gallery => gallery.id === this.image.gallery);
+        return `/galleries/${parentGallery.slug}`;
       },
       details() {
         return [
           { title: 'Title', value: this.image.name },
-          { title: 'Location', value: this.image.acf.location },
-          { title: 'Taken', value: this.image.acf.taken },
-          { title: 'Size', value: this.image.attributes.length ? this.image.attributes[0].options[0] : '' },
+          { title: 'Location', value: this.image.location },
+          { title: 'Taken', value: dayjs(this.image.dateTaken).format('MMM DD, YYYY') },
+          // { title: 'Size', value: this.image.attributes ? this.image.attributes[0].options[0] : '' },
           { title: 'Price', value: `$${this.image.price}` },
         ]
       },
@@ -171,7 +173,7 @@
         return this.fetchImage(this.$route.params.slug);
       },
       imageSrc() {
-        return this.image.images[0].src;
+        return this.image.src.formats.medium.url;
       },
       nextSlug() {
         return this.fetchImageNavigationSlugs(this.image).next;
@@ -194,7 +196,7 @@
       submit() {
         const payload = {
           id: this.image.id,
-          image: this.image.images[0].src,
+          image: this.image.src.formats,
           quantity: 1,
           title: this.image.name,
         };

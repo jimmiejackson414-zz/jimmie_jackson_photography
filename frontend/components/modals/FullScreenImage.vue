@@ -9,7 +9,7 @@
     @keydown.esc="closeModal">
     <v-card style="min-height: fit-content">
       <v-img
-        :src="image.images[0].src"
+        :src="imageSrc"
         @contextmenu.prevent>
         <v-btn
           class="close-modal float-right ma-3"
@@ -39,12 +39,18 @@
       }
     },
 
+    computed: {
+      imageSrc() {
+        return this.image.src.formats.large.url;
+      }
+    },
+
     methods: {
       closeModal(e) {
         e.preventDefault();
         this.$emit('handle-close-dialog');
       },
-    }
+    },
   }
 </script>
 

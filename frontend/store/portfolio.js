@@ -6,15 +6,7 @@ export const state = () => ({
 
 export const actions = {
   async fetchGalleries({ commit }) {
-    // let res = await this.$axios.$get(`${process.env.WP_API_URL}/wc/v3/products?consumer_key=${process.env.WC_CONSUMER_KEY}&consumer_secret=${process.env.WC_CONSUMER_SECRET}`);
     const { data } = await axios.get(`${process.env.STRAPI_BACKEND_URL}/galleries`);
-    // console.log('res: ', res.data);
-    // const data = Object.values(res.data.reduce((carry, item) => ({
-    //   ...carry,
-    //   [item.categories[0].slug]: (carry[item.categories[0].slug] || []).concat(item),
-    // }), {}));
-    console.log('data: ', data);
-
     commit('setGalleries', data);
   }
 };
@@ -27,34 +19,28 @@ export const mutations = {
 
 export const getters = {
   fetchGallery: state => slug => {
-    let selectedGallery;
-    state.galleries.forEach(gallery => {
-      gallery.forEach(image => {
-        if (image.categories[0].slug === slug) return selectedGallery = gallery;
-      })
-    })
-    return selectedGallery;
+    return state.galleries.find(gallery => gallery.slug === slug);
   },
   fetchImage: state => slug => {
-    let selectedImage;
+    let foundImage;
     state.galleries.forEach(gallery => {
-      gallery.forEach(image => {
-        if (image.slug === slug) return selectedImage = image;
+      gallery.images.find(image => {
+        if (image.slug === slug) return foundImage = image;
       })
-    })
-    return selectedImage;
+    });
+    return foundImage;
   },
   fetchImageNavigationSlugs: state => currentImage => {
     let selectedGallery;
     let steps = { next: null, previous: null };
 
     state.galleries.forEach(gallery => {
-      gallery.forEach(image => {
-        if (image.categories[0].slug === currentImage.categories[0].slug) return selectedGallery = gallery;
-      })
-    })
+      gallery.images.forEach(image => {
+        if (image.slug === currentImage.slug) return selectedGallery = gallery;
+      });
+    });
 
-    const currentImageIndex = selectedGallery.indexOf(currentImage);
+    const currentImageIndex = selectedGallery.images.indexOf(currentImage);
 
     // if next image exists
     if (selectedGallery[currentImageIndex + 1]) {
@@ -68,25 +54,18 @@ export const getters = {
 
     return steps;
   },
-  fetchGalleryNavigationSlugs: state => slug => {
-    let selectedGallery;
+  fetchGalleryNavigationSlugs: state => currentGallery => {
     let steps = { next: null, previous: null };
-    state.galleries.forEach(gallery => {
-      gallery.forEach(image => {
-        if (image.categories[0].slug === slug) return selectedGallery = gallery;
-      })
-    })
-
-    const currentGalleryIndex = state.galleries.indexOf(selectedGallery);
+    const currentGalleryIndex = state.galleries.indexOf(currentGallery);
 
     // if a next gallery exists
     if (state.galleries[currentGalleryIndex + 1]) {
-      steps['next'] = `/galleries/${state.galleries[currentGalleryIndex + 1][0].categories[0].slug}`;
+      steps['next'] = `/galleries/${state.galleries[currentGalleryIndex + 1]['slug']}`;
     }
 
     // if a previous gallery exists
     if (state.galleries[currentGalleryIndex - 1]) {
-      steps['previous'] = `/galleries/${state.galleries[currentGalleryIndex - 1][0].categories[0].slug}`;
+      steps['previous'] = `/galleries/${state.galleries[currentGalleryIndex - 1]['slug']}`;
     }
 
     return steps;
