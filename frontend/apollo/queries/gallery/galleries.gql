@@ -5,6 +5,7 @@ query Galleries {
     slug
 
     cover_image {
+      id
       url
     }
 
@@ -20,6 +21,10 @@ query Galleries {
       src {
         url
         formats
+      }
+
+      gallery {
+        slug
       }
     }
   }

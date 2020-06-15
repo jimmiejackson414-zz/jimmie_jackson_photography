@@ -14,7 +14,7 @@
         </nuxt-link>
       </v-toolbar-title>
     </v-app-bar>
-    <v-content :style="{ padding: 0 }">
+    <v-main :style="{ padding: 0 }">
       <v-container
         v-if="isHomepage"
         fluid>
@@ -23,7 +23,7 @@
       <v-container v-else>
         <nuxt />
       </v-container>
-    </v-content>
+    </v-main>
     <v-footer
       app
       tile

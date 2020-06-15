@@ -113,13 +113,13 @@
       :items="items"
       :cart-items="cartItems"
       @handle-search="performSearch" />
-    <v-content>
+    <v-main>
       <transition
         name="fade"
         mode="out-in">
         <nuxt />
       </transition>
-    </v-content>
+    </v-main>
     <v-footer
       app
       class="custom flex-column">
@@ -232,7 +232,7 @@
 <style lang="scss" scoped>
   @import '~/css/breakpoints';
 
-  main.v-content {
+  main.v-main {
     padding: 50px 0 !important;
 
     @include breakpoint(desktop) {

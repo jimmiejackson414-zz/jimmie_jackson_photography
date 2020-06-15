@@ -13,19 +13,14 @@
 </template>
 
 <script>
-  import PageTitle from '~/components/PageTitle'
-  import PortfolioCard from '~/components/PortfolioCard'
-  import galleriesQuery from '~/apollo/queries/gallery/galleries';
+  import PageTitle from '~/components/PageTitle';
+  import PortfolioCard from '~/components/PortfolioCard';
+  import fetchGalleries from '~/mixins/fetchGalleries';
 
   export default {
     name: 'Portfolio',
 
-    apollo: {
-      galleries: {
-        prefetch: true,
-        query: galleriesQuery,
-      }
-    },
+    mixins: [fetchGalleries],
 
     transition: 'page-fade',
 

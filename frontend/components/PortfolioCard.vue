@@ -4,31 +4,33 @@
     md="6"
     xl="4"
     class="px-1 py-1">
-    <v-lazy
-      v-model="isActive"
-      :options="{ threshold: .5 }"
-      min-height="200"
-      transition="fade-transition">
-      <nuxt-link :to="{ name: 'galleries-slug', params: { slug: gallery.slug } }">
-        <div
-          class="portfolio-card"
-          :style="{background: `url(${imageSrc}) no-repeat center center`}"
-          @contextmenu.prevent>
-          <div class="overlay" />
-          <p class="display-3 font-weight-bold gallery-title">
-            {{ gallery.name }}
-          </p>
-          <v-btn
-            depressed
-            :ripple="false"
-            color="primary"
-            class="visit-btn"
-            :to="{ name: 'galleries-slug', params: { slug: gallery.slug }}">
-            Visit Gallery
-          </v-btn>
-        </div>
-      </nuxt-link>
-    </v-lazy>
+    <client-only>
+      <v-lazy
+        v-model="isActive"
+        :options="{ threshold: .5 }"
+        min-height="200"
+        transition="fade-transition">
+        <nuxt-link :to="{ name: 'galleries-slug', params: { slug: gallery.slug } }">
+          <div
+            class="portfolio-card"
+            :style="{backgroundImage: `url(${imageSrc})`}"
+            @contextmenu.prevent>
+            <div class="overlay" />
+            <p class="display-3 font-weight-bold gallery-title">
+              {{ gallery.name }}
+            </p>
+            <v-btn
+              depressed
+              :ripple="false"
+              color="primary"
+              class="visit-btn"
+              :to="{ name: 'galleries-slug', params: { slug: gallery.slug }}">
+              Visit Gallery
+            </v-btn>
+          </div>
+        </nuxt-link>
+      </v-lazy>
+    </client-only>
   </v-col>
 </template>
 
@@ -47,7 +49,7 @@
 
     computed: {
       imageSrc() {
-        return this.gallery.images[0].src.formats.small.url || 'https://via.placeholder.com/500';
+        return this.gallery.cover_image.url || 'https://via.placeholder.com/500';
       }
     }
   }
@@ -56,7 +58,8 @@
 <style lang="scss" scoped>
   .portfolio-card {
     align-items: center;
-    background-size: cover;
+    background-repeat: no-repeat;
+    background-size: contain;
     cursor: pointer;
     display: flex;
     flex-direction: column;

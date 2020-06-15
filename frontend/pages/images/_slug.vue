@@ -1,160 +1,160 @@
 <template>
   <div class="page-wrapper">
-    <v-container class="pb-0">
-      <page-title
-        :text="pageTitle"
-        :back-slug="backSlug" />
-    </v-container>
-    <v-container
-      fluid
-      class="px-5">
-      <v-row
-        align="center"
-        justify="center">
-        <v-col
-          sm="12"
-          md="6"
-          class="image-container">
-          <v-img
-            :src="imageSrc"
-            max-width="800px"
-            @contextmenu.prevent>
+    <client-only>
+      <v-container class="pb-0">
+        <page-title
+          :text="pageTitle"
+          :back-slug="backSlug" />
+      </v-container>
+      <v-container
+        fluid
+        class="px-5">
+        <v-row
+          align="center"
+          justify="center">
+          <v-col
+            sm="12"
+            md="6"
+            class="image-container">
+            <v-img
+              :src="imageSrc"
+              max-width="800px"
+              @contextmenu.prevent>
+              <v-btn
+                class="expand-btn"
+                icon
+                @click.stop="openModal">
+                <icon
+                  name="expand-arrows-alt"
+                  fill="#fff"
+                  height="20px"
+                  width="20px" />
+              </v-btn>
+            </v-img>
+          </v-col>
+          <v-col
+            sm="12"
+            md="6"
+            class="details-container">
+            <h1 class="display-2 font-weight-bold mb-3">
+              Story Time
+            </h1>
+            <p class="body-1 story">
+              {{ image.description }}
+            </p>
+            <h1 class="display-2 font-weight-bold mb-3">
+              Details
+            </h1>
+            <div
+              v-for="(detail, index) in details"
+              :key="index"
+              class="detail">
+              <p class="body-1 font-weight-bold">
+                {{ detail.title }}:
+              </p>
+              <p class="body-1">
+                {{ detail.value }}
+              </p>
+            </div>
             <v-btn
-              class="expand-btn"
-              icon
-              @click.stop="openModal">
-              <icon
-                name="expand-arrows-alt"
-                fill="#fff"
-                height="20px"
-                width="20px" />
+              depressed
+              :ripple="false"
+              color="accent"
+              class="add-to-cart-btn"
+              @click="submit">
+              Add To Cart
             </v-btn>
-          </v-img>
-        </v-col>
-        <v-col
-          sm="12"
-          md="6"
-          class="details-container">
-          <h1 class="display-2 font-weight-bold mb-3">
-            Story Time
-          </h1>
-          <p class="body-1 story">
-            {{ image.description }}
-          </p>
-          <h1 class="display-2 font-weight-bold mb-3">
-            Details
-          </h1>
-          <div
-            v-for="(detail, index) in details"
-            :key="index"
-            class="detail">
-            <p class="body-1 font-weight-bold">
-              {{ detail.title }}:
-            </p>
-            <p class="body-1">
-              {{ detail.value }}
-            </p>
-          </div>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container>
+        <v-row
+          align="center"
+          class="prev-next-wrapper">
           <v-btn
-            depressed
+            text
             :ripple="false"
-            color="accent"
-            class="add-to-cart-btn"
-            @click="submit">
-            Add To Cart
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-container>
-      <v-row
-        align="center"
-        class="prev-next-wrapper">
-        <v-btn
-          text
-          :ripple="false"
-          small
-          nuxt
-          :to="prevSlug"
-          :disabled="!prevSlug"
-          color="info">
-          <icon
+            small
+            nuxt
+            :to="prevSlug"
             :disabled="!prevSlug"
-            name="angle-left"
-            fill="grey"
-            height="20px"
-            width="20px" />
-          Previous Photo
-        </v-btn>
-        <v-btn
-          text
-          :ripple="false"
-          small
-          nuxt
-          :to="nextSlug"
-          :disabled="!nextSlug"
-          color="info">
-          Next Photo
-          <icon
+            color="info">
+            <icon
+              :disabled="!prevSlug"
+              name="angle-left"
+              fill="grey"
+              height="20px"
+              width="20px" />
+            Previous Photo
+          </v-btn>
+          <v-btn
+            text
+            :ripple="false"
+            small
+            nuxt
+            :to="nextSlug"
             :disabled="!nextSlug"
-            name="angle-right"
-            fill="grey"
-            height="20px"
-            width="20px" />
-        </v-btn>
-      </v-row>
-    </v-container>
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      left
-      color="success"
-      :timeout="3000">
-      <icon
-        name="check-circle"
-        fill="white"
-        height="30px"
-        width="30px" />
-      <p class="body-1 mb-0 font-weight-bold">
-        Added To Cart
-      </p>
-      <v-btn
-        icon
-        @click="snackbar = false">
+            color="info">
+            Next Photo
+            <icon
+              :disabled="!nextSlug"
+              name="angle-right"
+              fill="grey"
+              height="20px"
+              width="20px" />
+          </v-btn>
+        </v-row>
+      </v-container>
+      <v-snackbar
+        v-model="snackbar"
+        bottom
+        left
+        color="success"
+        :timeout="30000">
         <icon
-          name="multiply"
+          name="check-circle"
           fill="white"
-          height="20px"
-          width="20px" />
-      </v-btn>
-    </v-snackbar>
-    <full-screen-image
-      :image="image"
-      :open="isModalOpen"
-      @handle-close-dialog="isModalOpen = false" />
+          height="30px"
+          width="30px" />
+        <p class="body-1 mb-0 font-weight-bold">
+          Added To Cart
+        </p>
+        <v-spacer />
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            icon
+            color="success"
+            v-bind="attrs"
+            @click="snackbar = false">
+            <icon
+              name="multiply"
+              fill="white"
+              height="20px"
+              width="20px" />
+          </v-btn>
+        </template>
+      </v-snackbar>
+      <full-screen-image
+        :image="image"
+        :open="isModalOpen"
+        @handle-close-dialog="isModalOpen = false" />
+    </client-only>
   </div>
 </template>
 
 <script>
+  import { mapMutations } from 'vuex';
   import dayjs from 'dayjs';
   import FullScreenImage from '~/components/modals/FullScreenImage';
   import PageTitle from '~/components/PageTitle';
-  import imageQuery from '~/apollo/queries/image/image';
+  import fetchGalleries from '~/mixins/fetchGalleries';
 
   export default {
     name: 'ImageSlug',
 
-    apollo: {
-      image: {
-        prefetch: true,
-        query: imageQuery,
-        variables: {
-          slug: 'grand-canyon'
-        }
-      },
-    },
-
     transition: 'page-fade',
+
+    mixins: [fetchGalleries],
 
     data: () => ({
       isModalOpen: false,
@@ -174,24 +174,48 @@
           { title: 'Price', value: `$${this.image.price}` },
         ]
       },
+      fetchImageNavigationSlugs() {
+        let steps = { next: null, previous: null };
+        const parentGallery = this.galleries.find(gallery => gallery.slug === this.image.gallery.slug);
+        const currentImageIndex = parentGallery.images.indexOf(this.image);
+
+        // if next image exists
+        if (parentGallery.images[currentImageIndex + 1]) {
+          steps['next'] = `/images/${parentGallery.images[currentImageIndex + 1].slug}`;
+        }
+
+        // if previous image exists
+        if (parentGallery.images[currentImageIndex - 1]) {
+          steps['previous'] = `/images/${parentGallery.images[currentImageIndex - 1].slug}`;
+        }
+
+        return steps;
+      },
+      image() {
+        let img;
+        this.galleries.forEach(gallery => {
+          return gallery.images.forEach(image => {
+            if (image.slug === this.$route.params.slug) return img = image;
+          });
+        });
+        return img;
+      },
       imageSrc() {
-        return this.image.src.formats.large.url;
+        return this.image.src.formats.medium.url;
       },
       nextSlug() {
-        return '/';
+        return this.fetchImageNavigationSlugs.next;
       },
       pageTitle() {
         return this.image.name;
       },
       prevSlug() {
-        return '/';
+        return this.fetchImageNavigationSlugs.previous;
       },
-      test() {
-        return this.$apollo.query;
-      }
     },
 
     methods: {
+      ...mapMutations('cart', ['addToCart']),
       openModal() {
         this.isModalOpen = true;
       },
@@ -269,5 +293,14 @@
   .prev-next-wrapper {
     display: flex;
     justify-content: space-between;
+  }
+
+  .v-snack__content {
+    align-items: center;
+    display: flex;
+
+    .unicon {
+      margin-right: 1rem;
+    }
   }
 </style>

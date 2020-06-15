@@ -1,30 +1,32 @@
 <template>
-  <v-card
-    class="image-card"
-    elevation="0"
-    nuxt
-    :ripple="false"
-    :to="{ name: 'images-slug', params: { slug: image.slug }}">
-    <v-img
-      class="white--text d-flex align-center text-center"
-      contain
-      min-width="100%"
-      :src="imageSrc"
-      @contextmenu.prevent>
-      <div class="overlay" />
-      <div class="btn-wrapper">
-        <v-btn
-          depressed
-          nuxt
-          :ripple="false"
-          color="primary"
-          class="visit-btn"
-          :to="{ name: 'images-slug', params: { slug: image.slug }}">
-          View
-        </v-btn>
-      </div>
-    </v-img>
-  </v-card>
+  <client-only>
+    <v-card
+      class="image-card"
+      elevation="0"
+      nuxt
+      :ripple="false"
+      :to="{ name: 'images-slug', params: { slug: image.slug }}">
+      <v-img
+        class="white--text d-flex align-center text-center"
+        contain
+        min-width="100%"
+        :src="imageSrc"
+        @contextmenu.prevent>
+        <div class="overlay" />
+        <div class="btn-wrapper">
+          <v-btn
+            depressed
+            nuxt
+            :ripple="false"
+            color="primary"
+            class="visit-btn"
+            :to="{ name: 'images-slug', params: { slug: image.slug }}">
+            View
+          </v-btn>
+        </div>
+      </v-img>
+    </v-card>
+  </client-only>
 </template>
 
 <script>

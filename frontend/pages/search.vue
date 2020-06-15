@@ -38,6 +38,7 @@
 
 <script>
   import { mapState } from 'vuex';
+  import searchImagesQuery from '~/apollo/queries/search/search';
   import GalleryCard from '~/components/GalleryCard';
   import PageTitle from '~/components/PageTitle';
   import Spinner from '~/components/Spinner';
@@ -62,24 +63,22 @@
 
     methods: {
       async performSearch() {
-        const searchQuery = this.query.replace(/\s+/g, '-').toLowerCase();
-        // await this.$axios.$get(`${process.env.WP_API_URL}/relevanssi/v1/search?type=post&keyword=${searchQuery}&consumer_key=${process.env.WC_CONSUMER_KEY}&consumer_secret=${process.env.WC_CONSUMER_SECRET}`)
-        await this.$axios.$get(`${process.env.WP_API_URL}/wc/v3/products?search=${searchQuery}&consumer_key=${process.env.WC_CONSUMER_KEY}&consumer_secret=${process.env.WC_CONSUMER_SECRET}`)
-          .then(res => {
-            if (!res.length) this.error = 'No results were found. Please try again.';
-            this.results = res;
+        this.$apollo.query({
+          query: searchImagesQuery,
+          variables: {
+            searchQuery: this.query,
+          }
+        })
+          .then(({ data: { searchImages } }) => {
+            if (searchImages.length) this.results = searchImages;
+            else this.error = 'No results were found. Please try again.';
           })
-          .catch(() => this.error = 'An error occurred. Please try again.');
-
-        this.loading = false;
+          .then(() => this.loading = false);
       }
     },
 
-    watch: {
-      query() {
-        console.log('this.query: ', this.query);
-        if (this.query) this.performSearch();
-      }
+    created() {
+      this.performSearch();
     },
 
     components: {
