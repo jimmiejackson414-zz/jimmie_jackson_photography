@@ -10,16 +10,14 @@
   },
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "description": {
       "type": "text"
     },
     "gallery": {
       "model": "gallery"
-    },
-    "tags": {
-      "collection": "tag"
     },
     "src": {
       "model": "file",
@@ -31,10 +29,12 @@
       "required": true
     },
     "price": {
-      "type": "integer"
+      "type": "integer",
+      "required": true
     },
     "location": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "date_taken": {
       "type": "date"
@@ -43,6 +43,9 @@
       "type": "string",
       "required": true,
       "unique": true
+    },
+    "tags": {
+      "collection": "tag"
     }
   }
 }

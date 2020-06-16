@@ -1,7 +1,6 @@
 <template>
   <v-app
-    light
-    app>
+    light>
     <v-app-bar
       id="home-app-bar"
       fixed
@@ -44,7 +43,7 @@
             </template>
           </v-text-field>
         </transition>
-        <transition
+        <!-- <transition
           name="fade"
           mode="out-in">
           <v-btn
@@ -73,7 +72,7 @@
               height="20px"
               width="20px" />
           </v-btn>
-        </transition>
+        </transition> -->
         <v-tabs
           class="hidden-sm-and-down"
           :style="{ width: 'auto' }"
@@ -113,17 +112,25 @@
       :items="items"
       :cart-items="cartItems"
       @handle-search="performSearch" />
+
     <v-main>
       <transition
         name="fade"
         mode="out-in">
-        <nuxt />
+        <v-container>
+          <nuxt />
+        </v-container>
       </transition>
     </v-main>
+
     <v-footer
       app
+      tile
+      padless
       class="custom flex-column">
-      <div class="social-container">
+      <v-row
+        justify-center
+        class="social-container">
         <div class="social facebook">
           <a
             href="https://www.facebook.com/jimmiejacksonphotography/"
@@ -157,7 +164,7 @@
               width="30px" />
           </a>
         </div>
-      </div>
+      </v-row>
       <span
         class="subtitle-2 grey--text text--darken-3">&copy; {{ new Date().getFullYear() }} Jimmie Jackson Photography</span>
     </v-footer>

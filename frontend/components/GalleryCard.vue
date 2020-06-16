@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <v-card
-      class="image-card"
+      class="image-card col-12 col-sm-6 col-md-4 col-lg-3"
       elevation="0"
       nuxt
       :ripple="false"
@@ -9,7 +9,6 @@
       <v-img
         class="white--text d-flex align-center text-center"
         contain
-        min-width="100%"
         :src="imageSrc"
         @contextmenu.prevent>
         <div class="overlay" />
