@@ -2,38 +2,35 @@
   <div>
     <client-only>
       <page-title :text="searchTerm" />
-      <v-row
-        class="mx-auto"
-        align="start"
-        justify="center">
-        <v-col cols="12">
-          <div
-            v-if="loading"
-            class="loader">
-            <spinner />
-          </div>
-          <div class="search-results-wrapper">
-            <!-- Search Result Component -->
-            <div v-if="results.length">
-              <v-container justify-center>
-                <v-row
-                  justify-center
-                  class="mx-auto h-100">
-                  <gallery-card
-                    v-for="result in results"
-                    :key="result.id"
-                    :image="result" />
-                </v-row>
-              </v-container>
+      <v-container>
+        <v-row
+          v-if="loading"
+          class="ma-0 text-center"
+          align="start"
+          justify="center">
+          <v-col cols="12">
+            <div class="loading">
+              <spinner />
             </div>
-            <div v-else>
-              <h3 class="display-1 text-center">
-                {{ error }}
-              </h3>
-            </div>
-          </div>
-        </v-col>
-      </v-row>
+          </v-col>
+        </v-row>
+        <v-row v-else-if="results.length && !loading">
+          <image-card
+            v-for="result in results"
+            :key="result.id"
+            :item="result"
+            btn-text="View"
+            item-type="images" />
+        </v-row>
+        <v-row
+          v-else
+          justify="center"
+          class="mx-0">
+          <h3 class="display-1 text-center">
+            {{ error }}
+          </h3>
+        </v-row>
+      </v-container>
     </client-only>
   </div>
 </template>
@@ -41,7 +38,7 @@
 <script>
   import { mapState } from 'vuex';
   import query from '~/apollo/queries/search/search';
-  import GalleryCard from '~/components/GalleryCard';
+  import ImageCard from '~/components/ImageCard';
   import PageTitle from '~/components/PageTitle';
   import Spinner from '~/components/Spinner';
 
@@ -91,7 +88,7 @@
     },
 
     components: {
-      GalleryCard,
+      ImageCard,
       PageTitle,
       Spinner,
     }
@@ -99,19 +96,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .search-results-wrapper {
-    width: 100%;
-
-    .results-container {
-      display: grid;
-      grid-gap: 1rem;
-      grid-template-columns: 1fr;
-    }
-  }
-
   .row {
-    width: 100%;
-
     .loader {
       display: flex;
       height: 100%;

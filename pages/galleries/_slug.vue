@@ -5,19 +5,16 @@
         <page-title
           :text="pageTitle"
           :back-slug="backSlug" />
-        <v-row
-          align="center"
-          justify="start">
-          <masonry
-            :cols="{default: 3, 700: 2, 400: 1}"
-            :gutter="{default: '10px', 700: '10px'}"
-            style="width: 100%;">
-            <gallery-card
+        <v-container>
+          <v-row>
+            <image-card
               v-for="(image, index) in gallery.images"
               :key="index"
-              :image="image" />
-          </masonry>
-        </v-row>
+              btn-text="View"
+              :item="image"
+              item-type="images" />
+          </v-row>
+        </v-container>
       </v-container>
       <v-container>
         <v-row
@@ -62,7 +59,7 @@
 </template>
 
 <script>
-  import GalleryCard from '~/components/GalleryCard';
+  import ImageCard from '~/components/ImageCard';
   import PageTitle from '~/components/PageTitle';
   import fetchGalleries from '~/mixins/fetchGalleries';
 
@@ -115,7 +112,7 @@
     },
 
     components: {
-      GalleryCard,
+      ImageCard,
       PageTitle,
     },
 
