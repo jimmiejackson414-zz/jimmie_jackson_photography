@@ -1,11 +1,11 @@
 <template>
   <li class="item-wrapper">
     <v-img
-      :src="item.image"
+      :src="imageSrc"
       max-width="100px" />
     <div class="details">
       <p class="font-weight-bold display-1 mb-1">
-        {{ item.title }}
+        {{ item.name }}
       </p>
     </div>
     <div class="quantity">
@@ -41,12 +41,18 @@
       item: {
         type: Object,
         default: () => ({})
-      }
+      },
     },
 
     data: () => ({
       quantity: 1
     }),
+
+    computed: {
+      imageSrc() {
+        return this.item.src.formats.small.url;
+      },
+    },
 
     methods: {
       ...mapMutations('cart', ['removeFromCart']),

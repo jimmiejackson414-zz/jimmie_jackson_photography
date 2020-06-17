@@ -1,0 +1,11 @@
+query($ids: [ID]) {
+  images(where: { id_in: $ids }) {
+    id
+    name
+    slug
+    src {
+      url
+      formats
+    }
+  }
+}

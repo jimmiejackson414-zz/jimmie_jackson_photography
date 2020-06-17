@@ -56,7 +56,7 @@
 
     computed: {
       imageLink() {
-        return `${this.itemType}/${this.item.slug}`;
+        return `/${this.itemType}/${this.item.slug}`;
       },
       imageSrc() {
         let src;

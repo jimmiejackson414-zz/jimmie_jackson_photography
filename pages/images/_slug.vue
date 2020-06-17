@@ -223,9 +223,7 @@
       submit() {
         const payload = {
           id: this.image.id,
-          image: this.image.src,
           quantity: 1,
-          title: this.image.name,
         };
         this.addToCart(payload);
         this.snackbar = true;
@@ -294,7 +292,9 @@
     display: flex;
     justify-content: space-between;
   }
+</style>
 
+<style lang="scss">
   .v-snack__content {
     align-items: center;
     display: flex;

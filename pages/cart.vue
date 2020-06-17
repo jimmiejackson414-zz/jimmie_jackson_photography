@@ -19,7 +19,7 @@
               outlined
               dense
               color="primary"
-              :disabled="!hasOrderItems"
+              :disabled="!hasCartItems"
               label="Email *"
               name="email"
               type="email"
@@ -32,7 +32,7 @@
               outlined
               dense
               color="primary"
-              :disabled="!hasOrderItems"
+              :disabled="!hasCartItems"
               label="First Name *"
               name="firstName"
               :rules="nameRules"
@@ -44,7 +44,7 @@
               outlined
               dense
               color="primary"
-              :disabled="!hasOrderItems"
+              :disabled="!hasCartItems"
               label="Last Name *"
               name="lastName"
               :rules="nameRules"
@@ -59,7 +59,7 @@
               refs="checkoutBtn"
               :disabled="!isStripeLoaded || !complete"
               @click="checkout">
-              <span v-if="!loading">Continue to Checkout</span>
+              <span v-if="!submitting">Continue to Checkout</span>
               <Spinner v-else />
             </v-btn>
             <span class="error">{{ error }}</span>
@@ -74,25 +74,27 @@
           <p class="display-1 section-title">
             Order Details
           </p>
-          <span v-if="hasOrderItems">
-            <transition-group
-              tag="ul"
-              name="list">
-              <order-item
-                v-for="item in orderItems"
-                :key="item.id"
-                :item="item" />
-            </transition-group>
-          </span>
-          <span v-else>
-            <p class="body-1">You have no items in your cart. Visit my portfolio to add items to your cart.</p>
-            <v-btn
-              color="primary"
-              :ripple="false"
-              depressed
-              nuxt
-              to="/portfolio">View Portfolio</v-btn>
-          </span>
+          <client-only>
+            <span v-if="!$apollo.loading && hasCartItems">
+              <transition-group
+                tag="ul"
+                name="list">
+                <order-item
+                  v-for="item in images"
+                  :key="item.id"
+                  :item="item" />
+              </transition-group>
+            </span>
+            <span v-else>
+              <p class="body-1">You have no items in your cart. Visit my portfolio to add items to your cart.</p>
+              <v-btn
+                color="primary"
+                :ripple="false"
+                depressed
+                nuxt
+                to="/portfolio">View Portfolio</v-btn>
+            </span>
+          </client-only>
         </div>
       </v-col>
     </v-row>
@@ -101,6 +103,7 @@
 
 <script>
   import { mapState } from 'vuex';
+  import cartItemsQuery from '~/apollo/queries/cart/images';
   import OrderItem from '~/components/OrderItem';
   import PageTitle from '~/components/PageTitle';
   import Spinner from '~/components/Spinner';
@@ -109,6 +112,18 @@
     name: 'Cart',
 
     transition: 'page-fade',
+
+    apollo: {
+      images: {
+        prefetch: false,
+        query: cartItemsQuery,
+        variables() {
+          return {
+            ids: !this.cartItems.length ? [-1] : this.cartItems.map(item => item.id),
+          }
+        }
+      },
+    },
 
     data: () => ({
       canceledResult: false,
@@ -121,26 +136,26 @@
       firstName: '',
       isStripeLoaded: false,
       lastName: '',
-      loading: false,
       nameRules: [
         v => !!v || 'Name is required.',
       ],
       stripe: null,
+      submitting: false,
       successfulResult: false,
     }),
 
     computed: {
       ...mapState({
-        orderItems: state => state.cart.items,
+        cartItems: state => state.cart.items,
       }),
       complete() {
         return this.email && this.firstName && this.lastName;
       },
-      hasOrderItems() {
-        return this.orderItems.length > 0;
+      hasCartItems() {
+        return this.cartItems && this.cartItems.length > 0;
       },
       flattenedLineItems() {
-        return this.orderItems.reduce((acc, item) => {
+        return this.cartItems.reduce((acc, item) => {
           const found = acc.some(a => a.price === item.chosenSize.value);
           if (!found) acc.push({ price: item.chosenSize.value, quantity: item.quantity })
           else acc.find(a => a.price === item.chosenSize.value).quantity++;
@@ -151,38 +166,9 @@
 
     methods: {
       checkout() {
-        this.loading = true;
-        // when the customer clicks on the button, redirect them to checkout
-        this.stripe.redirectToCheckout({
-          lineItems: this.flattenedLineItems,
-          mode: 'payment',
-          customerEmail: this.email,
-          // do not rely on the redirect to the successUrl for fulfilling purchases, customers
-          // may not always reach the successUrl after a successful payment.
-          // instead use one of the strategies described in https://stripe.com/docs/payments/checkout/fulfillment
-          successUrl: 'https://www.jimmiejacksonphotography.com/cart',
-          cancelUrl: 'https://www.jimmiejacksonphotography.com/cart',
-        })
-          .then(result => {
-            console.log('result: ', result);
-            this.loading = false;
-            if (result.error) {
-              // if `redirectToCheckout` fails due to a browser or network error, display the localized
-              // error message to your customer
-              this.error = result.error.message;
-            }
-          })
+        this.submitting = true;
+        this.submitting = false;
       },
-      initializeStripe() {
-        // eslint-disable-next-line no-undef
-        this.stripe = Stripe(process.env.STRIPE_PUBLISHABLE_KEY);
-      }
-    },
-
-    watch: {
-      isStripeLoaded() {
-        if (this.isStripeLoaded) this.initializeStripe();
-      }
     },
 
     components: {
@@ -239,7 +225,6 @@
     }
   }
 
-  .list-enter-active,
   .list-leave-active,
   .list-move {
     transition: 250ms cubic-bezier(0.59, 0.12, 0.34, 0.95);
@@ -248,12 +233,10 @@
 
   .list-enter {
     opacity: 0;
-    transform: translateX(50px) scaleY(0.5);
   }
 
   .list-enter-to {
     opacity: 1;
-    transform: translateX(0) scaleY(1);
   }
 
   .list-leave-active {
