@@ -9,61 +9,87 @@
         cols="12"
         md="5">
         <div class="payment-personals-wrapper">
-          <div class="personal-details">
-            <p class="display-1 section-title">
-              Personal Details
-            </p>
-            <!-- Email -->
-            <v-text-field
-              v-model="email"
-              outlined
-              dense
-              color="primary"
-              :disabled="!hasCartItems"
-              label="Email *"
-              name="email"
-              type="email"
-              :rules="emailRules"
-              required />
+          <client-only>
+            <v-form
+              ref="form"
+              v-model="valid"
+              @submit.stop.prevent="handleSubmit">
+              <div class="personal-details">
+                <p class="display-1 section-title">
+                  Personal Details
+                </p>
+                <!-- Email -->
+                <v-text-field
+                  v-model="email"
+                  outlined
+                  dense
+                  color="primary"
+                  :disabled="!hasCartItems"
+                  label="Email *"
+                  name="email"
+                  type="email"
+                  :rules="emailRules"
+                  required />
 
-            <!-- First Name -->
-            <v-text-field
-              v-model="firstName"
-              outlined
-              dense
-              color="primary"
-              :disabled="!hasCartItems"
-              label="First Name *"
-              name="firstName"
-              :rules="nameRules"
-              required />
+                <!-- First Name -->
+                <v-text-field
+                  v-model="firstName"
+                  outlined
+                  dense
+                  color="primary"
+                  :disabled="!hasCartItems"
+                  label="First Name *"
+                  name="firstName"
+                  :rules="nameRules"
+                  required />
 
-            <!-- Last Name -->
-            <v-text-field
-              v-model="lastName"
-              outlined
-              dense
-              color="primary"
-              :disabled="!hasCartItems"
-              label="Last Name *"
-              name="lastName"
-              :rules="nameRules"
-              required />
-          </div>
-          <div class="payment-details">
-            <p class="display-1 section-title">
-              Payment Details
-            </p>
-            <v-btn
-              color="primary"
-              refs="checkoutBtn"
-              :disabled="!isStripeLoaded || !complete"
-              @click="checkout">
-              <span v-if="!submitting">Continue to Checkout</span>
-              <Spinner v-else />
-            </v-btn>
-            <span class="error">{{ error }}</span>
-          </div>
+                <!-- Last Name -->
+                <v-text-field
+                  v-model="lastName"
+                  outlined
+                  dense
+                  color="primary"
+                  :disabled="!hasCartItems"
+                  label="Last Name *"
+                  name="lastName"
+                  :rules="nameRules"
+                  required />
+              </div>
+
+              <div class="payment-details">
+                <p class="display-1 section-title">
+                  Payment Details
+                </p>
+
+                <!-- Card -->
+                <card
+                  ref="card-stripe"
+                  :class="['stripe-card', { complete }]"
+                  :stripe="stripeKey"
+                  @change="complete = $event.complete" />
+                <p class="subtitle-1">
+                  Payment secured using Stripe&copy;
+                </p>
+
+                <!-- Submit Button -->
+                <v-btn
+                  color="primary"
+                  refs="checkoutBtn"
+                  :disabled="!complete && !valid"
+                  class="mt-5"
+                  block
+                  large
+                  type="submit">
+                  <span v-if="!submitting">Pay ${{ amount }}</span>
+                  <Spinner v-else />
+                </v-btn>
+                <p class="body-1 payment-disclaimer">
+                  *Upon successful purchase, an email will be sent to the one provided above with a download link along with an invoice of your payment.
+                </p>
+                <span class="error">{{ error }}</span>
+              </div>
+            </v-form>
+          </client-only>
         </div>
       </v-col>
       <v-col
@@ -102,8 +128,10 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import { mapMutations, mapState } from 'vuex';
   import cartItemsQuery from '~/apollo/queries/cart/images';
+  import createOrderMutation from '~/apollo/mutations/cart/order';
+  import { Card, createToken } from 'vue-stripe-elements-plus';
   import OrderItem from '~/components/OrderItem';
   import PageTitle from '~/components/PageTitle';
   import Spinner from '~/components/Spinner';
@@ -126,7 +154,8 @@
     },
 
     data: () => ({
-      canceledResult: false,
+      amount: '',
+      complete: false,
       email: '',
       emailRules: [
         v => !!v || 'E-mail is required',
@@ -141,42 +170,70 @@
       ],
       stripe: null,
       submitting: false,
-      successfulResult: false,
+      valid: false,
     }),
 
     computed: {
       ...mapState({
         cartItems: state => state.cart.items,
       }),
-      complete() {
-        return this.email && this.firstName && this.lastName;
-      },
       hasCartItems() {
         return this.cartItems && this.cartItems.length > 0;
       },
-      flattenedLineItems() {
-        return this.cartItems.reduce((acc, item) => {
-          const found = acc.some(a => a.price === item.chosenSize.value);
-          if (!found) acc.push({ price: item.chosenSize.value, quantity: item.quantity })
-          else acc.find(a => a.price === item.chosenSize.value).quantity++;
-          return acc;
-        }, []);
+      stripeKey() {
+        return process.env.STRIPE_PUBLISHABLE_KEY;
       }
     },
 
     methods: {
-      checkout() {
+      ...mapMutations('cart', ['clearCart']),
+      async handleSubmit() {
         this.submitting = true;
+
+        await createToken()
+          .then(async ({ token }) => {
+            console.log('token: ', token);
+            await this.$apollo.mutate({
+              mutation: createOrderMutation,
+              variables: {
+                amount: this.amount,
+                email: this.email,
+                firstName: this.firstName,
+                lastName: this.lastName,
+                images: JSON.stringify(this.cartItems),
+                token: token.id
+              }
+            })
+              .then(({ data }) => {
+                if (data.createOrder.order) {
+                  this.clearCart();
+                  this.$router.push('/thanks');
+                }
+                console.log('success data: ', data)
+              })
+              .catch(err => console.error('mutate error: ', err))
+            this.submitting = false;
+          })
+          .catch(err => {
+            this.submitting = false;
+            console.error('stripe error: ', err);
+          });
         this.submitting = false;
       },
     },
 
+    watch: {
+      images(value) {
+        if (value) this.amount = this.images.reduce((acc, item) => acc += item.price, 0);
+      }
+    },
+
     components: {
+      Card,
       OrderItem,
       PageTitle,
       Spinner,
     },
-
 
     head() {
       return {
@@ -220,6 +277,13 @@
           .stripe-card {
             margin-bottom: 2rem;
           }
+
+          .payment-disclaimer {
+            border-top: 1px solid $light-grey;
+            line-height: 1.8rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+          }
         }
       }
     }
@@ -247,5 +311,20 @@
     opacity: 0;
     transform: translateX(50px) scaleY(0);
     transform-origin: center top;
+  }
+</style>
+
+<style lang="scss">
+  @import '~/css/global.scss';
+
+  .stripe-card {
+    border: 1px solid rgba(0, 0, 0, 0.38);
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-bottom: 0.5rem !important;
+
+    &.complete {
+      border-color: $primary;
+    }
   }
 </style>

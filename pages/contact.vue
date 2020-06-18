@@ -141,7 +141,6 @@
           .join("&");
       },
       submit () {
-        console.log('this.refs: ', this.$refs.form);
         this.sendingForm = true;
 
         const axiosConfig = {

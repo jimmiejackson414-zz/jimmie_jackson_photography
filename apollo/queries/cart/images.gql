@@ -2,6 +2,7 @@ query($ids: [ID]) {
   images(where: { id_in: $ids }) {
     id
     name
+    price
     slug
     src {
       url
