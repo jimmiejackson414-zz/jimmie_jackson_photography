@@ -8,7 +8,7 @@
           I hope you enjoy these photos as much as I enjoyed taking them.
         </p>
         <p class="body-1 text-center">
-          Please be on the look out for an email that contains your download links for the images you've just purchased, as well as an invoice of your payment.
+          Please be on the look out for an email that contains the download link for the image(s) you've just purchased, as well as an invoice of your payment.
         </p>
         <p class="body-1 text-center">
           If your emails don't arrive within 24 hours, make sure to check your Spam folder. If you have any issues or questions whatsoever, please don't hesitate to <nuxt-link to="/contact">
@@ -70,7 +70,7 @@
       width: 50%;
     }
 
-    .v-img {
+    .v-image {
       border: 1rem solid white;
     }
   }

@@ -61,13 +61,56 @@
                   Payment Details
                 </p>
 
+                <!-- Coupon -->
+                <p
+                  v-if="!showCouponField"
+                  class="primary--text body-1 pointer"
+                  @click="toggleCouponField">
+                  Have a coupon?
+                </p>
+                <div
+                  v-else
+                  class="coupon-wrapper d-flex">
+                  <v-text-field
+                    v-model="coupon"
+                    hide-details
+                    outlined
+                    dense
+                    color="primary"
+                    :disabled="!hasCartItems"
+                    label="Coupon"
+                    name="coupon"
+                    @keydown.enter="applyCoupon" />
+                  <v-btn
+                    text
+                    :ripple="false"
+                    @click="applyCoupon">
+                    <span
+                      v-if="!applyingCoupon"
+                      class="primary--text">Apply</span>
+                    <spinner v-if="applyingCoupon" />
+                  </v-btn>
+                  <p
+                    v-show="couponIsValid && !applyingCoupon && couponSubmitted"
+                    class="success--text body-1 ma-0 align-self-center">
+                    Success!
+                  </p>
+                  <p
+                    v-show="!couponIsValid && !applyingCoupon && couponSubmitted"
+                    class="error--text body-1 ma-0 align-self-center">
+                    Invalid
+                  </p>
+                </div>
+
+
                 <!-- Card -->
                 <card
+                  v-if="isStripeLoaded"
                   ref="card-stripe"
                   :class="['stripe-card', { complete }]"
                   :stripe="stripeKey"
                   @change="complete = $event.complete" />
-                <p class="subtitle-1">
+                <p class="subtitle-1 mt-2">
                   Payment secured using Stripe&copy;
                 </p>
 
@@ -110,6 +153,15 @@
                   :key="item.id"
                   :item="item" />
               </transition-group>
+              <div class="total-row">
+                <span
+                  v-if="couponSubmitted && couponIsValid"
+                  class="coupon success--text body-1">Coupon Applied: {{ couponDetails.percent_off }}% Off</span>
+                <div class="total">
+                  <span class="display-1 font-weight-bold">Total:&nbsp;</span>
+                  <span class="display-1">${{ amount }}</span>
+                </div>
+              </div>
             </span>
             <span v-else>
               <p class="body-1">You have no items in your cart. Visit my portfolio to add items to your cart.</p>
@@ -128,9 +180,11 @@
 </template>
 
 <script>
+  /* eslint-disable no-undef */
   import { mapMutations, mapState } from 'vuex';
   import cartItemsQuery from '~/apollo/queries/cart/images';
   import createOrderMutation from '~/apollo/mutations/cart/order';
+  import validateCouponQuery from '~/apollo/queries/order/validateCoupon';
   import { Card, createToken } from 'vue-stripe-elements-plus';
   import OrderItem from '~/components/OrderItem';
   import PageTitle from '~/components/PageTitle';
@@ -155,7 +209,12 @@
 
     data: () => ({
       amount: '',
+      applyingCoupon: false,
       complete: false,
+      coupon: '',
+      couponDetails: '',
+      couponIsValid: null,
+      couponSubmitted: false,
       email: '',
       emailRules: [
         v => !!v || 'E-mail is required',
@@ -168,6 +227,7 @@
       nameRules: [
         v => !!v || 'Name is required.',
       ],
+      showCouponField: false,
       stripe: null,
       submitting: false,
       valid: false,
@@ -187,12 +247,38 @@
 
     methods: {
       ...mapMutations('cart', ['clearCart']),
+      async applyCoupon() {
+        this.applyingCoupon = true;
+        this.$apollo.query({
+          query: validateCouponQuery,
+          variables: {
+            coupon: this.coupon
+          }
+        })
+          .then(({ data }) => {
+            if (data.validateCoupon) {
+              this.couponIsValid = data.validateCoupon.valid;
+              this.couponDetails = data.validateCoupon;
+              this.calculateAmount(data.validateCoupon.percent_off);
+            } else {
+              this.couponIsValid = false;
+            }
+          })
+          .then(() => {
+            this.applyingCoupon = false;
+            this.couponSubmitted = true;
+          });
+      },
+      calculateAmount(coupon) {
+        const price = this.images.reduce((acc, item) => acc += item.price, 0);
+        if (coupon) this.amount = price * ((100 - coupon) / 100);
+        else this.amount = price;
+      },
       async handleSubmit() {
         this.submitting = true;
 
         await createToken()
           .then(async ({ token }) => {
-            console.log('token: ', token);
             await this.$apollo.mutate({
               mutation: createOrderMutation,
               variables: {
@@ -209,7 +295,6 @@
                   this.clearCart();
                   this.$router.push('/thanks');
                 }
-                console.log('success data: ', data)
               })
               .catch(err => console.error('mutate error: ', err))
             this.submitting = false;
@@ -220,12 +305,15 @@
           });
         this.submitting = false;
       },
+      toggleCouponField() {
+        this.showCouponField = true;
+      }
     },
 
     watch: {
       images(value) {
-        if (value) this.amount = this.images.reduce((acc, item) => acc += item.price, 0);
-      }
+        if (value) this.calculateAmount();
+      },
     },
 
     components: {
@@ -241,7 +329,7 @@
           {
             hid: 'stripe',
             src: 'https://js.stripe.com/v3',
-            defer: true,
+            async: true,
             callback: () => { this.isStripeLoaded = true }
           }
         ],
@@ -286,6 +374,18 @@
           }
         }
       }
+
+      .order-details-wrapper {
+        .total-row {
+          align-items: flex-end;
+          border-top: 1px solid $light-grey;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding-top: 1rem;
+          margin-top: 2rem;
+        }
+      }
     }
   }
 
@@ -322,6 +422,7 @@
     border-radius: 4px;
     padding: 8px 12px;
     margin-bottom: 0.5rem !important;
+    margin-top: 2.5rem;
 
     &.complete {
       border-color: $primary;

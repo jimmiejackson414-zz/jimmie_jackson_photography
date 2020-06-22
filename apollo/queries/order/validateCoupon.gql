@@ -1,0 +1,8 @@
+query($coupon: String!) {
+  validateCoupon(coupon: $coupon) {
+    id
+    name
+    valid
+    percent_off
+  }
+}
