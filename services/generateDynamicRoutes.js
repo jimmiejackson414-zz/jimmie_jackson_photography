@@ -26,10 +26,7 @@ const dynamicRoutes = async () => {
     };
   });
 
-  // concatenate both route arrays
-  const routes = routesForGalleries.concat(routesForImages);
-
-  return routes;
+  return [...routesForGalleries, ...routesForImages];
 };
 
 export default dynamicRoutes;
