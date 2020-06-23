@@ -1,5 +1,6 @@
 <template>
   <v-navigation-drawer
+    app
     bottom
     color="transparent"
     fixed
@@ -12,7 +13,7 @@
     <v-list
       color="white"
       shaped>
-      <v-list-item>
+      <!-- <v-list-item>
         <v-text-field
           label="Search"
           outlined
@@ -36,7 +37,7 @@
             </v-btn>
           </template>
         </v-text-field>
-      </v-list-item>
+      </v-list-item> -->
       <v-list-item
         v-for="item in items"
         :key="item.title"

@@ -1,0 +1,25 @@
+query Gallery($slug: String!) {
+  gallery: galleryBySlug(slug: $slug) {
+    id
+    name
+    slug
+    cover_image {
+      url
+    }
+
+    images {
+      id
+      name
+      slug
+      description
+      location
+      price
+      date_taken
+
+      src {
+        url
+        formats
+      }
+    }
+  }
+}

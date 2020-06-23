@@ -9,61 +9,130 @@
         cols="12"
         md="5">
         <div class="payment-personals-wrapper">
-          <div class="personal-details">
-            <p class="display-1 section-title">
-              Personal Details
-            </p>
-            <!-- Email -->
-            <v-text-field
-              v-model="email"
-              outlined
-              dense
-              color="primary"
-              :disabled="!hasOrderItems"
-              label="Email *"
-              name="email"
-              type="email"
-              :rules="emailRules"
-              required />
+          <client-only>
+            <v-form
+              ref="form"
+              v-model="valid"
+              @submit.stop.prevent="handleSubmit">
+              <div class="personal-details">
+                <p class="display-1 section-title">
+                  Personal Details
+                </p>
+                <!-- Email -->
+                <v-text-field
+                  v-model="email"
+                  outlined
+                  dense
+                  color="primary"
+                  :disabled="!hasCartItems"
+                  label="Email *"
+                  name="email"
+                  type="email"
+                  :rules="emailRules"
+                  required />
 
-            <!-- First Name -->
-            <v-text-field
-              v-model="firstName"
-              outlined
-              dense
-              color="primary"
-              :disabled="!hasOrderItems"
-              label="First Name *"
-              name="firstName"
-              :rules="nameRules"
-              required />
+                <!-- First Name -->
+                <v-text-field
+                  v-model="firstName"
+                  outlined
+                  dense
+                  color="primary"
+                  :disabled="!hasCartItems"
+                  label="First Name *"
+                  name="firstName"
+                  :rules="nameRules"
+                  required />
 
-            <!-- Last Name -->
-            <v-text-field
-              v-model="lastName"
-              outlined
-              dense
-              color="primary"
-              :disabled="!hasOrderItems"
-              label="Last Name *"
-              name="lastName"
-              :rules="nameRules"
-              required />
-          </div>
-          <div class="payment-details">
-            <p class="display-1 section-title">
-              Payment Details
-            </p>
-            <v-btn
-              color="primary"
-              refs="checkoutBtn"
-              :disabled="!isStripeLoaded || !complete"
-              @click="checkout">
-              <span v-if="!loading">Continue to Checkout</span>
-              <Spinner v-else />
-            </v-btn>
-            <span class="error">{{ error }}</span>
-          </div>
+                <!-- Last Name -->
+                <v-text-field
+                  v-model="lastName"
+                  outlined
+                  dense
+                  color="primary"
+                  :disabled="!hasCartItems"
+                  label="Last Name *"
+                  name="lastName"
+                  :rules="nameRules"
+                  required />
+              </div>
+
+              <div class="payment-details">
+                <p class="display-1 section-title">
+                  Payment Details
+                </p>
+
+                <!-- Coupon -->
+                <p
+                  v-if="!showCouponField"
+                  class="primary--text body-1 pointer"
+                  @click="toggleCouponField">
+                  Have a coupon?
+                </p>
+                <div
+                  v-else
+                  class="coupon-wrapper d-flex">
+                  <v-text-field
+                    v-model="coupon"
+                    hide-details
+                    outlined
+                    dense
+                    color="primary"
+                    :disabled="!hasCartItems"
+                    label="Coupon"
+                    name="coupon"
+                    @keydown.enter="applyCoupon" />
+                  <v-btn
+                    text
+                    :ripple="false"
+                    @click="applyCoupon">
+                    <span
+                      v-if="!applyingCoupon"
+                      class="primary--text">Apply</span>
+                    <spinner v-if="applyingCoupon" />
+                  </v-btn>
+                  <p
+                    v-show="couponIsValid && !applyingCoupon && couponSubmitted"
+                    class="success--text body-1 ma-0 align-self-center">
+                    Success!
+                  </p>
+                  <p
+                    v-show="!couponIsValid && !applyingCoupon && couponSubmitted"
+                    class="error--text body-1 ma-0 align-self-center">
+                    Invalid
+                  </p>
+                </div>
+
+
+                <!-- Card -->
+                <card
+                  v-if="isStripeLoaded"
+                  ref="card-stripe"
+                  :class="['stripe-card', { complete }]"
+                  :stripe="stripeKey"
+                  @change="complete = $event.complete" />
+                <p class="subtitle-1 mt-2">
+                  Payment secured using Stripe&copy;
+                </p>
+
+                <!-- Submit Button -->
+                <v-btn
+                  color="primary"
+                  refs="checkoutBtn"
+                  :disabled="!complete && !valid"
+                  class="mt-5"
+                  block
+                  large
+                  type="submit">
+                  <span v-if="!submitting">Pay {{ amount }}</span>
+                  <Spinner v-else />
+                </v-btn>
+                <p class="body-1 payment-disclaimer">
+                  *Upon successful purchase, an email will be sent to the one provided above with a download link along with an invoice of your payment.
+                </p>
+                <span class="error">{{ error }}</span>
+              </div>
+            </v-form>
+          </client-only>
         </div>
       </v-col>
       <v-col
@@ -74,25 +143,36 @@
           <p class="display-1 section-title">
             Order Details
           </p>
-          <span v-if="hasOrderItems">
-            <transition-group
-              tag="ul"
-              name="list">
-              <order-item
-                v-for="item in orderItems"
-                :key="item.id"
-                :item="item" />
-            </transition-group>
-          </span>
-          <span v-else>
-            <p class="body-1">You have no items in your cart. Visit my portfolio to add items to your cart.</p>
-            <v-btn
-              color="primary"
-              :ripple="false"
-              depressed
-              nuxt
-              to="/portfolio">View Portfolio</v-btn>
-          </span>
+          <client-only>
+            <span v-if="!$apollo.loading && hasCartItems">
+              <transition-group
+                tag="ul"
+                name="list">
+                <order-item
+                  v-for="item in images"
+                  :key="item.id"
+                  :item="item" />
+              </transition-group>
+              <div class="total-row">
+                <span
+                  v-if="couponSubmitted && couponIsValid"
+                  class="coupon success--text body-1">Coupon Applied: {{ couponDetails.percent_off }}% Off</span>
+                <div class="total">
+                  <span class="display-1 font-weight-bold">Total:&nbsp;</span>
+                  <span class="display-1">{{ amount }}</span>
+                </div>
+              </div>
+            </span>
+            <span v-else>
+              <p class="body-1">You have no items in your cart. Visit my portfolio to add items to your cart.</p>
+              <v-btn
+                color="primary"
+                :ripple="false"
+                depressed
+                nuxt
+                to="/portfolio">View Portfolio</v-btn>
+            </span>
+          </client-only>
         </div>
       </v-col>
     </v-row>
@@ -100,7 +180,13 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  /* eslint-disable no-undef */
+  import { mapMutations, mapState } from 'vuex';
+  import numeral from 'numeral';
+  import cartItemsQuery from '~/apollo/queries/cart/images';
+  import createOrderMutation from '~/apollo/mutations/cart/order';
+  import validateCouponQuery from '~/apollo/queries/order/validateCoupon';
+  import { Card, createToken } from 'vue-stripe-elements-plus';
   import OrderItem from '~/components/OrderItem';
   import PageTitle from '~/components/PageTitle';
   import Spinner from '~/components/Spinner';
@@ -110,8 +196,26 @@
 
     transition: 'page-fade',
 
+    apollo: {
+      images: {
+        prefetch: false,
+        query: cartItemsQuery,
+        variables() {
+          return {
+            ids: !this.cartItems.length ? [-1] : this.cartItems.map(item => item.id),
+          }
+        }
+      },
+    },
+
     data: () => ({
-      canceledResult: false,
+      amount: '',
+      applyingCoupon: false,
+      complete: false,
+      coupon: '',
+      couponDetails: '',
+      couponIsValid: null,
+      couponSubmitted: false,
       email: '',
       emailRules: [
         v => !!v || 'E-mail is required',
@@ -121,76 +225,104 @@
       firstName: '',
       isStripeLoaded: false,
       lastName: '',
-      loading: false,
       nameRules: [
         v => !!v || 'Name is required.',
       ],
+      showCouponField: false,
       stripe: null,
-      successfulResult: false,
+      submitting: false,
+      valid: false,
     }),
 
     computed: {
       ...mapState({
-        orderItems: state => state.cart.items,
+        cartItems: state => state.cart.items,
       }),
-      complete() {
-        return this.email && this.firstName && this.lastName;
+      hasCartItems() {
+        return this.cartItems && this.cartItems.length > 0;
       },
-      hasOrderItems() {
-        return this.orderItems.length > 0;
-      },
-      flattenedLineItems() {
-        return this.orderItems.reduce((acc, item) => {
-          const found = acc.some(a => a.price === item.chosenSize.value);
-          if (!found) acc.push({ price: item.chosenSize.value, quantity: item.quantity })
-          else acc.find(a => a.price === item.chosenSize.value).quantity++;
-          return acc;
-        }, []);
+      stripeKey() {
+        return process.env.STRIPE_PUBLISHABLE_KEY;
       }
     },
 
     methods: {
-      checkout() {
-        this.loading = true;
-        // when the customer clicks on the button, redirect them to checkout
-        this.stripe.redirectToCheckout({
-          lineItems: this.flattenedLineItems,
-          mode: 'payment',
-          customerEmail: this.email,
-          // do not rely on the redirect to the successUrl for fulfilling purchases, customers
-          // may not always reach the successUrl after a successful payment.
-          // instead use one of the strategies described in https://stripe.com/docs/payments/checkout/fulfillment
-          successUrl: 'https://www.jimmiejacksonphotography.com/cart',
-          cancelUrl: 'https://www.jimmiejacksonphotography.com/cart',
+      ...mapMutations('cart', ['clearCart']),
+      async applyCoupon() {
+        this.applyingCoupon = true;
+        this.$apollo.query({
+          query: validateCouponQuery,
+          variables: {
+            coupon: this.coupon
+          }
         })
-          .then(result => {
-            console.log('result: ', result);
-            this.loading = false;
-            if (result.error) {
-              // if `redirectToCheckout` fails due to a browser or network error, display the localized
-              // error message to your customer
-              this.error = result.error.message;
+          .then(({ data }) => {
+            if (data.validateCoupon) {
+              this.couponIsValid = data.validateCoupon.valid;
+              this.couponDetails = data.validateCoupon;
+              this.calculateAmount(data.validateCoupon.percent_off);
+            } else {
+              this.couponIsValid = false;
             }
           })
+          .then(() => {
+            this.applyingCoupon = false;
+            this.couponSubmitted = true;
+          });
       },
-      initializeStripe() {
-        // eslint-disable-next-line no-undef
-        this.stripe = Stripe(process.env.STRIPE_PUBLISHABLE_KEY);
+      calculateAmount(coupon) {
+        const price = this.images.reduce((acc, item) => acc += item.price, 0);
+        if (coupon) this.amount = numeral(price * ((100 - coupon) / 100)).format('$0,0.00');
+        else this.amount = numeral(price).format('$0,0.00');
+      },
+      async handleSubmit() {
+        this.submitting = true;
+
+        await createToken()
+          .then(async ({ token }) => {
+            await this.$apollo.mutate({
+              mutation: createOrderMutation,
+              variables: {
+                amount: this.amount,
+                email: this.email,
+                firstName: this.firstName,
+                lastName: this.lastName,
+                images: JSON.stringify(this.cartItems),
+                token: token.id
+              }
+            })
+              .then(({ data }) => {
+                if (data.createOrder.order) {
+                  this.clearCart();
+                  this.$router.push('/thanks');
+                }
+              })
+              .catch(err => console.error('mutate error: ', err))
+            this.submitting = false;
+          })
+          .catch(err => {
+            this.submitting = false;
+            console.error('stripe error: ', err);
+          });
+        this.submitting = false;
+      },
+      toggleCouponField() {
+        this.showCouponField = true;
       }
     },
 
     watch: {
-      isStripeLoaded() {
-        if (this.isStripeLoaded) this.initializeStripe();
-      }
+      images(value) {
+        if (value) this.calculateAmount();
+      },
     },
 
     components: {
+      Card,
       OrderItem,
       PageTitle,
       Spinner,
     },
-
 
     head() {
       return {
@@ -198,7 +330,7 @@
           {
             hid: 'stripe',
             src: 'https://js.stripe.com/v3',
-            defer: true,
+            async: true,
             callback: () => { this.isStripeLoaded = true }
           }
         ],
@@ -234,12 +366,30 @@
           .stripe-card {
             margin-bottom: 2rem;
           }
+
+          .payment-disclaimer {
+            border-top: 1px solid $light-grey;
+            line-height: 1.8rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+          }
+        }
+      }
+
+      .order-details-wrapper {
+        .total-row {
+          align-items: flex-end;
+          border-top: 1px solid $light-grey;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding-top: 1rem;
+          margin-top: 2rem;
         }
       }
     }
   }
 
-  .list-enter-active,
   .list-leave-active,
   .list-move {
     transition: 250ms cubic-bezier(0.59, 0.12, 0.34, 0.95);
@@ -248,12 +398,10 @@
 
   .list-enter {
     opacity: 0;
-    transform: translateX(50px) scaleY(0.5);
   }
 
   .list-enter-to {
     opacity: 1;
-    transform: translateX(0) scaleY(1);
   }
 
   .list-leave-active {
@@ -264,5 +412,21 @@
     opacity: 0;
     transform: translateX(50px) scaleY(0);
     transform-origin: center top;
+  }
+</style>
+
+<style lang="scss">
+  @import '~/css/global.scss';
+
+  .stripe-card {
+    border: 1px solid rgba(0, 0, 0, 0.38);
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-bottom: 0.5rem !important;
+    margin-top: 2.5rem;
+
+    &.complete {
+      border-color: $primary;
+    }
   }
 </style>

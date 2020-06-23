@@ -6,11 +6,13 @@ export default {
   mode: 'universal',
   env: {
     BASE_URL: process.env.BASE_URL,
-    WP_API_URL: process.env.WP_API_URL,
-    WP_USERNAME: process.env.WP_USERNAME,
-    WP_PASSWORD: process.env.WP_PASSWORD,
+    // WP_API_URL: process.env.WP_API_URL,
+    // WP_USERNAME: process.env.WP_USERNAME,
+    // WP_PASSWORD: process.env.WP_PASSWORD,
     STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    // WC_CONSUMER_KEY: process.env.WC_CONSUMER_KEY,
+    // WC_CONSUMER_SECRET: process.env.WC_CONSUMER_SECRET
   },
   /*
    ** Headers of the page
@@ -31,11 +33,11 @@ export default {
       }
     ],
     link: [
-      { rel: 'apple-touch-icon', sizes: "180x180", href: '/apple-touch-icon.png'},
-      { rel: 'icon', type: 'image/png', sizes: "32x32", href: '/favicon-32x32.png'},
-      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png'},
+      { rel: 'apple-touch-icon', sizes: "180x180", href: '/apple-touch-icon.png' },
+      { rel: 'icon', type: 'image/png', sizes: "32x32", href: '/favicon-32x32.png' },
+      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
       { rel: 'manifest', href: '/site.webmanifest' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700;800&display=swap'}
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700;800&display=swap' }
     ]
   },
   /*
@@ -79,7 +81,18 @@ export default {
     '@nuxtjs/axios',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
+    '@nuxtjs/apollo'
   ],
+  /*
+  ** Apollo module configuration
+  */
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: process.env.STRAPI_BACKEND_URL
+      }
+    }
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options

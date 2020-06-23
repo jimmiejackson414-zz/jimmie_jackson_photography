@@ -1,7 +1,6 @@
 <template>
   <v-app
-    light
-    app>
+    light>
     <v-app-bar
       id="home-app-bar"
       fixed
@@ -44,7 +43,7 @@
             </template>
           </v-text-field>
         </transition>
-        <transition
+        <!-- <transition
           name="fade"
           mode="out-in">
           <v-btn
@@ -73,7 +72,7 @@
               height="20px"
               width="20px" />
           </v-btn>
-        </transition>
+        </transition> -->
         <v-tabs
           class="hidden-sm-and-down"
           :style="{ width: 'auto' }"
@@ -113,17 +112,25 @@
       :items="items"
       :cart-items="cartItems"
       @handle-search="performSearch" />
-    <v-content>
+
+    <v-main>
       <transition
         name="fade"
         mode="out-in">
-        <nuxt />
+        <v-container>
+          <nuxt />
+        </v-container>
       </transition>
-    </v-content>
+    </v-main>
+
     <v-footer
       app
+      tile
+      padless
       class="custom flex-column">
-      <div class="social-container">
+      <v-row
+        justify-center
+        class="social-container">
         <div class="social facebook">
           <a
             href="https://www.facebook.com/jimmiejacksonphotography/"
@@ -157,7 +164,7 @@
               width="30px" />
           </a>
         </div>
-      </div>
+      </v-row>
       <span
         class="subtitle-2 grey--text text--darken-3">&copy; {{ new Date().getFullYear() }} Jimmie Jackson Photography</span>
     </v-footer>
@@ -214,7 +221,7 @@
     watch: {
       cartItems: function(newValue, oldValue) {
         const badge = document.querySelector('.v-badge__badge');
-        if (newValue !== oldValue) {
+        if (badge && newValue !== oldValue) {
           badge.classList.add('bounce');
           this.delay(500).then(() => {
             badge.classList.remove('bounce');
@@ -232,7 +239,7 @@
 <style lang="scss" scoped>
   @import '~/css/breakpoints';
 
-  main.v-content {
+  main.v-main {
     padding: 50px 0 !important;
 
     @include breakpoint(desktop) {
