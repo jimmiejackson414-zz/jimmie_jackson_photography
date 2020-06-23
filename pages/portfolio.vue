@@ -1,22 +1,25 @@
 <template>
-  <v-container class="pt-5">
-    <page-title
-      text="Portfolio" />
-    <v-row
-      align="center"
-      justify="start">
-      <portfolio-card
-        v-for="(gallery, index) in galleries"
-        :key="index"
-        :gallery="gallery" />
-    </v-row>
-  </v-container>
+  <div>
+    <client-only>
+      <page-title text="Portfolio" />
+      <v-container>
+        <v-row>
+          <image-card
+            v-for="(gallery, index) in galleries"
+            :key="index"
+            btn-text="Visit Gallery"
+            :item="gallery"
+            item-type="galleries" />
+        </v-row>
+      </v-container>
+    </client-only>
+  </div>
 </template>
 
 <script>
-  import fetchGalleries from '~/mixins/fetchGalleries';
+  import ImageCard from '~/components/ImageCard';
   import PageTitle from '~/components/PageTitle';
-  import PortfolioCard from '~/components/PortfolioCard';
+  import fetchGalleries from '~/mixins/fetchGalleries';
 
   export default {
     name: 'Portfolio',
@@ -26,18 +29,23 @@
     transition: 'page-fade',
 
     components: {
+      ImageCard,
       PageTitle,
-      PortfolioCard,
     },
 
     head() {
       return {
         title: 'Portfolio'
       }
-    },
+    }
   }
 </script>
 
 <style lang="scss" scoped>
-
+  .portfolio-container {
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+  }
 </style>

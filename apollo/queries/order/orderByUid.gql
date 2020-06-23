@@ -1,0 +1,10 @@
+query($uid: String!) {
+  order: orderByUid(uid: $uid) {
+    id
+    created_at
+    email
+    images
+    firstName
+    lastName
+  }
+}

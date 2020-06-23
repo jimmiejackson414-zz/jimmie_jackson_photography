@@ -1,5 +1,5 @@
 <template>
-  <v-content
+  <v-main
     v-if="!loading"
     class="background"
     :style="{
@@ -30,7 +30,7 @@
         </nuxt-link>
       </div>
     </div>
-  </v-content>
+  </v-main>
 </template>
 
 <script>
@@ -76,7 +76,7 @@
     height: 100%;
     padding: 64px 0 100px !important;
 
-    .v-content__wrap {
+    .v-main__wrap {
       display: flex;
       flex-direction: column;
       justify-content: center;

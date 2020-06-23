@@ -1,44 +1,44 @@
 <template>
-  <v-container class="pt-5">
-    <page-title :text="searchTerm" />
-    <v-row
-      align="start"
-      justify="center">
-      <v-col cols="12">
-        <div
+  <div>
+    <client-only>
+      <page-title :text="searchTerm" />
+      <v-container>
+        <v-row
           v-if="loading"
-          class="loader">
-          <spinner />
-        </div>
-        <div class="search-results-wrapper">
-          <!-- Search Result Component -->
-          <div v-if="results.length">
-            <client-only>
-              <masonry
-                :cols="{default: 2, 1000: 3, 700: 2, 400: 1}"
-                :gutter="{ default: '10px', 700: '10px' }"
-                style="width: 100%">
-                <gallery-card
-                  v-for="result in results"
-                  :key="result.id"
-                  :image="result" />
-              </masonry>
-            </client-only>
-          </div>
-          <div v-else>
-            <h3 class="display-1 text-center">
-              {{ error }}
-            </h3>
-          </div>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+          class="ma-0 text-center"
+          align="start"
+          justify="center">
+          <v-col cols="12">
+            <div class="loading">
+              <spinner />
+            </div>
+          </v-col>
+        </v-row>
+        <v-row v-else-if="results.length && !loading">
+          <image-card
+            v-for="result in results"
+            :key="result.id"
+            :item="result"
+            btn-text="View"
+            item-type="images" />
+        </v-row>
+        <v-row
+          v-else
+          justify="center"
+          class="mx-0">
+          <h3 class="display-1 text-center">
+            {{ error }}
+          </h3>
+        </v-row>
+      </v-container>
+    </client-only>
+  </div>
 </template>
 
 <script>
   import { mapState } from 'vuex';
-  import GalleryCard from '~/components/GalleryCard';
+  import query from '~/apollo/queries/search/search';
+  import ImageCard from '~/components/ImageCard';
   import PageTitle from '~/components/PageTitle';
   import Spinner from '~/components/Spinner';
 
@@ -62,28 +62,33 @@
 
     methods: {
       async performSearch() {
-        const searchQuery = this.query.replace(/\s+/g, '-').toLowerCase();
-        // await this.$axios.$get(`${process.env.WP_API_URL}/relevanssi/v1/search?type=post&keyword=${searchQuery}&consumer_key=${process.env.WC_CONSUMER_KEY}&consumer_secret=${process.env.WC_CONSUMER_SECRET}`)
-        await this.$axios.$get(`${process.env.WP_API_URL}/wc/v3/products?search=${searchQuery}&consumer_key=${process.env.WC_CONSUMER_KEY}&consumer_secret=${process.env.WC_CONSUMER_SECRET}`)
-          .then(res => {
-            if (!res.length) this.error = 'No results were found. Please try again.';
-            this.results = res;
+        this.$apollo.query({
+          query,
+          variables: {
+            searchQuery: this.query,
+          }
+        })
+          .then(({ data: { images } }) => {
+            if (images && images.length) this.results = images;
+            else this.error = 'No results were found. Please try again.';
           })
-          .catch(() => this.error = 'An error occurred. Please try again.');
-
-        this.loading = false;
+          .catch(err => console.error(err))
+          .then(() => this.loading = false);
       }
     },
 
+    mounted() {
+      this.performSearch();
+    },
+
     watch: {
-      query() {
-        console.log('this.query: ', this.query);
-        if (this.query) this.performSearch();
+      query(value) {
+        if (value) this.performSearch();
       }
     },
 
     components: {
-      GalleryCard,
+      ImageCard,
       PageTitle,
       Spinner,
     }
@@ -91,14 +96,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .search-results-wrapper {
-    width: 100%;
-  }
-
   .row {
-    width: 100%;
-    height: 100px;
-
     .loader {
       display: flex;
       height: 100%;

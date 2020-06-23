@@ -1,0 +1,15 @@
+query($searchQuery: String) {
+  images(
+    where: {
+      tags: { title_contains: $searchQuery }
+      name_contains: $searchQuery
+    }
+  ) {
+    id
+    name
+    slug
+    src {
+      formats
+    }
+  }
+}

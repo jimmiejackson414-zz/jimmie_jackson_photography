@@ -1,5 +1,5 @@
 <template>
-  <div class="row page-title-wrapper">
+  <div class="row page-title-wrapper mx-0">
     <v-btn
       v-if="backSlug"
       text
@@ -46,10 +46,12 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 2rem;
+    margin-top: 4rem;
 
     @include breakpoint(desktop) {
       flex-direction: row;
       margin-bottom: 4rem;
+      margin-top:2rem;
     }
 
     .back-wrapper {

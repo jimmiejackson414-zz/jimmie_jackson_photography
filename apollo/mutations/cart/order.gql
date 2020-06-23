@@ -1,0 +1,31 @@
+mutation(
+  $amount: Float!
+  $email: String!
+  $firstName: String!
+  $lastName: String!
+  $images: JSON!
+  $token: String!
+) {
+  createOrder(
+    input: {
+      data: {
+        amount: $amount
+        email: $email
+        firstName: $firstName
+        lastName: $lastName
+        images: $images
+        token: $token
+      }
+    }
+  ) {
+    order {
+      id
+      amount
+      created_at
+      email
+      firstName
+      images
+      lastName
+    }
+  }
+}

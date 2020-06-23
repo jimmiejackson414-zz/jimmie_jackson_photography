@@ -1,0 +1,19 @@
+query Image($slug: String!) {
+  image: imageBySlug(slug: $slug) {
+    id
+    name
+    slug
+    description
+    location
+    price
+    date_taken
+
+    src {
+      formats
+    }
+
+    gallery {
+      slug
+    }
+  }
+}
