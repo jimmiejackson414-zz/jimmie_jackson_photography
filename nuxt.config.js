@@ -1,4 +1,4 @@
-import { dynamicRoutes } from './services/generateDynamicRoutes';
+import dynamicRoutes from './services/generateDynamicRoutes';
 
 require('dotenv').config();
 
@@ -6,13 +6,13 @@ export default {
   mode: 'universal',
   env: {
     BASE_URL: process.env.BASE_URL,
-    // WP_API_URL: process.env.WP_API_URL,
-    // WP_USERNAME: process.env.WP_USERNAME,
-    // WP_PASSWORD: process.env.WP_PASSWORD,
     STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
-    // WC_CONSUMER_KEY: process.env.WC_CONSUMER_KEY,
-    // WC_CONSUMER_SECRET: process.env.WC_CONSUMER_SECRET
+    LOGROCKET_APP_ID: process.env.LOGROCKET_APP_ID,
+    CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
+    CLOUDINARY_KEY: process.env.CLOUDINARY_KEY,
+    CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET,
+    STRAPI_BACKEND_URL: process.env.STRAPI_BACKEND_URL
   },
   /*
    ** Headers of the page

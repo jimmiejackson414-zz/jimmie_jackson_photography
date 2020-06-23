@@ -1,19 +1,18 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: process.env.WP_API_URL,
-  headers: { 'Authorization': `Basic ${Buffer.from(process.env.WP_USERNAME + ':' + process.env.WP_PASSWORD).toString('base64')}`},
+  baseURL: process.env.STRAPI_BACKEND_BASE,
 });
 
-export const dynamicRoutes = async () => {
+const dynamicRoutes = async () => {
 
   // fetch galleries slugs
-  const resForGalleries = await instance.get('/realmedialibrary/v1/tree');
+  const resForGalleries = await instance.get('/galleries');
 
   // fetch images slugs
-  const resForImages = await instance.get('/wp/v2/media');
+  const resForImages = await instance.get('/images');
 
-  const routesForGalleries = resForGalleries.data.tree.map(gallery => {
+  const routesForGalleries = resForGalleries.data.map(gallery => {
     return {
       route: `/galleries/${gallery.slug}`,
       payload: gallery,
@@ -32,3 +31,5 @@ export const dynamicRoutes = async () => {
 
   return routes;
 };
+
+export default dynamicRoutes;
