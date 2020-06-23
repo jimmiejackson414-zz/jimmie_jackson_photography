@@ -9,7 +9,6 @@ query Image($slug: String!) {
     date_taken
 
     src {
-      url
       formats
     }
 

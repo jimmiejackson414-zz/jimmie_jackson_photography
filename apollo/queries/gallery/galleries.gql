@@ -19,7 +19,6 @@ query Galleries {
       price
 
       src {
-        url
         formats
       }
 

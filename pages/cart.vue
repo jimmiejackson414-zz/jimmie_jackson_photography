@@ -123,7 +123,7 @@
                   block
                   large
                   type="submit">
-                  <span v-if="!submitting">Pay ${{ amount }}</span>
+                  <span v-if="!submitting">Pay {{ amount }}</span>
                   <Spinner v-else />
                 </v-btn>
                 <p class="body-1 payment-disclaimer">
@@ -159,7 +159,7 @@
                   class="coupon success--text body-1">Coupon Applied: {{ couponDetails.percent_off }}% Off</span>
                 <div class="total">
                   <span class="display-1 font-weight-bold">Total:&nbsp;</span>
-                  <span class="display-1">${{ amount }}</span>
+                  <span class="display-1">{{ amount }}</span>
                 </div>
               </div>
             </span>
@@ -182,6 +182,7 @@
 <script>
   /* eslint-disable no-undef */
   import { mapMutations, mapState } from 'vuex';
+  import numeral from 'numeral';
   import cartItemsQuery from '~/apollo/queries/cart/images';
   import createOrderMutation from '~/apollo/mutations/cart/order';
   import validateCouponQuery from '~/apollo/queries/order/validateCoupon';
@@ -271,8 +272,8 @@
       },
       calculateAmount(coupon) {
         const price = this.images.reduce((acc, item) => acc += item.price, 0);
-        if (coupon) this.amount = price * ((100 - coupon) / 100);
-        else this.amount = price;
+        if (coupon) this.amount = numeral(price * ((100 - coupon) / 100)).format('$0,0.00');
+        else this.amount = numeral(price).format('$0,0.00');
       },
       async handleSubmit() {
         this.submitting = true;

@@ -27,6 +27,7 @@
     "logrocket": "^1.0.7",
     "logrocket-vuex": "^0.0.3",
     "nodemailer": "^6.4.6",
+    "numeral": "^2.0.6",
     "nuxt": "^2.0.0",
     "vue-masonry": "^0.11.8",
     "vue-masonry-css": "^1.0.3",

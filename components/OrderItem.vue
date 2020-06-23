@@ -14,10 +14,17 @@
         type="number"
         color="primary"
         outlined
+        hide-details
         dense
         label="Quantity"
         name="quantity"
         required />
+    </div>
+    <div class="price-wrapper">
+      <span class="price body-2">
+        Price:
+      </span>
+      <span class="amount body-1 font-weight-bold">{{ price }}</span>
     </div>
     <div class="remove-item">
       <v-btn
@@ -35,6 +42,7 @@
 
 <script>
   import { mapMutations } from 'vuex';
+  import numeral from 'numeral';
 
   export default {
     props: {
@@ -52,6 +60,9 @@
       imageSrc() {
         return this.item.src.formats.small.url;
       },
+      price() {
+        return numeral(this.item.price).format('$0,0.00');
+      }
     },
 
     methods: {
@@ -67,9 +78,10 @@
   @import '~/css/global';
 
   .item-wrapper {
+    align-items: center;
     display: grid;
-    grid-gap: 1.5rem;
-    grid-template-columns: auto 1fr 1fr auto;
+    grid-gap: 1.75rem;
+    grid-template-columns: auto minmax(100px, 200px) repeat(3, auto);
     padding: 1.6rem;
 
     &:not(:last-child) {
@@ -79,6 +91,13 @@
     .quantity {
       max-width: 10rem;
     }
+
+    .price-wrapper {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
   }
 </style>
 
@@ -86,6 +105,8 @@
   @import '~/css/global';
 
   .remove-item {
+    align-self: center;
+
     svg path {
       transition: 0.2s all ease-in-out;
 
