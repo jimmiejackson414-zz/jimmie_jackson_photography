@@ -12,7 +12,8 @@ export default {
     CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
     CLOUDINARY_KEY: process.env.CLOUDINARY_KEY,
     CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET,
-    STRAPI_BACKEND_URL: process.env.STRAPI_BACKEND_URL
+    STRAPI_BACKEND_URL: process.env.STRAPI_BACKEND_URL,
+    STRAPI_BACKEND_BASE: process.env.STRAPI_BACKEND_BASE,
   },
   /*
    ** Headers of the page

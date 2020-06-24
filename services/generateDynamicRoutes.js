@@ -2,7 +2,11 @@ import axios from 'axios';
 
 const instance = axios.create({
   baseURL: process.env.STRAPI_BACKEND_BASE,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
+
 
 const dynamicRoutes = async () => {
 
