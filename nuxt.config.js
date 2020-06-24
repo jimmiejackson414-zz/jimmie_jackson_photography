@@ -1,4 +1,4 @@
-// import dynamicRoutes from './services/generateDynamicRoutes';
+import dynamicRoutes from './services/generateDynamicRoutes';
 
 require('dotenv').config();
 
@@ -131,20 +131,7 @@ export default {
   ** Register dynamic routes
   */
   generate: {
-    // routes: dynamicRoutes,
-    routes: [
-      '/galleries/arizona',
-      '/galleries/john-muir-trail',
-      '/galleries/north-carolina',
-      '/galleries/wonderland-trail',
-      '/images/californian-valley',
-      '/images/dark-tree',
-      '/images/in-the-clouds',
-      '/images/mount-rainier-national-park',
-      '/images/snowy-appalachia',
-      '/images/sunset-over-the-grand-canyon',
-      '/images/washington-hiking',
-    ]
+    routes: dynamicRoutes,
   },
   /*
    ** Build configuration
