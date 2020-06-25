@@ -9,7 +9,7 @@
     @keydown.esc="closeModal">
     <v-card style="min-height: fit-content">
       <v-img
-        :src="image.src.url"
+        :src="image.src.formats.large.url"
         @contextmenu.prevent>
         <v-btn
           class="close-modal float-right ma-3"
