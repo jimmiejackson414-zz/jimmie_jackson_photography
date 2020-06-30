@@ -77,7 +77,7 @@
                     outlined
                     dense
                     color="primary"
-                    :disabled="disabled"
+                    :disabled="!hasCartItems"
                     label="Coupon"
                     name="coupon"
                     @keypress.enter.prevent="applyCoupon" />
