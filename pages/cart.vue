@@ -77,7 +77,7 @@
                     outlined
                     dense
                     color="primary"
-                    :disabled="!hasCartItems"
+                    :disabled="disabled"
                     label="Coupon"
                     name="coupon"
                     @keypress.enter.prevent="applyCoupon" />
@@ -102,7 +102,6 @@
                   </p>
                 </div>
 
-
                 <!-- Card -->
                 <card
                   v-if="isStripeLoaded"
@@ -118,7 +117,7 @@
                 <v-btn
                   color="primary"
                   refs="checkoutBtn"
-                  :disabled="!complete && !valid"
+                  :disabled="disabled || !valid"
                   class="my-5"
                   block
                   large
@@ -238,6 +237,9 @@
       ...mapState({
         cartItems: state => state.cart.items,
       }),
+      disabled() {
+        return !this.hasCartItems || !this.complete;
+      },
       formattedAmount() {
         return numeral(this.amount).format('$0,0.00');
       },
