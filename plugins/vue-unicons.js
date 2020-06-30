@@ -8,10 +8,23 @@ import {
   uniExpandArrowsAlt,
   uniFacebookF,
   uniImageDownload,
+  uniInfoCircle,
   uniInstagramAlt,
   uniMultiply,
   uniSearch
 } from 'vue-unicons/src/icons';
 
-Unicon.add([uniAngleLeft, uniAngleRight, uniCheckCircle, uniEnvelopeAlt, uniExpandArrowsAlt, uniFacebookF, uniImageDownload, uniInstagramAlt, uniMultiply, uniSearch]);
+Unicon.add([
+  uniAngleLeft,
+  uniAngleRight,
+  uniCheckCircle,
+  uniEnvelopeAlt,
+  uniExpandArrowsAlt,
+  uniFacebookF,
+  uniImageDownload,
+  uniInfoCircle,
+  uniInstagramAlt,
+  uniMultiply,
+  uniSearch
+]);
 Vue.use(Unicon);

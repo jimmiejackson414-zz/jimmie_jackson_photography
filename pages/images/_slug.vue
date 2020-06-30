@@ -110,7 +110,7 @@
         bottom
         left
         color="success"
-        :timeout="30000">
+        :timeout="3000">
         <icon
           name="check-circle"
           fill="white"

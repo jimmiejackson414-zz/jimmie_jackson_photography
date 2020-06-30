@@ -38,6 +38,7 @@
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",
     "@nuxtjs/eslint-module": "^1.0.0",
+    "@nuxtjs/google-analytics": "^2.3.0",
     "@nuxtjs/vuetify": "^1.0.0",
     "@vue/cli-shared-utils": "^4.4.5",
     "apollo-client": "^2.6.10",
