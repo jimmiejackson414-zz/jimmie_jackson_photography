@@ -76,6 +76,7 @@
 
     .page-title {
       flex-grow: 1;
+      font-weight: 400;
     }
   }
 </style>

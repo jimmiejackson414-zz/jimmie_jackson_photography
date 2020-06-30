@@ -80,7 +80,7 @@
                     :disabled="!hasCartItems"
                     label="Coupon"
                     name="coupon"
-                    @keydown.enter="applyCoupon" />
+                    @keypress.enter.prevent="applyCoupon" />
                   <v-btn
                     text
                     :ripple="false"
@@ -119,17 +119,17 @@
                   color="primary"
                   refs="checkoutBtn"
                   :disabled="!complete && !valid"
-                  class="mt-5"
+                  class="my-5"
                   block
                   large
                   type="submit">
-                  <span v-if="!submitting">Pay {{ amount }}</span>
+                  <span v-if="!submitting">Pay {{ formattedAmount }}</span>
                   <Spinner v-else />
                 </v-btn>
+                <span class="error--text body-1 text-center">{{ error }}</span>
                 <p class="body-1 payment-disclaimer">
                   *Upon successful purchase, an email will be sent to the one provided above with a download link along with an invoice of your payment.
                 </p>
-                <span class="error">{{ error }}</span>
               </div>
             </v-form>
           </client-only>
@@ -159,7 +159,7 @@
                   class="coupon success--text body-1">Coupon Applied: {{ couponDetails.percent_off }}% Off</span>
                 <div class="total">
                   <span class="display-1 font-weight-bold">Total:&nbsp;</span>
-                  <span class="display-1">{{ amount }}</span>
+                  <span class="display-1">{{ formattedAmount }}</span>
                 </div>
               </div>
             </span>
@@ -212,7 +212,7 @@
       amount: '',
       applyingCoupon: false,
       complete: false,
-      coupon: '',
+      coupon: null,
       couponDetails: '',
       couponIsValid: null,
       couponSubmitted: false,
@@ -221,7 +221,7 @@
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
-      error: null,
+      error: '',
       firstName: '',
       isStripeLoaded: false,
       lastName: '',
@@ -238,6 +238,9 @@
       ...mapState({
         cartItems: state => state.cart.items,
       }),
+      formattedAmount() {
+        return numeral(this.amount).format('$0,0.00');
+      },
       hasCartItems() {
         return this.cartItems && this.cartItems.length > 0;
       },
@@ -272,15 +275,18 @@
       },
       calculateAmount(coupon) {
         const price = this.images.reduce((acc, item) => acc += item.price, 0);
-        if (coupon) this.amount = numeral(price * ((100 - coupon) / 100)).format('$0,0.00');
-        else this.amount = numeral(price).format('$0,0.00');
+        if (coupon) this.amount = price * ((100 - coupon) / 100);
+        else this.amount = price;
       },
       async handleSubmit() {
         this.submitting = true;
 
-        await createToken()
-          .then(async ({ token }) => {
-            await this.$apollo.mutate({
+        // create Stripe token, then pass to mutation
+        createToken()
+          .then(({ token }) => {
+
+            // create order mutation
+            this.$apollo.mutate({
               mutation: createOrderMutation,
               variables: {
                 amount: this.amount,
@@ -297,14 +303,15 @@
                   this.$router.push('/thanks');
                 }
               })
-              .catch(err => console.error('mutate error: ', err))
-            this.submitting = false;
+              .catch(() => {
+                this.error = 'Your card was unable to be processed. Please check the details are correct, or try another card.';
+              })
+              .then(() => this.submitting = false);
           })
-          .catch(err => {
-            this.submitting = false;
-            console.error('stripe error: ', err);
-          });
-        this.submitting = false;
+          .catch(() => {
+            this.error = 'Your card was unable to be processed. Please check the details are correct, or try another card.';
+          })
+          .then(() => this.submitting = false);
       },
       toggleCouponField() {
         this.showCouponField = true;
@@ -372,6 +379,10 @@
             line-height: 1.8rem;
             margin-top: 2rem;
             padding-top: 1rem;
+          }
+
+          .error--text {
+            line-height: 1.6rem;
           }
         }
       }
