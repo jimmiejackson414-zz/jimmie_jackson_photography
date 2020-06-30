@@ -1,6 +1,8 @@
 <template>
   <v-container class="pt-5">
-    <page-title text="Download" />
+    <page-title
+      text="Download"
+      download-page />
     <v-row
       align="start"
       justify="center">
@@ -22,7 +24,7 @@
                 :download="download"
                 :image="associatedImage" />
             </transition-group>
-            <h4 class="display-1 error--text text-center mt-5">
+            <h4 class="body-1 error--text text-center mt-5">
               Note: This download page will expire {{ expirationDate }}
             </h4>
           </client-only>
@@ -30,7 +32,7 @@
         <div
           v-else-if="isExpired"
           class="expired-container">
-          <h2 class="display-1 text-center">
+          <h2 class="body-1 text-center">
             This page has expired due to the 14 day download window ending. If you believe this is in error, please
             <nuxt-link to="/contact">
               contact me!
