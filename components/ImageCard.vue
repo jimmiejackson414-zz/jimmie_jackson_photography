@@ -16,6 +16,7 @@
           class="white--text d-flex align-center text-center"
           contain
           :src="imageSrc"
+          :alt="item.name + ' Gallery'"
           @contextmenu.prevent>
           <div class="overlay" />
           <div class="btn-wrapper">

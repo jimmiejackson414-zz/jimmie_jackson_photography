@@ -18,6 +18,7 @@
             class="image-container">
             <v-img
               :src="imageSrc"
+              :alt="image.name"
               max-width="800px"
               @contextmenu.prevent>
               <v-btn
@@ -36,15 +37,15 @@
             sm="12"
             md="6"
             class="details-container">
-            <h1 class="display-2 font-weight-bold mb-3">
+            <h2 class="display-2 font-weight-bold mb-3">
               Story Time
-            </h1>
+            </h2>
             <p class="body-1 story">
               {{ image.description }}
             </p>
-            <h1 class="display-2 font-weight-bold mb-3">
+            <h2 class="display-2 font-weight-bold mb-3">
               Details
-            </h1>
+            </h2>
             <div
               v-for="(detail, index) in details"
               :key="index"

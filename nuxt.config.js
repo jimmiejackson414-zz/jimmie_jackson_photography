@@ -27,17 +27,31 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui' },
+      { hid: 'robots', name: 'robots', content: 'index, follow' },
       {
         hid: 'description',
         name: 'description',
         content: 'Jimmie Jackson Photography - Seattle Based Landscape and Travel Photographer'
-      }
+      },
+
+      // OG Tags
+      { hid: 'og:title', property: 'og:title', content: 'Jimmie Jackson Photography' },
+      { hid: 'og:description', property: 'og:description', content: 'Jimmie Jackson Photography - Seattle Based Landscape and Travel Photographer' },
+      { hid: 'og:image', property: 'og:image', content: '/JJP_Logo_Black_V2.png' },
+      { hid: 'og:url', property: 'og:url', content: 'https://www.jimmiejacksonphotography.com' },
+      { hid: 'og:site_name', property: 'og:site_name', content: 'Jimmie Jackson Photography' },
+
+      // Twitter OG tags
+      { hid: 'twitter:title', property: 'twitter:title', content: 'Jimmie Jackson Photography' },
+      { hid: 'twitter:description', property: 'twitter:description', content: 'Jimmie Jackson Photography - Seattle Based Landscape and Travel Photographer' },
+      { hid: 'twitter:image', property: 'twitter:image', content: '/JJP_Logo_Black_V2.png' },
     ],
     link: [
       { rel: 'apple-touch-icon', sizes: "180x180", href: '/apple-touch-icon.png' },
       { rel: 'icon', type: 'image/png', sizes: "32x32", href: '/favicon-32x32.png' },
       { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
       { rel: 'manifest', href: '/site.webmanifest' },
+      { rel: 'canonical', href: 'https://www.jimmiejacksonphotography.com' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700;800&display=swap' }
     ]
   },

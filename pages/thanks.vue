@@ -46,7 +46,10 @@
 
     head() {
       return {
-        title: 'Thanks'
+        title: 'Thanks',
+        meta: [
+          { hid: 'robots', name: 'robots', content: 'noindex, nofollow' }
+        ]
       }
     }
   }

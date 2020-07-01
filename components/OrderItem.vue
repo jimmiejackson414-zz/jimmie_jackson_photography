@@ -4,9 +4,9 @@
       :src="imageSrc"
       max-width="100px" />
     <div class="details">
-      <p class="font-weight-bold display-1 mb-1">
+      <h3 class="font-weight-bold display-1 mb-1">
         {{ item.name }}
-      </p>
+      </h3>
     </div>
     <div class="quantity">
       <v-text-field

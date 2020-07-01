@@ -134,6 +134,15 @@
       DownloadItem,
       PageTitle,
       Spinner,
+    },
+
+    head() {
+      return {
+        title: 'Download',
+        meta: [
+          { hid: 'robots', name: 'robots', content: 'noindex, nofollow' }
+        ]
+      }
     }
   }
 </script>
