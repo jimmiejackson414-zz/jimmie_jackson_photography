@@ -16,22 +16,34 @@
             sm="12"
             md="6"
             class="image-container">
-            <v-img
-              :src="imageSrc"
-              :alt="image.name"
-              max-width="800px"
-              @contextmenu.prevent>
-              <v-btn
-                class="expand-btn"
-                icon
-                @click.stop="openModal">
-                <icon
-                  name="expand-arrows-alt"
-                  fill="#fff"
-                  height="20px"
-                  width="20px" />
-              </v-btn>
-            </v-img>
+            <v-carousel
+              continuous
+              hide-delimiters
+              show-arrows-on-hover>
+              <v-carousel-item
+                v-for="(img, i) in image.src"
+                :key="i">
+                <v-img
+                  :src="img.formats.medium.url"
+                  :alt="image.name"
+                  max-width="800px"
+                  class="pointer"
+                  @click.stop="openModal"
+                  @contextmenu.prevent>
+                  <v-btn
+                    class="expand-btn"
+                    icon
+                    :ripple="false"
+                    @click.stop="openModal">
+                    <icon
+                      name="expand-arrows-alt"
+                      fill="#fff"
+                      height="20px"
+                      width="20px" />
+                  </v-btn>
+                </v-img>
+              </v-carousel-item>
+            </v-carousel>
           </v-col>
           <v-col
             sm="12"
@@ -138,7 +150,7 @@
       <full-screen-image
         :image="image"
         :open="isModalOpen"
-        @handle-close-dialog="isModalOpen = false" />
+        @handle-close-dialog="closeModal" />
     </client-only>
   </div>
 </template>
@@ -202,7 +214,7 @@
         return img;
       },
       imageSrc() {
-        return this.image.src.formats.medium.url;
+        return this.image.src[0].formats.medium.url;
       },
       nextSlug() {
         return this.fetchImageNavigationSlugs.next;
@@ -217,6 +229,9 @@
 
     methods: {
       ...mapMutations('cart', ['addToCart']),
+      closeModal() {
+        this.isModalOpen = false;
+      },
       openModal() {
         this.isModalOpen = true;
       },

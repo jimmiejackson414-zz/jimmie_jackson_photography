@@ -64,7 +64,7 @@
         if (this.itemType === 'galleries') {
           src = this.item.cover_image.url;
         } else if (this.itemType === 'images') {
-          src = this.item.src.formats.small.url;
+          src = this.item.src[0].formats.small.url;
         }
         return src;
       }
