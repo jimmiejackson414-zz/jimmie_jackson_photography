@@ -27,6 +27,7 @@
                   :src="img.formats.medium.url"
                   :alt="image.name"
                   max-width="800px"
+                  height="auto"
                   class="pointer"
                   @click.stop="openModal"
                   @contextmenu.prevent>
@@ -183,7 +184,7 @@
           { title: 'Title', value: this.image.name },
           { title: 'Location', value: this.image.location },
           { title: 'Taken', value: dayjs(this.image.date_taken).format('MMM DD, YYYY') },
-          { title: 'Size', value: this.image.attributes ? this.image.attributes[0].options[0] : '' },
+          { title: 'Size', value: `${this.image.src[0].width}x${this.image.src[0].height}` },
           { title: 'Price', value: `$${this.image.price}` },
         ]
       },

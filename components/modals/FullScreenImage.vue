@@ -4,6 +4,8 @@
     transition="fade"
     overlay-color="#000"
     overlay-opacity=".75"
+    max-width="90%"
+    max-height="fit-content"
     content-class="dialog-wrapper"
     @click:outside="closeModal"
     @keydown.esc="closeModal">
@@ -12,14 +14,16 @@
       rounded="0"
       style="min-height: fit-content">
       <v-carousel
-        height="100%"
         continuous
+        height="auto"
         hide-delimiter-background
         show-arrows-on-hover>
         <v-carousel-item
           v-for="(img, i) in image.src"
           :key="i">
           <v-img
+            height="100%"
+            width="auto"
             :src="img.formats.large.url"
             @contextmenu.prevent>
             <v-btn
@@ -67,6 +71,10 @@
 <style lang="scss">
   .dialog-wrapper.v-dialog {
     border-radius: 0;
+
+    &.v-dialog:not(.v-dialog--fullscreen) {
+      max-height: fit-content;
+    }
 
     .v-card {
       min-height: fit-content;

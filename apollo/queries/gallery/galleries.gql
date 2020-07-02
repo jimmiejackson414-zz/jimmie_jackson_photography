@@ -20,6 +20,8 @@ query Galleries {
 
       src {
         formats
+        height
+        width
       }
 
       gallery {
