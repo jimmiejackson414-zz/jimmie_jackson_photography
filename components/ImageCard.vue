@@ -19,6 +19,11 @@
           :alt="item.name + ' Gallery'"
           @contextmenu.prevent>
           <div class="overlay" />
+          <h3
+            v-if="itemType === 'galleries'"
+            class="display-3 text--white gallery-name">
+            {{ item.name }}
+          </h3>
           <div class="btn-wrapper">
             <v-btn
               depressed
@@ -94,14 +99,21 @@
       visibility: hidden;
     }
 
-    .visit-btn {
+    .visit-btn, .gallery-name {
       opacity: 0;
       transition: 0.2s all ease-in-out;
       visibility: hidden;
     }
 
+    .gallery-name {
+      font-family: 'Exo 2', serif !important;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, .9);
+    }
+
     &:hover {
-      .overlay, .visit-btn {
+      .overlay, .visit-btn, .gallery-name {
         opacity: 1;
         visibility: visible;
       }

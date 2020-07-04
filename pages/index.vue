@@ -147,7 +147,8 @@
           }
 
           a {
-            font-family: 'Open Sans' !important;
+            font-family: 'Exo 2', serif !important;
+            font-weight: 500;
           }
         }
       }
