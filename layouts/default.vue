@@ -1,5 +1,7 @@
 <template>
   <v-app
+    id="app"
+    v-scroll="onScroll"
     light>
     <v-app-bar
       id="home-app-bar"
@@ -168,6 +170,25 @@
       <span
         class="subtitle-2 grey--text text--darken-3">&copy; {{ new Date().getFullYear() }} Jimmie Jackson Photography</span>
     </v-footer>
+
+    <v-fab-transition>
+      <v-btn
+        v-show="showScrollBtn"
+        color="#4a4a4a"
+        dark
+        fab
+        fixed
+        bottom
+        right
+        :ripple="false"
+        @click="scrollToTop">
+        <icon
+          name="angle-up"
+          fill="white"
+          height="40px"
+          width="40px" />
+      </v-btn>
+    </v-fab-transition>
   </v-app>
 </template>
 
@@ -185,6 +206,7 @@
         {title: 'Contact', to: '/contact', badge: false},
         {title: 'Cart', to: '/cart', badge: true}
       ],
+      offsetTop: 0,
       searchIsOpen: false,
       searchTerm: null,
     }),
@@ -194,12 +216,18 @@
       hasCartItems() {
         return this.cartItems > 0;
       },
+      showScrollBtn() {
+        return this.offsetTop > 60;
+      }
     },
 
     methods: {
       ...mapActions('search', ['setQuery']),
       delay(t) {
         return new Promise(resolve => setTimeout(resolve, t));
+      },
+      onScroll() {
+        this.offsetTop = window.pageYOffset || document.documentElementt.scrollTop;
       },
       performSearch() {
         this.setQuery(this.searchTerm);
@@ -208,6 +236,9 @@
         // have to refresh page if user is already on search page
         if (this.$router.currentRoute.name === 'search') this.$router.go()
         else this.$router.push({ name: 'search' });
+      },
+      scrollToTop() {
+        this.$vuetify.goTo('#app', { duration: 500, offset: 0 })
       },
       toggleSearchInput() {
         this.searchIsOpen = !this.searchIsOpen;
