@@ -35,7 +35,7 @@
 
     head() {
       return {
-        title: 'Portfolio'
+        title: 'Portfolio',
       }
     }
   }

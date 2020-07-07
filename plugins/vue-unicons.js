@@ -3,6 +3,7 @@ import Unicon from 'vue-unicons';
 import {
   uniAngleLeft,
   uniAngleRight,
+  uniAngleUp,
   uniCheckCircle,
   uniEnvelopeAlt,
   uniExpandArrowsAlt,
@@ -17,6 +18,7 @@ import {
 Unicon.add([
   uniAngleLeft,
   uniAngleRight,
+  uniAngleUp,
   uniCheckCircle,
   uniEnvelopeAlt,
   uniExpandArrowsAlt,

@@ -58,7 +58,7 @@
 
     computed: {
       imageSrc() {
-        return this.item.src.formats.small.url;
+        return this.item.src[0].formats.small.url;
       },
       price() {
         return numeral(this.item.price).format('$0,0.00');
