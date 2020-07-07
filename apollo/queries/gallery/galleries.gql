@@ -4,9 +4,10 @@ query Galleries {
     name
     slug
 
-    cover_image {
+    source {
       id
-      url
+      title
+      public_id
     }
 
     images {
@@ -18,10 +19,10 @@ query Galleries {
       date_taken
       price
 
-      src {
-        formats
-        height
-        width
+      sources {
+        id
+        title
+        public_id
       }
 
       gallery {

@@ -10,39 +10,43 @@
         fluid
         class="px-5">
         <v-row
-          align="center"
+          align="start"
           justify="center">
           <v-col
             sm="12"
             md="6"
             class="image-container">
             <v-carousel
+              height="auto"
               continuous
               hide-delimiters
               show-arrows-on-hover>
               <v-carousel-item
-                v-for="(img, i) in image.src"
-                :key="i">
-                <v-img
-                  :src="img.formats.medium.url"
+                v-for="(img, i) in image"
+                :key="i"
+                @click.stop="openModal"
+                @contextmenu.prevent>
+                <v-btn
+                  class="expand-btn"
+                  icon
+                  :ripple="false"
+                  @click.stop="openModal">
+                  <icon
+                    name="expand-arrows-alt"
+                    fill="#fff"
+                    height="20px"
+                    width="20px" />
+                </v-btn>
+                <cld-image
+                  class="pointer"
+                  :public-id="imageSrc"
+                  responsive="width"
                   :alt="image.name"
                   max-width="800px"
                   height="auto"
-                  class="pointer"
-                  @click.stop="openModal"
-                  @contextmenu.prevent>
-                  <v-btn
-                    class="expand-btn"
-                    icon
-                    :ripple="false"
-                    @click.stop="openModal">
-                    <icon
-                      name="expand-arrows-alt"
-                      fill="#fff"
-                      height="20px"
-                      width="20px" />
-                  </v-btn>
-                </v-img>
+                  fetch-format="auto"
+                  quality="auto"
+                  @contextmenu.prevent />
               </v-carousel-item>
             </v-carousel>
           </v-col>
@@ -184,7 +188,7 @@
           { title: 'Title', value: this.image.name },
           { title: 'Location', value: this.image.location },
           { title: 'Taken', value: dayjs(this.image.date_taken).format('MMM DD, YYYY') },
-          { title: 'Size', value: `${this.image.src[0].width}x${this.image.src[0].height}` },
+          { title: 'Size', value: '1500x1000' },
           { title: 'Price', value: `$${this.image.price}` },
         ]
       },
@@ -215,7 +219,7 @@
         return img;
       },
       imageSrc() {
-        return this.image.src[0].formats.medium.url;
+        return this.image.sources[0].public_id;
       },
       nextSlug() {
         return this.fetchImageNavigationSlugs.next;
@@ -269,9 +273,10 @@
 
       .expand-btn {
         cursor: pointer;
-        float: right;
         opacity: 0;
         padding: 1rem;
+        position: absolute;
+        right: 0;
         transition: 0.2s all ease-in-out;
         visibility: hidden;
       }

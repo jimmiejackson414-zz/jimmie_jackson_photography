@@ -1,8 +1,15 @@
 <template>
-  <li class="item-wrapper">
-    <v-img
-      :src="imageSrc"
-      max-width="100px" />
+  <li
+    class="item-wrapper"
+    @contextmenu.prevent>
+    <cld-image
+      :public-id="item.sources[0].public_id"
+      responsive="width"
+      height="auto"
+      fetch-format="auto"
+      quality="auto"
+      width="auto"
+      @contextmenu.prevent />
     <div class="details">
       <h3 class="font-weight-bold display-1 mb-1">
         {{ item.name }}
@@ -57,9 +64,6 @@
     }),
 
     computed: {
-      imageSrc() {
-        return this.item.src[0].formats.small.url;
-      },
       price() {
         return numeral(this.item.price).format('$0,0.00');
       }

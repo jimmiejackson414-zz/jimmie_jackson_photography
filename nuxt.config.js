@@ -76,7 +76,8 @@ export default {
   plugins: [
     { src: '~/plugins/vuex-persist', mode: 'client' },
     { src: '~/plugins/vue-unicons', mode: 'client' },
-    { src: '~/plugins/masonry', mode: 'client' },
+    // { src: '~/plugins/masonry', mode: 'client' },
+    { src: '~/plugins/cloudinary', mode: 'client' },
     '~/plugins/axios',
     '~/plugins/custom-icons',
     '~/plugins/click-outside',

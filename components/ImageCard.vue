@@ -12,13 +12,7 @@
         nuxt
         :ripple="false"
         :to="imageLink">
-        <v-img
-          class="white--text d-flex align-center text-center"
-          contain
-          :src="imageSrc"
-          :alt="item.name + ' Gallery'"
-          @contextmenu.prevent>
-          <div class="overlay" />
+        <div class="overlay">
           <h3
             v-if="itemType === 'galleries'"
             class="display-3 text--white gallery-name">
@@ -34,7 +28,17 @@
               {{ btnText }}
             </v-btn>
           </div>
-        </v-img>
+        </div>
+
+        <cld-image
+          class="white--text d-flex align-center text-center"
+          :public-id="imageSrc"
+          responsive="width"
+          height="auto"
+          fetch-format="auto"
+          quality="auto"
+          width="auto"
+          @contextmenu.prevent />
       </v-card>
     </v-col>
   </client-only>
@@ -67,9 +71,9 @@
       imageSrc() {
         let src;
         if (this.itemType === 'galleries') {
-          src = this.item.cover_image.url;
+          src = this.item.source.public_id;
         } else if (this.itemType === 'images') {
-          src = this.item.src[0].formats.small.url;
+          src = this.item.sources[0].public_id;
         }
         return src;
       }
@@ -79,17 +83,18 @@
 
 <style lang="scss" scoped>
   .image-card {
-    align-items: center;
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    height: 100%;
     margin: 0 auto;
     position: relative;
 
     .overlay {
+      align-items: center;
       background-color: rgba(255, 255, 255, 0.3);
       bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       left: 0;
       opacity: 0;
       position: absolute;
@@ -100,6 +105,7 @@
     }
 
     .visit-btn, .gallery-name {
+      color: white;
       opacity: 0;
       transition: 0.2s all ease-in-out;
       visibility: hidden;

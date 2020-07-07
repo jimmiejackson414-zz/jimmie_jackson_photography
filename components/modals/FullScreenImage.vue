@@ -19,24 +19,17 @@
         hide-delimiter-background
         show-arrows-on-hover>
         <v-carousel-item
-          v-for="(img, i) in image.src"
+          v-for="(img, i) in image"
           :key="i">
-          <v-img
-            height="100%"
-            width="auto"
-            :src="img.formats.large.url"
-            @contextmenu.prevent>
-            <v-btn
-              class="close-modal float-right ma-3"
-              icon
-              @click.stop="closeModal">
-              <icon
-                name="multiply"
-                fill="#fff"
-                height="30px"
-                width="30px" />
-            </v-btn>
-          </v-img>
+          <cld-image
+            :public-id="image.sources[0].public_id"
+            responsive="width"
+            :alt="image.name"
+            max-width="800px"
+            height="auto"
+            fetch-format="auto"
+            quality="auto"
+            @contextmenu.prevent />
         </v-carousel-item>
       </v-carousel>
     </v-card>
@@ -62,9 +55,6 @@
         this.$emit('handle-close-dialog');
       },
     },
-
-    components: {
-    }
   }
 </script>
 

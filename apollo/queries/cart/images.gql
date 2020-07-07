@@ -4,8 +4,10 @@ query($ids: [ID]) {
     name
     price
     slug
-    src {
-      formats
+    sources {
+      id
+      title
+      public_id
     }
   }
 }

@@ -3,8 +3,10 @@ query Gallery($slug: String!) {
     id
     name
     slug
-    cover_image {
-      url
+    source {
+      id
+      title
+      public_id
     }
 
     images {
@@ -15,11 +17,6 @@ query Gallery($slug: String!) {
       location
       price
       date_taken
-
-      src {
-        url
-        formats
-      }
     }
   }
 }
