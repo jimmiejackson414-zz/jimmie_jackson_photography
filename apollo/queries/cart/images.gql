@@ -3,7 +3,9 @@ query($ids: [ID]) {
     id
     name
     price
+    size_description
     slug
+
     sources {
       id
       title

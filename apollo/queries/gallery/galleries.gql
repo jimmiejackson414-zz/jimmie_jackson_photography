@@ -6,23 +6,24 @@ query Galleries {
 
     source {
       id
-      title
       public_id
+      title
     }
 
     images {
       id
-      name
-      slug
+      date_taken
       description
       location
-      date_taken
+      name
       price
+      size_description
+      slug
 
       sources {
         id
-        title
         public_id
+        title
       }
 
       gallery {

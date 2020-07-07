@@ -3,20 +3,22 @@ query Gallery($slug: String!) {
     id
     name
     slug
+
     source {
       id
-      title
       public_id
+      title
     }
 
     images {
       id
-      name
-      slug
+      date_taken
       description
       location
+      name
       price
-      date_taken
+      size_description
+      slug
     }
   }
 }

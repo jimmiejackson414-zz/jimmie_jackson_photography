@@ -188,7 +188,7 @@
           { title: 'Title', value: this.image.name },
           { title: 'Location', value: this.image.location },
           { title: 'Taken', value: dayjs(this.image.date_taken).format('MMM DD, YYYY') },
-          { title: 'Size', value: '1500x1000' },
+          { title: 'Size', value: this.image.size_description },
           { title: 'Price', value: `$${this.image.price}` },
         ]
       },
