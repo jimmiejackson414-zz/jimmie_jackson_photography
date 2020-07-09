@@ -52,8 +52,8 @@ export default {
       { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
       { rel: 'manifest', href: '/site.webmanifest' },
       { rel: 'canonical', href: 'https://www.jimmiejacksonphotography.com' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700;800&display=swap' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800;900&display=swap' }
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&display=swap' }
     ]
   },
   /*
@@ -76,7 +76,6 @@ export default {
   plugins: [
     { src: '~/plugins/vuex-persist', mode: 'client' },
     { src: '~/plugins/vue-unicons', mode: 'client' },
-    // { src: '~/plugins/masonry', mode: 'client' },
     { src: '~/plugins/cloudinary', mode: 'client' },
     '~/plugins/axios',
     '~/plugins/custom-icons',
@@ -97,9 +96,7 @@ export default {
    ** Nuxt.js modules
    */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
     '@nuxtjs/apollo'
   ],

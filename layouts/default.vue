@@ -45,7 +45,7 @@
             </template>
           </v-text-field>
         </transition>
-        <!-- <transition
+        <transition
           name="fade"
           mode="out-in">
           <v-btn
@@ -74,7 +74,7 @@
               height="20px"
               width="20px" />
           </v-btn>
-        </transition> -->
+        </transition>
         <v-tabs
           class="hidden-sm-and-down"
           :style="{ width: 'auto' }"
@@ -112,8 +112,7 @@
     <home-drawer
       v-model="drawer"
       :items="items"
-      :cart-items="cartItems"
-      @handle-search="performSearch" />
+      :cart-items="cartItems" />
 
     <v-main>
       <transition

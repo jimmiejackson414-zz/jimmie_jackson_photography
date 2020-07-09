@@ -147,7 +147,7 @@
           }
 
           a {
-            font-family: 'Exo 2', serif !important;
+            font-family: 'Comfortaa', serif !important;
             font-weight: 500;
           }
         }

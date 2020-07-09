@@ -124,6 +124,7 @@
 
     .page-title {
       flex-grow: 1;
+      font-family: 'Comfortaa', sans-serif !important;
       font-weight: 400;
     }
   }

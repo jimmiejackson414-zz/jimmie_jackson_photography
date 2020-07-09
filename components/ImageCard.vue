@@ -15,7 +15,7 @@
         <div class="overlay">
           <h3
             v-if="itemType === 'galleries'"
-            class="display-3 text--white gallery-name">
+            class="display-2 text--white gallery-name">
             {{ item.name }}
           </h3>
           <div class="btn-wrapper">
@@ -112,10 +112,13 @@
     }
 
     .gallery-name {
-      font-family: 'Exo 2', serif !important;
+      font-family: 'Avenir Next', serif !important;
       font-weight: 500;
+      line-height: 1.1;
       margin-bottom: 1rem;
-      text-shadow: 1px 1px 1px rgba(0, 0, 0, .9);
+      text-align: center;
+      text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+      text-transform: uppercase;
     }
 
     &:hover {
