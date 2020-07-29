@@ -1,0 +1,11 @@
+query Gears {
+  gears(sort: "id:asc") {
+    id
+    name
+    gear_items {
+      id
+      name
+      url
+    }
+  }
+}

@@ -23,7 +23,6 @@
       <h1 class="display-3 text-center page-title">
         {{ text }}
       </h1>
-      <div class="empty" />
     </div>
     <v-row
       v-if="downloadPage"

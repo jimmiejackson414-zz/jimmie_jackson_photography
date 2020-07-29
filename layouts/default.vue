@@ -99,6 +99,34 @@
               overlap>
               {{ item.title }}
             </v-badge>
+            <v-menu
+              v-else-if="item.hasMenu"
+              close-on-click
+              open-on-hover
+              bottom
+              transition="slide-y-transition"
+              nudge-bottom
+              offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <span
+                  v-bind="attrs"
+                  v-on="on">
+                  {{ item.title }}
+                </span>
+              </template>
+              <v-list
+                elevation="1">
+                <v-list-item
+                  v-for="(menuItem, index) in item.menuItems"
+                  :key="index">
+                  <nuxt-link
+                    :to="menuItem.to"
+                    class="body-1 font-weight-medium">
+                    {{ menuItem.title }}
+                  </nuxt-link>
+                </v-list-item>
+              </v-list>
+            </v-menu>
             <span v-else>{{ item.title }}</span>
           </v-tab>
         </v-tabs>
@@ -200,10 +228,10 @@
     data: () => ({
       drawer: null,
       items: [
-        {title: 'Portfolio', to: '/portfolio', badge: false},
-        {title: 'About', to: '/about', badge: false},
-        {title: 'Contact', to: '/contact', badge: false},
-        {title: 'Cart', to: '/cart', badge: true}
+        { title: 'Portfolio', to: '/portfolio', badge: false, hasMenu: false },
+        { title: 'About', to: '/about', badge: false, hasMenu: true, menuItems: [{ title: 'Gear', to: '/gear' }, { title: 'Blog', to: '/blog' }] },
+        { title: 'Contact', to: '/contact', badge: false, hasMenu: false },
+        { title: 'Cart', to: '/cart', badge: true, hasMenu: false }
       ],
       offsetTop: 0,
       searchIsOpen: false,
@@ -226,7 +254,7 @@
         return new Promise(resolve => setTimeout(resolve, t));
       },
       onScroll() {
-        this.offsetTop = window.pageYOffset || document.documentElementt.scrollTop;
+        this.offsetTop = window.pageYOffset || document.documentElement.scrollTop;
       },
       performSearch() {
         this.setQuery(this.searchTerm);
@@ -379,6 +407,14 @@
         color: rgba(0, 0, 0, 0.54);
         font-size: 1rem;
         letter-spacing: 2px;
+      }
+    }
+  }
+
+  .v-menu__content {
+    .v-list-item {
+      a {
+        color: #4a4a4a;
       }
     }
   }

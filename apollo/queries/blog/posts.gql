@@ -1,0 +1,10 @@
+query Posts {
+  posts(sort: "published_at:desc") {
+    id
+    title
+    content
+    slug
+    created_at
+    updated_at
+  }
+}

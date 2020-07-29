@@ -2,13 +2,19 @@
   <li
     class="item-wrapper"
     @contextmenu.prevent>
-    <cld-image
-      :public-id="item.sources[0].public_id"
-      responsive="width"
-      height="auto"
-      fetch-format="auto"
-      quality="auto"
-      width="auto"
+    <i-k-image
+      :public-key="publicKey"
+      :url-endpoint="urlEndpoint"
+      :src="item.sources[0].public_id"
+      sizes="100vw"
+      :lqip="{ active: true, threshold: 10 }"
+      :transformation="[
+        { progressive: true },
+        { cm: 'maintain_ratio' },
+        { width: '100' },
+        { f: 'auto' },
+        { dpr: 'auto' }
+      ]"
       @contextmenu.prevent />
     <div class="details">
       <h3 class="font-weight-bold display-1 mb-1">
@@ -50,8 +56,12 @@
 <script>
   import { mapMutations } from 'vuex';
   import numeral from 'numeral';
+  import { IKImage } from 'imagekitio-vue';
+  import { imageKitProps } from '~/mixins';
 
   export default {
+    mixins: [imageKitProps],
+
     props: {
       item: {
         type: Object,
@@ -66,7 +76,7 @@
     computed: {
       price() {
         return numeral(this.item.price).format('$0,0.00');
-      }
+      },
     },
 
     methods: {
@@ -74,6 +84,10 @@
       remove() {
         this.removeFromCart(this.item);
       }
+    },
+
+    components: {
+      IKImage,
     }
   }
 </script>
