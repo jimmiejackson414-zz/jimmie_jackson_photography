@@ -3,6 +3,7 @@
   <v-container class="pt-5">
     <page-title
       :text="articleTitle"
+      :subtitle="publishDate"
       back-slug="/blog" />
     <v-row
       align="start"
@@ -21,6 +22,7 @@
 </template>
 
 <script>
+  import dayjs from 'dayjs';
   import postQuery from '~/apollo/queries/blog/post';
   import PageTitle from '~/components/PageTitle';
   import MailchimpForm from '~/components/MailchimpForm';
@@ -42,7 +44,10 @@
 
     computed: {
       articleTitle() {
-        return 'Test';
+        return this.post ? this.post.title : '';
+      },
+      publishDate() {
+        return this.post ? `Published ${dayjs(this.post.published_at).format('MMM DD, YYYY')}` : '';
       }
     },
 

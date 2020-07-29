@@ -16,6 +16,9 @@
             class="display-2 post-title">
             {{ post.title }}
           </nuxt-link>
+          <p class="subtitle-1 font-italic">
+            Published {{ publishDate(post.published_at) }}
+          </p>
           <p class="body-1">
             {{ truncateContent(post.content ) }}
             <nuxt-link
@@ -32,6 +35,7 @@
 </template>
 
 <script>
+  import dayjs from 'dayjs';
   import postsQuery from '~/apollo/queries/blog/posts';
   import PageTitle from '~/components/PageTitle';
   import { truncate } from '~/helpers/functions';
@@ -48,6 +52,9 @@
     },
 
     methods: {
+      publishDate(date) {
+        return dayjs(date).format('MMM DD, YYYY');
+      },
       truncateContent(content) {
         return truncate(content);
       }

@@ -24,6 +24,14 @@
         {{ text }}
       </h1>
     </div>
+    <v-row justify="center">
+      <p
+        v-if="subtitle"
+        class="body-1 mb-0 font-italic">
+        {{ subtitle }}
+      </p>
+    </v-row>
+
     <v-row
       v-if="downloadPage"
       align="start"
@@ -75,6 +83,10 @@
       text: {
         type: String,
         default: 'Page'
+      },
+      subtitle: {
+        type: String,
+        default: '',
       }
     },
 
@@ -90,10 +102,10 @@
   @import '~/css/breakpoints';
 
   .page-title-wrapper {
+    align-items: center;
     display: flex;
     flex-direction: column;
     margin-bottom: 2rem;
-    /* margin-top: 4rem; */
 
     @include breakpoint(desktop) {
       flex-direction: row;
