@@ -16,6 +16,16 @@
           class="body-1 post-wrapper"
           v-html="$md.render(post.content)" />
         <mailchimp-form />
+        <div class="fb-wrapper text-center">
+          <client-only>
+            <div id="fb-root" />
+            <div
+              class="fb-comments"
+              :data-href="`https://www.jimmiejacksonphotography.com/blog/${postSlug}`"
+              data-numposts="5"
+              data-width="" />
+          </client-only>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -46,6 +56,9 @@
       articleTitle() {
         return this.post ? this.post.title : '';
       },
+      postSlug() {
+        return this.post ? this.post.slug : '';
+      },
       publishDate() {
         return this.post ? `Published ${dayjs(this.post.published_at).format('MMM DD, YYYY')}` : '';
       }
@@ -58,7 +71,10 @@
 
     head() {
       return {
-        title: ''
+        title: this.post ? this.post.title : '',
+        script: [
+          { src: 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0&appId=1426336677753774&autoLogAppEvents=1', async: true, defer: true, crossorigin: 'anonymous', nonce: 'tvz4i7de'}
+        ]
       }
     }
   }
@@ -69,5 +85,9 @@
     img {
       width: 100%;
     }
+  }
+
+  .fb-wrapper {
+    margin-top: 4rem;
   }
 </style>

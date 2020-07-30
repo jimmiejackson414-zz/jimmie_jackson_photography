@@ -13,7 +13,7 @@
         <p class="body-1">
           Below you'll find a list of the gear I currently use split up by category.
         </p>
-        <p class="subtitle">
+        <p class="subtitle-1">
           *Please be aware that these are affiliate links, and by purchasing products through these links I will be compensated by the affiliate provider at no additional cost to you. This helps me to continue doing what I love!
         </p>
       </v-col>

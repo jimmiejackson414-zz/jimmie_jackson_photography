@@ -3,6 +3,7 @@ query Post($slug: String!) {
     id
     title
     content
+    slug
     updated_at
     created_at
     published_at
