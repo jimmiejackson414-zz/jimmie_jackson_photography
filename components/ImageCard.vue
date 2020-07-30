@@ -30,14 +30,15 @@
           </div>
         </div>
 
-        <cld-image
-          class="white--text d-flex align-center text-center"
-          :public-id="imageSrc"
-          responsive="width"
-          height="auto"
-          fetch-format="auto"
-          quality="auto"
-          width="auto"
+        <i-k-image
+          :public-key="publicKey"
+          :url-endpoint="urlEndpoint"
+          :src="imageSrc"
+          :transformation="[
+            { progressive: true },
+            { cropMode: 'maintain_ratio' },
+            { width: '1000'}
+          ]"
           @contextmenu.prevent />
       </v-card>
     </v-col>
@@ -45,7 +46,12 @@
 </template>
 
 <script>
+  import { IKImage } from "imagekitio-vue";
+  import { imageKitProps } from '~/mixins';
+
   export default {
+    mixins: [imageKitProps],
+
     props: {
       btnText: {
         type: String,
@@ -76,13 +82,19 @@
           src = this.item.sources[0].public_id;
         }
         return src;
-      }
+      },
+    },
+
+    components: {
+      IKImage,
     }
   }
 </script>
 
 <style lang="scss" scoped>
   .image-card {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
     cursor: pointer;
     height: 100%;
     margin: 0 auto;

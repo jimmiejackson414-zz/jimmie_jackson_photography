@@ -37,16 +37,23 @@
                     height="20px"
                     width="20px" />
                 </v-btn>
-                <cld-image
-                  class="pointer"
-                  :public-id="imageSrc"
-                  responsive="width"
-                  :alt="image.name"
-                  max-width="800px"
-                  height="auto"
-                  fetch-format="auto"
-                  quality="auto"
-                  @contextmenu.prevent />
+                <client-only>
+                  <i-k-image
+                    class="pointer"
+                    :public-key="publicKey"
+                    :url-endpoint="urlEndpoint"
+                    :src="imageSrc"
+                    sizes="100vw"
+                    :lqip="{ active: true, threshold: 10 }"
+                    :transformation="[
+                      { progressive: true },
+                      { cm: 'maintain_ratio' },
+                      { width: '1000' },
+                      { f: 'auto' },
+                      { dpr: 'auto' }
+                    ]"
+                    @contextmenu.prevent />
+                </client-only>
               </v-carousel-item>
             </v-carousel>
           </v-col>
@@ -142,6 +149,7 @@
           <v-btn
             icon
             color="success"
+            :ripple="false"
             v-bind="attrs"
             @click="snackbar = false">
             <icon
@@ -162,17 +170,18 @@
 
 <script>
   import { mapMutations } from 'vuex';
+  import { IKImage } from 'imagekitio-vue';
   import dayjs from 'dayjs';
   import FullScreenImage from '~/components/modals/FullScreenImage';
   import PageTitle from '~/components/PageTitle';
-  import fetchGalleries from '~/mixins/fetchGalleries';
+  import { imageKitProps, fetchGalleries } from '~/mixins';
 
   export default {
     name: 'ImageSlug',
 
     transition: 'page-fade',
 
-    mixins: [fetchGalleries],
+    mixins: [imageKitProps, fetchGalleries],
 
     data: () => ({
       isModalOpen: false,
@@ -221,14 +230,14 @@
       imageSrc() {
         return this.image.sources[0].public_id;
       },
-      nextSlug() {
-        return this.fetchImageNavigationSlugs.next;
-      },
       pageTitle() {
         return this.image.name;
       },
       prevSlug() {
         return this.fetchImageNavigationSlugs.previous;
+      },
+      nextSlug() {
+        return this.fetchImageNavigationSlugs.next;
       },
     },
 
@@ -253,6 +262,7 @@
 
     components: {
       FullScreenImage,
+      IKImage,
       PageTitle,
     },
 

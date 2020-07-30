@@ -1,0 +1,12 @@
+query Posts {
+  posts(sort: "published_at:desc", where: { published: true }) {
+    id
+    title
+    content
+    slug
+    published
+    created_at
+    updated_at
+    published_at
+  }
+}

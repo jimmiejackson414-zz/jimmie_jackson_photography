@@ -38,7 +38,7 @@ $headings: (
   ),
 
   'subtitle-1': (
-    // 'size': 1.6rem,
+    'size': 1.2rem,
     'color': #4a4a4a,
     'letter-spacing': 1px
   ),
@@ -89,5 +89,7 @@ $btn-hover-opacity: 0.1 !default;
 
 $list-item-dense-title-font-size: 1.4rem;
 $list-item-title-font-size: 1.4rem;
+
+$menu-content-elevation: 2;
 
 @import '~vuetify/src/styles/styles.sass';

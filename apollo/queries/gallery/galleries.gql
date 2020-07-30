@@ -10,7 +10,7 @@ query Galleries {
       title
     }
 
-    images {
+    images(sort: "created_at:desc") {
       id
       date_taken
       description

@@ -19,16 +19,21 @@
         hide-delimiter-background
         show-arrows-on-hover>
         <v-carousel-item
-          v-for="(img, i) in image"
+          v-for="(img, i) in image.sources"
           :key="i">
-          <cld-image
-            :public-id="image.sources[0].public_id"
-            responsive="width"
-            :alt="image.name"
-            max-width="800px"
-            height="auto"
-            fetch-format="auto"
-            quality="auto"
+          <i-k-image
+            :public-key="publicKey"
+            :url-endpoint="urlEndpoint"
+            :src="img.public_id"
+            sizes="100vw"
+            :lqip="{ active: true, threshold: 10 }"
+            :transformation="[
+              { progressive: true },
+              { cropMode: 'maintain_ratio' },
+              { width: '1500' },
+              { f: 'auto' },
+              { dpr: 'auto' },
+            ]"
             @contextmenu.prevent />
         </v-carousel-item>
       </v-carousel>
@@ -37,8 +42,12 @@
 </template>
 
 <script>
+  import { IKImage } from 'imagekitio-vue';
+  import { imageKitProps } from '~/mixins';
 
   export default {
+    mixins: [imageKitProps],
+
     props: {
       image: {
         type: Object,
@@ -55,6 +64,10 @@
         this.$emit('handle-close-dialog');
       },
     },
+
+    components: {
+      IKImage,
+    }
   }
 </script>
 
@@ -73,6 +86,9 @@
         pointer-events: none;
       }
     }
+  }
 
+  .ik-image {
+    height: 100%;
   }
 </style>
