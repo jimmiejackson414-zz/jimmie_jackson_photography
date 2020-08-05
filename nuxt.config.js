@@ -1,4 +1,4 @@
-import dynamicRoutes from './services/generateDynamicRoutes';
+// import dynamicRoutes from './services/generateDynamicRoutes';
 
 require('dotenv').config();
 
@@ -166,9 +166,9 @@ export default {
   /*
   ** Register dynamic routes
   */
-  generate: {
-    routes: dynamicRoutes,
-  },
+  // generate: {
+  //   routes: dynamicRoutes,
+  // },
 
   /*
    ** Build configuration
