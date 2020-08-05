@@ -16,6 +16,9 @@ const dynamicRoutes = async () => {
   // fetch images slugs
   const resForImages = await instance.get('/images');
 
+  // fetch blog posts
+  const resForPosts = await instance.get('/posts');
+
   const routesForGalleries = resForGalleries.data.map(gallery => {
     return {
       route: `/galleries/${gallery.slug}`,
@@ -30,7 +33,14 @@ const dynamicRoutes = async () => {
     };
   });
 
-  return [...routesForGalleries, ...routesForImages];
+  const routesForPosts = resForPosts.data.map(post => {
+    return {
+      route: `/blog/${post.slug}`,
+      payload: post,
+    };
+  });
+
+  return [...routesForGalleries, ...routesForImages, ...routesForPosts];
 };
 
 export default dynamicRoutes;
