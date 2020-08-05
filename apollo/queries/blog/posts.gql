@@ -5,8 +5,8 @@ query Posts {
     content
     slug
     published
-    created_at
-    updated_at
+    createdAt
+    updatedAt
     published_at
   }
 }
