@@ -1,0 +1,12 @@
+query($searchQuery: String) {
+  images(where: { name_contains: $searchQuery }) {
+    id
+    name
+    slug
+    sources {
+      id
+      public_id
+      title
+    }
+  }
+}

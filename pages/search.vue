@@ -16,8 +16,8 @@
         </v-row>
         <v-row v-else-if="results.length && !loading">
           <image-card
-            v-for="result in results"
-            :key="result.id"
+            v-for="(result, index) in results"
+            :key="index"
             :item="result"
             btn-text="View"
             item-type="images" />
@@ -37,7 +37,8 @@
 
 <script>
   import { mapState } from 'vuex';
-  import query from '~/apollo/queries/search/search';
+  import searchImages from '~/apollo/queries/search/searchImages';
+  import searchTags from '~/apollo/queries/search/searchTags';
   import ImageCard from '~/components/ImageCard';
   import PageTitle from '~/components/PageTitle';
   import Spinner from '~/components/Spinner';
@@ -62,18 +63,24 @@
 
     methods: {
       async performSearch() {
-        this.$apollo.query({
-          query,
+
+        const { data: { images: tagsData }} = await this.$apollo.query({
+          query: searchTags,
           variables: {
             searchQuery: this.query,
           }
-        })
-          .then(({ data: { images } }) => {
-            if (images && images.length) this.results = images;
-            else this.error = 'No results were found. Please try again.';
-          })
-          .catch(err => console.error(err))
-          .then(() => this.loading = false);
+        });
+
+        const { data: { images: imagesData }} = await this.$apollo.query({
+          query: searchImages,
+          variables: {
+            searchQuery: this.query,
+          }
+        });
+
+        if (!tagsData.length && !imagesData.length) this.error = 'No results were found. Please try again.';
+        else this.results = [...tagsData, ...imagesData];
+        this.loading = false;
       }
     },
 

@@ -1,25 +1,29 @@
 query Galleries {
   galleries {
     id
-    name
+    title
     slug
 
-    cover_image {
+    source {
       id
-      url
+      public_id
+      title
     }
 
-    images {
+    images(sort: "created_at:desc") {
       id
-      name
-      slug
+      date_taken
       description
       location
-      date_taken
+      title
       price
+      size_description
+      slug
 
-      src {
-        formats
+      sources {
+        id
+        public_id
+        title
       }
 
       gallery {

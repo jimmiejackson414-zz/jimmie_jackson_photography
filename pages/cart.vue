@@ -15,9 +15,9 @@
               v-model="valid"
               @submit.stop.prevent="handleSubmit">
               <div class="personal-details">
-                <p class="display-1 section-title">
+                <h3 class="display-1 section-title">
                   Personal Details
-                </p>
+                </h3>
                 <!-- Email -->
                 <v-text-field
                   v-model="email"
@@ -57,9 +57,9 @@
               </div>
 
               <div class="payment-details">
-                <p class="display-1 section-title">
+                <h3 class="display-1 section-title">
                   Payment Details
-                </p>
+                </h3>
 
                 <!-- Coupon -->
                 <p
@@ -139,9 +139,9 @@
         cols="12"
         md="7">
         <div class="order-details-wrapper">
-          <p class="display-1 section-title">
+          <h3 class="display-1 section-title">
             Order Details
-          </p>
+          </h3>
           <client-only>
             <span v-if="!$apollo.loading && hasCartItems">
               <transition-group
@@ -343,7 +343,10 @@
             callback: () => { this.isStripeLoaded = true }
           }
         ],
-        title: 'Cart'
+        title: 'Cart',
+        meta: [
+          { hid: 'robots', name: 'robots', content: 'noindex, nofollow' }
+        ]
       }
     }
   }
@@ -364,6 +367,7 @@
 
       .section-title {
         border-bottom: 1px solid $light-grey;
+        margin-bottom: 1.6rem;
       }
 
       .payment-personals-wrapper {

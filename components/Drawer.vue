@@ -13,8 +13,9 @@
     <v-list
       color="white"
       shaped>
-      <!-- <v-list-item>
+      <v-list-item>
         <v-text-field
+          v-model="query"
           label="Search"
           outlined
           clearable
@@ -37,7 +38,7 @@
             </v-btn>
           </template>
         </v-text-field>
-      </v-list-item> -->
+      </v-list-item>
       <v-list-item
         v-for="item in items"
         :key="item.title"
@@ -67,6 +68,8 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex';
+
   export default {
     name: 'HomeDrawer',
 
@@ -81,9 +84,18 @@
       },
     },
 
+    data: () => ({
+      query: '',
+    }),
+
     methods: {
+      ...mapActions('search', ['setQuery']),
       performSearch() {
-        this.$emit('handle-search');
+        this.setQuery(this.query);
+
+        // have to refresh page if user is already on search page
+        if (this.$router.currentRoute.name === 'search') this.$router.go();
+        else this.$router.push({ name: 'search' });
       },
     },
   }

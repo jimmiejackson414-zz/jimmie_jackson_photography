@@ -2,7 +2,7 @@
   <v-container class="pt-5">
     <page-title text="About Me" />
     <v-row
-      align="center"
+      align="start"
       justify="center">
       <v-col
         cols="12"
@@ -19,9 +19,9 @@
         md="6"
         lg="4"
         class="d-flex flex-column">
-        <p class="display-1 font-weight-bold">
+        <h3 class="display-1 font-weight-bold">
           My first camera was an iPhone.
-        </p>
+        </h3>
         <p class="body-1">
           I know, I wish I had a cool story about how I used an old film camera as a kid, and knew that I wanted to be a photographer since I was born.
         </p>

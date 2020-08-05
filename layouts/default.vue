@@ -1,5 +1,7 @@
 <template>
   <v-app
+    id="app"
+    v-scroll="onScroll"
     light>
     <v-app-bar
       id="home-app-bar"
@@ -43,7 +45,7 @@
             </template>
           </v-text-field>
         </transition>
-        <!-- <transition
+        <transition
           name="fade"
           mode="out-in">
           <v-btn
@@ -72,7 +74,7 @@
               height="20px"
               width="20px" />
           </v-btn>
-        </transition> -->
+        </transition>
         <v-tabs
           class="hidden-sm-and-down"
           :style="{ width: 'auto' }"
@@ -97,6 +99,34 @@
               overlap>
               {{ item.title }}
             </v-badge>
+            <v-menu
+              v-else-if="item.hasMenu"
+              close-on-click
+              open-on-hover
+              bottom
+              transition="slide-y-transition"
+              nudge-bottom
+              offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <span
+                  v-bind="attrs"
+                  v-on="on">
+                  {{ item.title }}
+                </span>
+              </template>
+              <v-list
+                elevation="1">
+                <v-list-item
+                  v-for="(menuItem, index) in item.menuItems"
+                  :key="index">
+                  <nuxt-link
+                    :to="menuItem.to"
+                    class="body-1 font-weight-medium">
+                    {{ menuItem.title }}
+                  </nuxt-link>
+                </v-list-item>
+              </v-list>
+            </v-menu>
             <span v-else>{{ item.title }}</span>
           </v-tab>
         </v-tabs>
@@ -110,8 +140,7 @@
     <home-drawer
       v-model="drawer"
       :items="items"
-      :cart-items="cartItems"
-      @handle-search="performSearch" />
+      :cart-items="cartItems" />
 
     <v-main>
       <transition
@@ -168,6 +197,25 @@
       <span
         class="subtitle-2 grey--text text--darken-3">&copy; {{ new Date().getFullYear() }} Jimmie Jackson Photography</span>
     </v-footer>
+
+    <v-fab-transition>
+      <v-btn
+        v-show="showScrollBtn"
+        color="#4a4a4a"
+        dark
+        fab
+        fixed
+        bottom
+        right
+        :ripple="false"
+        @click="scrollToTop">
+        <icon
+          name="angle-up"
+          fill="white"
+          height="40px"
+          width="40px" />
+      </v-btn>
+    </v-fab-transition>
   </v-app>
 </template>
 
@@ -180,11 +228,12 @@
     data: () => ({
       drawer: null,
       items: [
-        {title: 'Portfolio', to: '/portfolio', badge: false},
-        {title: 'About', to: '/about', badge: false},
-        {title: 'Contact', to: '/contact', badge: false},
-        {title: 'Cart', to: '/cart', badge: true}
+        { title: 'Portfolio', to: '/portfolio', badge: false, hasMenu: false },
+        { title: 'About', to: '/about', badge: false, hasMenu: true, menuItems: [{ title: 'Gear', to: '/gear' }] },
+        { title: 'Contact', to: '/contact', badge: false, hasMenu: false },
+        { title: 'Cart', to: '/cart', badge: true, hasMenu: false }
       ],
+      offsetTop: 0,
       searchIsOpen: false,
       searchTerm: null,
     }),
@@ -194,12 +243,18 @@
       hasCartItems() {
         return this.cartItems > 0;
       },
+      showScrollBtn() {
+        return this.offsetTop > 60;
+      }
     },
 
     methods: {
       ...mapActions('search', ['setQuery']),
       delay(t) {
         return new Promise(resolve => setTimeout(resolve, t));
+      },
+      onScroll() {
+        this.offsetTop = window.pageYOffset || document.documentElement.scrollTop;
       },
       performSearch() {
         this.setQuery(this.searchTerm);
@@ -208,6 +263,9 @@
         // have to refresh page if user is already on search page
         if (this.$router.currentRoute.name === 'search') this.$router.go()
         else this.$router.push({ name: 'search' });
+      },
+      scrollToTop() {
+        this.$vuetify.goTo('#app', { duration: 500, offset: 0 })
       },
       toggleSearchInput() {
         this.searchIsOpen = !this.searchIsOpen;
@@ -349,6 +407,14 @@
         color: rgba(0, 0, 0, 0.54);
         font-size: 1rem;
         letter-spacing: 2px;
+      }
+    }
+  }
+
+  .v-menu__content {
+    .v-list-item {
+      a {
+        color: #4a4a4a;
       }
     }
   }

@@ -1,12 +1,25 @@
 <template>
-  <li class="item-wrapper">
-    <v-img
-      :src="imageSrc"
-      max-width="100px" />
+  <li
+    class="item-wrapper"
+    @contextmenu.prevent>
+    <i-k-image
+      :public-key="publicKey"
+      :url-endpoint="urlEndpoint"
+      :src="item.sources[0].public_id"
+      sizes="100vw"
+      :lqip="{ active: true, threshold: 10 }"
+      :transformation="[
+        { progressive: true },
+        { cm: 'maintain_ratio' },
+        { width: '100' },
+        { f: 'auto' },
+        { dpr: 'auto' }
+      ]"
+      @contextmenu.prevent />
     <div class="details">
-      <p class="font-weight-bold display-1 mb-1">
+      <h3 class="font-weight-bold display-1 mb-1">
         {{ item.name }}
-      </p>
+      </h3>
     </div>
     <div class="quantity">
       <v-text-field
@@ -43,8 +56,12 @@
 <script>
   import { mapMutations } from 'vuex';
   import numeral from 'numeral';
+  import { IKImage } from 'imagekitio-vue';
+  import { imageKitProps } from '~/mixins';
 
   export default {
+    mixins: [imageKitProps],
+
     props: {
       item: {
         type: Object,
@@ -57,12 +74,9 @@
     }),
 
     computed: {
-      imageSrc() {
-        return this.item.src.formats.small.url;
-      },
       price() {
         return numeral(this.item.price).format('$0,0.00');
-      }
+      },
     },
 
     methods: {
@@ -70,6 +84,10 @@
       remove() {
         this.removeFromCart(this.item);
       }
+    },
+
+    components: {
+      IKImage,
     }
   }
 </script>

@@ -3,21 +3,17 @@ import dynamicRoutes from './services/generateDynamicRoutes';
 require('dotenv').config();
 
 export default {
-  mode: 'universal',
+  target: 'static',
+
   env: {
     BASE_URL: process.env.BASE_URL,
     STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     LOGROCKET_APP_ID: process.env.LOGROCKET_APP_ID,
-    CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
-    CLOUDINARY_KEY: process.env.CLOUDINARY_KEY,
-    CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET,
     STRAPI_BACKEND_URL: process.env.STRAPI_BACKEND_URL,
     STRAPI_BACKEND_BASE: process.env.STRAPI_BACKEND_BASE,
   },
-  /*
-   ** Headers of the page
-   */
+
   head: {
     htmlAttrs: {
       lang: 'en',
@@ -27,20 +23,37 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui' },
+      { hid: 'robots', name: 'robots', content: 'index, follow' },
       {
         hid: 'description',
         name: 'description',
         content: 'Jimmie Jackson Photography - Seattle Based Landscape and Travel Photographer'
-      }
+      },
+      { 'http-equiv': 'Accept-CH', content: 'DPR, Viewport-Width, Width' },
+
+      // OG Tags
+      { hid: 'og:title', property: 'og:title', content: 'Jimmie Jackson Photography' },
+      { hid: 'og:description', property: 'og:description', content: 'Jimmie Jackson Photography - Seattle Based Landscape and Travel Photographer' },
+      { hid: 'og:image', property: 'og:image', content: '/JJP_Logo_Black_V2.png' },
+      { hid: 'og:url', property: 'og:url', content: 'https://www.jimmiejacksonphotography.com' },
+      { hid: 'og:site_name', property: 'og:site_name', content: 'Jimmie Jackson Photography' },
+
+      // Twitter OG tags
+      { hid: 'twitter:title', property: 'twitter:title', content: 'Jimmie Jackson Photography' },
+      { hid: 'twitter:description', property: 'twitter:description', content: 'Jimmie Jackson Photography - Seattle Based Landscape and Travel Photographer' },
+      { hid: 'twitter:image', property: 'twitter:image', content: '/JJP_Logo_Black_V2.png' },
     ],
     link: [
       { rel: 'apple-touch-icon', sizes: "180x180", href: '/apple-touch-icon.png' },
       { rel: 'icon', type: 'image/png', sizes: "32x32", href: '/favicon-32x32.png' },
       { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
       { rel: 'manifest', href: '/site.webmanifest' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700;800&display=swap' }
+      { rel: 'canonical', href: 'https://www.jimmiejacksonphotography.com' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&display=swap' }
     ]
   },
+
   /*
    ** Customize the progress-bar color
    */
@@ -48,12 +61,14 @@ export default {
     color: '#0077be',
     height: '3px'
   },
+
   /*
    ** Global CSS
    */
   css: [
     '~/css/global.scss'
   ],
+
   /*
    ** Plugins to load before mounting the App
    ** Icons can be found at https://antonreshetov.github.io/vue-unicons/
@@ -61,11 +76,11 @@ export default {
   plugins: [
     { src: '~/plugins/vuex-persist', mode: 'client' },
     { src: '~/plugins/vue-unicons', mode: 'client' },
-    { src: '~/plugins/masonry', mode: 'client' },
     '~/plugins/axios',
     '~/plugins/custom-icons',
     '~/plugins/click-outside',
   ],
+
   /*
    ** Nuxt.js dev-modules
    */
@@ -77,16 +92,17 @@ export default {
       id: 'UA-65927635-1',
     }]
   ],
+
   /*
    ** Nuxt.js modules
    */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
-    '@nuxtjs/apollo'
+    '@nuxtjs/apollo',
+    '@nuxtjs/markdownit'
   ],
+
   /*
   ** Apollo module configuration
   */
@@ -97,6 +113,17 @@ export default {
       }
     }
   },
+
+  /*
+  ** Markdownit module configuration
+  */
+  markdownit: {
+    preset: 'default',
+    linkify: true,
+    breaks: true,
+    injected: true,
+  },
+
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
@@ -104,6 +131,7 @@ export default {
   axios: {
     https: true,
   },
+
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -131,12 +159,14 @@ export default {
       }
     }
   },
+
   /*
   ** Register dynamic routes
   */
   generate: {
     routes: dynamicRoutes,
   },
+
   /*
    ** Build configuration
    */

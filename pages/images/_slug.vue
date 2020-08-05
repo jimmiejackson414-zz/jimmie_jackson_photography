@@ -10,41 +10,66 @@
         fluid
         class="px-5">
         <v-row
-          align="center"
+          align="start"
           justify="center">
           <v-col
             sm="12"
             md="6"
             class="image-container">
-            <v-img
-              :src="imageSrc"
-              max-width="800px"
-              @contextmenu.prevent>
-              <v-btn
-                class="expand-btn"
-                icon
-                @click.stop="openModal">
-                <icon
-                  name="expand-arrows-alt"
-                  fill="#fff"
-                  height="20px"
-                  width="20px" />
-              </v-btn>
-            </v-img>
+            <v-carousel
+              height="auto"
+              continuous
+              hide-delimiters
+              show-arrows-on-hover>
+              <v-carousel-item
+                v-for="(img, i) in image"
+                :key="i"
+                @click.stop="openModal"
+                @contextmenu.prevent>
+                <v-btn
+                  class="expand-btn"
+                  icon
+                  :ripple="false"
+                  @click.stop="openModal">
+                  <icon
+                    name="expand-arrows-alt"
+                    fill="#fff"
+                    height="20px"
+                    width="20px" />
+                </v-btn>
+                <client-only>
+                  <i-k-image
+                    class="pointer"
+                    :public-key="publicKey"
+                    :url-endpoint="urlEndpoint"
+                    :src="imageSrc"
+                    sizes="100vw"
+                    :lqip="{ active: true, threshold: 10 }"
+                    :transformation="[
+                      { progressive: true },
+                      { cm: 'maintain_ratio' },
+                      { width: '1000' },
+                      { f: 'auto' },
+                      { dpr: 'auto' }
+                    ]"
+                    @contextmenu.prevent />
+                </client-only>
+              </v-carousel-item>
+            </v-carousel>
           </v-col>
           <v-col
             sm="12"
             md="6"
             class="details-container">
-            <h1 class="display-2 font-weight-bold mb-3">
+            <h2 class="display-2 font-weight-bold mb-3">
               Story Time
-            </h1>
+            </h2>
             <p class="body-1 story">
               {{ image.description }}
             </p>
-            <h1 class="display-2 font-weight-bold mb-3">
+            <h2 class="display-2 font-weight-bold mb-3">
               Details
-            </h1>
+            </h2>
             <div
               v-for="(detail, index) in details"
               :key="index"
@@ -124,6 +149,7 @@
           <v-btn
             icon
             color="success"
+            :ripple="false"
             v-bind="attrs"
             @click="snackbar = false">
             <icon
@@ -137,24 +163,25 @@
       <full-screen-image
         :image="image"
         :open="isModalOpen"
-        @handle-close-dialog="isModalOpen = false" />
+        @handle-close-dialog="closeModal" />
     </client-only>
   </div>
 </template>
 
 <script>
   import { mapMutations } from 'vuex';
+  import { IKImage } from 'imagekitio-vue';
   import dayjs from 'dayjs';
   import FullScreenImage from '~/components/modals/FullScreenImage';
   import PageTitle from '~/components/PageTitle';
-  import fetchGalleries from '~/mixins/fetchGalleries';
+  import { imageKitProps, fetchGalleries } from '~/mixins';
 
   export default {
     name: 'ImageSlug',
 
     transition: 'page-fade',
 
-    mixins: [fetchGalleries],
+    mixins: [imageKitProps, fetchGalleries],
 
     data: () => ({
       isModalOpen: false,
@@ -170,7 +197,7 @@
           { title: 'Title', value: this.image.name },
           { title: 'Location', value: this.image.location },
           { title: 'Taken', value: dayjs(this.image.date_taken).format('MMM DD, YYYY') },
-          { title: 'Size', value: this.image.attributes ? this.image.attributes[0].options[0] : '' },
+          { title: 'Size', value: this.image.size_description },
           { title: 'Price', value: `$${this.image.price}` },
         ]
       },
@@ -201,10 +228,7 @@
         return img;
       },
       imageSrc() {
-        return this.image.src.formats.medium.url;
-      },
-      nextSlug() {
-        return this.fetchImageNavigationSlugs.next;
+        return this.image.sources[0].public_id;
       },
       pageTitle() {
         return this.image.name;
@@ -212,10 +236,16 @@
       prevSlug() {
         return this.fetchImageNavigationSlugs.previous;
       },
+      nextSlug() {
+        return this.fetchImageNavigationSlugs.next;
+      },
     },
 
     methods: {
       ...mapMutations('cart', ['addToCart']),
+      closeModal() {
+        this.isModalOpen = false;
+      },
       openModal() {
         this.isModalOpen = true;
       },
@@ -232,6 +262,7 @@
 
     components: {
       FullScreenImage,
+      IKImage,
       PageTitle,
     },
 
@@ -252,9 +283,10 @@
 
       .expand-btn {
         cursor: pointer;
-        float: right;
         opacity: 0;
         padding: 1rem;
+        position: absolute;
+        right: 0;
         transition: 0.2s all ease-in-out;
         visibility: hidden;
       }
