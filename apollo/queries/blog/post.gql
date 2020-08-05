@@ -4,8 +4,8 @@ query Post($slug: String!) {
     title
     content
     slug
-    updated_at
-    created_at
+    updatedAt
+    createdAt
     published_at
   }
 }
