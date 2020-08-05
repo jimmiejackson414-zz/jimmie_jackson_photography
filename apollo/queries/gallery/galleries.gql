@@ -1,7 +1,7 @@
 query Galleries {
   galleries {
     id
-    name
+    title
     slug
 
     source {
@@ -15,7 +15,7 @@ query Galleries {
       date_taken
       description
       location
-      name
+      title
       price
       size_description
       slug

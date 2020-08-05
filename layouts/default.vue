@@ -229,7 +229,7 @@
       drawer: null,
       items: [
         { title: 'Portfolio', to: '/portfolio', badge: false, hasMenu: false },
-        { title: 'About', to: '/about', badge: false, hasMenu: true, menuItems: [{ title: 'Gear', to: '/gear' }, { title: 'Blog', to: '/blog' }] },
+        { title: 'About', to: '/about', badge: false, hasMenu: true, menuItems: [{ title: 'Gear', to: '/gear' }] },
         { title: 'Contact', to: '/contact', badge: false, hasMenu: false },
         { title: 'Cart', to: '/cart', badge: true, hasMenu: false }
       ],
