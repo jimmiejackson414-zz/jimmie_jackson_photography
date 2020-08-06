@@ -18,6 +18,7 @@ const dynamicRoutes = async () => {
 
   // fetch blog posts
   const resForPosts = await instance.get('/posts');
+  console.log('resForPosts: ', resForPosts);
 
   const routesForGalleries = resForGalleries.data.map(gallery => {
     return {
@@ -39,6 +40,7 @@ const dynamicRoutes = async () => {
       payload: post,
     };
   });
+  console.log('routesForPosts: ', [...routesForPosts]);
 
   return [...routesForGalleries, ...routesForImages, ...routesForPosts];
 };

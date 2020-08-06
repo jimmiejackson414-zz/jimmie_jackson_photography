@@ -1,4 +1,4 @@
-import dynamicRoutes from './services/generateDynamicRoutes';
+// import dynamicRoutes from './services/generateDynamicRoutes';
 
 require('dotenv').config();
 
@@ -12,6 +12,9 @@ export default {
     LOGROCKET_APP_ID: process.env.LOGROCKET_APP_ID,
     STRAPI_BACKEND_URL: process.env.STRAPI_BACKEND_URL,
     STRAPI_BACKEND_BASE: process.env.STRAPI_BACKEND_BASE,
+    IMAGEKIT_PUBLIC_KEY: process.env.IMAGEKIT_PUBLIC_KEY,
+    IMAGEKIT_PRIVATE_KEY: process.env.IMAGEKIT_PRIVATE_KEY,
+    IMAGEKIT_URL_ENDPOINT: process.env.IMAGEKIT_URL_ENDPOINT,
   },
 
   head: {
@@ -163,9 +166,9 @@ export default {
   /*
   ** Register dynamic routes
   */
-  generate: {
-    routes: dynamicRoutes,
-  },
+  // generate: {
+  //   routes: dynamicRoutes,
+  // },
 
   /*
    ** Build configuration
