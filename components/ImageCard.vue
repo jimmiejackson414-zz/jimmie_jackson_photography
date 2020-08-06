@@ -16,7 +16,7 @@
           <h3
             v-if="itemType === 'galleries'"
             class="display-2 text--white gallery-name">
-            {{ item.name }}
+            {{ item.title }}
           </h3>
           <div class="btn-wrapper">
             <v-btn
