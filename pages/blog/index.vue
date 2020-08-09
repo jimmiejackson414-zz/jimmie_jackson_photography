@@ -28,6 +28,28 @@
             </nuxt-link>
           </p>
         </div>
+        <v-row
+          align="center"
+          justify="center">
+          <v-col
+            cols="12"
+            align="center"
+            justify="center">
+            <v-btn
+              v-if="morePosts"
+              color="primary"
+              class="my-5"
+              :ripple="false"
+              outlined
+              depressed
+              :disabled="loadingMorePosts"
+              @click="fetchMorePosts">
+              <spinner v-if="loadingMorePosts" />
+              <span v-else>Show More</span>
+            </v-btn>
+          </v-col>
+        </v-row>
+
         <mailchimp-form />
       </v-col>
     </v-row>
@@ -38,20 +60,69 @@
   import dayjs from 'dayjs';
   import postsQuery from '~/apollo/queries/blog/posts';
   import PageTitle from '~/components/PageTitle';
+  import Spinner from '~/components/Spinner';
   import { truncate } from '~/helpers/functions';
   import MailchimpForm from '~/components/MailchimpForm';
+
+  const pageSize = 5;
 
   export default {
     name: 'BlogIndex',
 
+    data: () => ({
+      loadingMorePosts: false,
+      page: 0,
+      pageSize,
+    }),
+
     apollo: {
+      postsCount: {
+        prefetch: true,
+        query: postsQuery,
+        variables: {
+          page: 0,
+          pageSize,
+        }
+      },
       posts: {
         prefetch: true,
         query: postsQuery,
+        variables: {
+          page: 0,
+          pageSize,
+        }
+      },
+    },
+
+    computed: {
+      morePosts() {
+        return this.posts.length < this.postsCount.aggregate.totalCount;
       }
     },
 
     methods: {
+      async fetchMorePosts() {
+        this.loadingMorePosts = true;
+        this.page += this.pageSize;
+
+        this.$apollo.queries.posts.fetchMore({
+          variables: {
+            page: this.page,
+            pageSize,
+          },
+          updateQuery: (previousResult, { fetchMoreResult }) => {
+            const newPosts = fetchMoreResult.posts;
+            if (!newPosts.length) return previousResult;
+
+            return {
+              posts: [...previousResult.posts, ...newPosts],
+              postsCount: fetchMoreResult.postsCount,
+            }
+          }
+        });
+
+        this.loadingMorePosts = false;
+      },
       publishDate(date) {
         return dayjs(date).format('MMM DD, YYYY');
       },
@@ -61,8 +132,9 @@
     },
 
     components: {
-      PageTitle,
       MailchimpForm,
+      PageTitle,
+      Spinner,
     },
 
     head() {

@@ -1,5 +1,10 @@
-query Posts {
-  posts(sort: "published_at:desc", where: { published: true }) {
+query Posts($page: Int!, $pageSize: Int!) {
+  posts(
+    start: $page
+    limit: $pageSize
+    sort: "published_at:desc"
+    where: { published: true }
+  ) {
     id
     title
     content
@@ -8,5 +13,10 @@ query Posts {
     createdAt
     updatedAt
     published_at
+  }
+  postsCount: postsConnection(where: { published: true }) {
+    aggregate {
+      totalCount
+    }
   }
 }
