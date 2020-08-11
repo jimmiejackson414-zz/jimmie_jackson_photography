@@ -1,8 +1,9 @@
 query($searchQuery: String) {
   images(where: { tags: { title_contains: $searchQuery } }) {
     id
-    name
+    title
     slug
+
     sources {
       id
       public_id
