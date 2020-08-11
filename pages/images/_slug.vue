@@ -12,10 +12,8 @@
         <v-row
           align="start"
           justify="center">
-          <v-col
-            sm="12"
-            md="6"
-            class="image-container">
+          <div
+            class="image-container col-12 col-md-6">
             <v-carousel
               height="auto"
               continuous
@@ -56,11 +54,9 @@
                 </client-only>
               </v-carousel-item>
             </v-carousel>
-          </v-col>
-          <v-col
-            sm="12"
-            md="6"
-            class="details-container">
+          </div>
+          <div
+            class="details-container col-12 col-md-6">
             <h2 class="display-2 font-weight-bold mb-3">
               Story Time
             </h2>
@@ -89,7 +85,7 @@
               @click="submit">
               Add To Cart
             </v-btn>
-          </v-col>
+          </div>
         </v-row>
       </v-container>
       <v-container>
@@ -194,7 +190,7 @@
       },
       details() {
         return [
-          { title: 'Title', value: this.image.name },
+          { title: 'Title', value: this.image.title },
           { title: 'Location', value: this.image.location },
           { title: 'Taken', value: dayjs(this.image.date_taken).format('MMM DD, YYYY') },
           { title: 'Size', value: this.image.size_description },
@@ -231,7 +227,7 @@
         return this.image.sources[0].public_id;
       },
       pageTitle() {
-        return this.image.name;
+        return this.image.title;
       },
       prevSlug() {
         return this.fetchImageNavigationSlugs.previous;

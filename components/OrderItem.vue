@@ -17,8 +17,8 @@
       ]"
       @contextmenu.prevent />
     <div class="details">
-      <h3 class="font-weight-bold display-1 mb-1">
-        {{ item.name }}
+      <h3 class="display-1">
+        {{ item.title }}
       </h3>
     </div>
     <div class="quantity">
@@ -94,6 +94,7 @@
 
 <style lang="scss" scoped>
   @import '~/css/global';
+  @import '~/css/breakpoints';
 
   .item-wrapper {
     align-items: center;
@@ -108,6 +109,20 @@
 
     .quantity {
       max-width: 10rem;
+    }
+
+    .details {
+      h3 {
+        font-size: 1.5rem !important;
+        font-weight: 300;
+        margin-bottom: 0;
+
+        @include breakpoint(desktop) {
+          font-size: 2.125rem;
+          font-weight: 700;
+          margin-bottom: 4px;
+        }
+      }
     }
 
     .price-wrapper {

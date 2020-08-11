@@ -101,7 +101,7 @@
         return this.galleries.find(gallery => gallery.slug === this.$route.params.slug);
       },
       pageTitle() {
-        return this.gallery.name;
+        return this.gallery.title;
       },
       nextSlug() {
         return this.fetchGalleryNavigationSlugs.next;

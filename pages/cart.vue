@@ -7,6 +7,46 @@
       <v-col
         class="column"
         cols="12"
+        md="7">
+        <div class="order-details-wrapper">
+          <h3 class="display-1 section-title">
+            Order Details
+          </h3>
+          <client-only>
+            <span v-if="!$apollo.loading && hasCartItems">
+              <transition-group
+                tag="ul"
+                name="list">
+                <order-item
+                  v-for="item in images"
+                  :key="item.id"
+                  :item="item" />
+              </transition-group>
+              <div class="total-row">
+                <span
+                  v-if="couponSubmitted && couponIsValid"
+                  class="coupon success--text body-1">Coupon Applied: {{ couponDetails.percent_off }}% Off</span>
+                <div class="total">
+                  <span class="display-1 font-weight-bold">Total:&nbsp;</span>
+                  <span class="display-1">{{ formattedAmount }}</span>
+                </div>
+              </div>
+            </span>
+            <span v-else>
+              <p class="body-1">You have no items in your cart. Visit my portfolio to add items to your cart.</p>
+              <v-btn
+                color="primary"
+                :ripple="false"
+                depressed
+                nuxt
+                to="/portfolio">View Portfolio</v-btn>
+            </span>
+          </client-only>
+        </div>
+      </v-col>
+      <v-col
+        class="column"
+        cols="12"
         md="5">
         <div class="payment-personals-wrapper">
           <client-only>
@@ -131,46 +171,6 @@
                 </p>
               </div>
             </v-form>
-          </client-only>
-        </div>
-      </v-col>
-      <v-col
-        class="column"
-        cols="12"
-        md="7">
-        <div class="order-details-wrapper">
-          <h3 class="display-1 section-title">
-            Order Details
-          </h3>
-          <client-only>
-            <span v-if="!$apollo.loading && hasCartItems">
-              <transition-group
-                tag="ul"
-                name="list">
-                <order-item
-                  v-for="item in images"
-                  :key="item.id"
-                  :item="item" />
-              </transition-group>
-              <div class="total-row">
-                <span
-                  v-if="couponSubmitted && couponIsValid"
-                  class="coupon success--text body-1">Coupon Applied: {{ couponDetails.percent_off }}% Off</span>
-                <div class="total">
-                  <span class="display-1 font-weight-bold">Total:&nbsp;</span>
-                  <span class="display-1">{{ formattedAmount }}</span>
-                </div>
-              </div>
-            </span>
-            <span v-else>
-              <p class="body-1">You have no items in your cart. Visit my portfolio to add items to your cart.</p>
-              <v-btn
-                color="primary"
-                :ripple="false"
-                depressed
-                nuxt
-                to="/portfolio">View Portfolio</v-btn>
-            </span>
           </client-only>
         </div>
       </v-col>
@@ -354,15 +354,24 @@
 
 <style lang="scss" scoped>
   @import '~/css/global';
+  @import '~/css/breakpoints';
 
   .container {
     .column {
       &:first-child {
-        padding: 12px 4rem 12px 12px;
+        padding: 12px 2rem;
+
+        @include breakpoint(desktop) {
+          padding: 12px 4rem 12px 12px;
+        }
       }
 
       &:nth-child(2) {
-        padding: 12px 12px 12px 4rem;
+        padding: 12px 2rem;
+
+        @include breakpoint(desktop) {
+          padding: 12px 12px 12px 4rem;
+        }
       }
 
       .section-title {
@@ -394,6 +403,14 @@
       }
 
       .order-details-wrapper {
+        ul {
+          padding-left: 0;
+
+          @include breakpoint(desktop) {
+            padding-left: 24px;
+          }
+        }
+
         .total-row {
           align-items: flex-end;
           border-top: 1px solid $light-grey;

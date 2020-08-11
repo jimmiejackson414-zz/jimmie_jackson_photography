@@ -118,9 +118,11 @@
       display: flex;
       justify-content: flex-start;
       margin-bottom: 1rem;
+      left: 0;
       position: absolute;
 
       @include breakpoint(desktop) {
+        left: auto;
         margin-bottom: 0;
       }
 

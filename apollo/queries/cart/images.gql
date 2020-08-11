@@ -1,7 +1,7 @@
 query($ids: [ID]) {
   images(where: { id_in: $ids }) {
     id
-    name
+    title
     price
     size_description
     slug
