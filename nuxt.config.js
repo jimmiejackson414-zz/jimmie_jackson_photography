@@ -1,20 +1,27 @@
-// import dynamicRoutes from './services/generateDynamicRoutes';
+const axios = require('axios');
 
 require('dotenv').config();
+
+const instance = axios.create({
+  baseURL: process.env.STRAPI_BACKEND_BASE,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 export default {
   target: 'static',
 
   env: {
     BASE_URL: process.env.BASE_URL,
-    STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
-    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
-    LOGROCKET_APP_ID: process.env.LOGROCKET_APP_ID,
-    STRAPI_BACKEND_URL: process.env.STRAPI_BACKEND_URL,
-    STRAPI_BACKEND_BASE: process.env.STRAPI_BACKEND_BASE,
     IMAGEKIT_PUBLIC_KEY: process.env.IMAGEKIT_PUBLIC_KEY,
     IMAGEKIT_PRIVATE_KEY: process.env.IMAGEKIT_PRIVATE_KEY,
     IMAGEKIT_URL_ENDPOINT: process.env.IMAGEKIT_URL_ENDPOINT,
+    LOGROCKET_APP_ID: process.env.LOGROCKET_APP_ID,
+    STRAPI_BACKEND_URL: process.env.STRAPI_BACKEND_URL,
+    STRAPI_BACKEND_BASE: process.env.STRAPI_BACKEND_BASE,
+    STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
   },
 
   head: {
@@ -103,7 +110,9 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
     '@nuxtjs/apollo',
-    '@nuxtjs/markdownit'
+    '@nuxtjs/markdownit',
+    '@nuxtjs/robots',
+    '@nuxtjs/sitemap'
   ],
 
   /*
@@ -125,6 +134,40 @@ export default {
     linkify: true,
     breaks: true,
     injected: true,
+  },
+
+  /*
+  ** Robots module configuration
+  */
+  robots: {
+    SiteMap: '/sitemap.xml'
+  },
+
+  /*
+  ** Sitemap module configuration
+  */
+  sitemap: {
+    hostname: 'https://www.jimmiejacksonphotography.com',
+    path: '/sitemap.xml',
+    exclude: ['/cart', '/download'],
+    routes: async () => {
+      // fetch galleries slugs
+      const { data: resForGalleries } = await instance.get('/galleries');
+
+      // fetch images slugs
+      const { data: resForImages } = await instance.get('/images');
+
+      // fetch blog posts
+      const { data: resForPosts } = await instance.get('/posts');
+
+      const routesForGalleries = resForGalleries.map(gallery => `/galleries/${gallery.slug}`);
+
+      const routesForImages = resForImages.map(image => `/images/${image.slug}`);
+
+      const routesForPosts = resForPosts.map(post => `/blog/${post.slug}`);
+
+      return [...routesForGalleries, ...routesForImages, ...routesForPosts];
+    },
   },
 
   /*
