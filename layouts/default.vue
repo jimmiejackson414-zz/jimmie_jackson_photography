@@ -139,7 +139,6 @@
 
     <home-drawer
       v-model="drawer"
-      :items="items"
       :cart-items="cartItems" />
 
     <v-main>

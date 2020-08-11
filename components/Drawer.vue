@@ -78,14 +78,18 @@
         type: Number,
         default: 0,
       },
-      items: {
-        type: Array,
-        default: () => ([]),
-      },
     },
 
     data: () => ({
       query: '',
+      items: [
+        { title: 'Portfolio', to: '/portfolio', badge: false },
+        { title: 'Gear', to: '/gear', badge: false },
+        { title: 'Blog', to: '/blog', badge: false },
+        { title: 'About', to: '/about', badge: false },
+        { title: 'Contact', to: '/contact', badge: false },
+        { title: 'Cart', to: '/cart', badge: true }
+      ]
     }),
 
     methods: {
