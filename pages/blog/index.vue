@@ -161,5 +161,17 @@
       }
     }
   }
+
+  .v-application.theme--dark {
+    .post-wrapper {
+      .post-title {
+        color: #fff;
+
+        &:hover {
+          color: $primary;
+        }
+      }
+    }
+  }
 </style>
 

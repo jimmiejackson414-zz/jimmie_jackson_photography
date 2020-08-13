@@ -23,6 +23,14 @@ body {
   height: 100%;
 }
 
+.v-application.theme--dark {
+  main.v-main {
+    &:not(.background) {
+      background: var(--v-background-base, #121212) !important;
+    }
+  }
+}
+
 a {
   text-decoration: none;
 }
