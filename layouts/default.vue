@@ -131,17 +131,17 @@
           </v-tab>
         </v-tabs>
         <span class="ml-4">
-          <v-tooltip
-            bottom>
-            <template v-slot:activator="{ on }">
-              <v-switch
-                v-model="$vuetify.theme.dark"
-                hide-details
-                inset
-                :ripple="false"
-                v-on="on" />
+          <v-tooltip bottom>
+            <template #activator="{ on }">
+              <span v-on="on">
+                <v-switch
+                  v-model="$vuetify.theme.dark"
+                  class="d-inline-block"
+                  hide-details
+                  :ripple="false" />
+              </span>
             </template>
-            <span>Dark Mode</span>
+            {{ calculateThemeMode }}
           </v-tooltip>
         </span>
       </div>
@@ -253,6 +253,9 @@
 
     computed: {
       ...mapGetters('cart', ['cartItems']),
+      calculateThemeMode() {
+        return this.$vuetify.theme.isDark ? 'Light Mode' : 'Dark Mode';
+      },
       hasCartItems() {
         return this.cartItems > 0;
       },
