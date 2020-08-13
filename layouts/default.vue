@@ -11,7 +11,7 @@
       <v-toolbar-title>
         <nuxt-link to="/">
           <v-img
-            src="/JJP_Logo_Black_V2.png"
+            :src="logoSrc"
             class="logo" />
         </nuxt-link>
       </v-toolbar-title>
@@ -130,6 +130,20 @@
             <span v-else>{{ item.title }}</span>
           </v-tab>
         </v-tabs>
+        <span class="ml-4">
+          <v-tooltip
+            bottom>
+            <template v-slot:activator="{ on }">
+              <v-switch
+                v-model="$vuetify.theme.dark"
+                hide-details
+                inset
+                :ripple="false"
+                v-on="on" />
+            </template>
+            <span>Dark Mode</span>
+          </v-tooltip>
+        </span>
       </div>
 
       <v-app-bar-nav-icon
@@ -241,6 +255,9 @@
       ...mapGetters('cart', ['cartItems']),
       hasCartItems() {
         return this.cartItems > 0;
+      },
+      logoSrc() {
+        return this.$vuetify.theme.isDark ? '/JJP_Logo_White_V2.png' : '/JJP_Logo_Black_V2.png';
       },
       showScrollBtn() {
         return this.offsetTop > 60;
@@ -354,6 +371,14 @@
         }
       }
     }
+
+    &.theme--dark {
+      background: var(--v-background-base, #121212) !important;
+
+      .subtitle-2 {
+        color: #fff !important;
+      }
+    }
   }
 
   .slide-fade-enter-active, .slide-fade-leave-active {
@@ -378,7 +403,13 @@
   }
 
   #home-app-bar {
-    background-color: #fff;
+    &.theme--light {
+      background-color: #fff;
+    }
+
+    &.theme--dark {
+      background-color: #272727;
+    }
 
     .logo {
       max-width: 200px;
@@ -396,16 +427,30 @@
         margin: 0 auto;
       }
 
-      .v-tab {
-        &:before {
-          display: none;
-        }
-      }
+      .v-tabs {
+        background-color: transparent;
 
-      .nav-link {
-        color: rgba(0, 0, 0, 0.54);
-        font-size: 1rem;
-        letter-spacing: 2px;
+        .v-item-group {
+          background-color: transparent;
+
+          .v-tab {
+            &:before {
+              display: none;
+            }
+
+            .nav-link {
+              color: rgba(0, 0, 0, 0.54);
+              font-size: 1rem;
+              letter-spacing: 2px;
+            }
+          }
+        }
+
+        &.theme--dark {
+          .nav-link {
+            color: #fff;
+          }
+        }
       }
     }
   }
@@ -414,6 +459,10 @@
     .v-list-item {
       a {
         color: #4a4a4a;
+      }
+
+      &.theme--dark a {
+        color: #fff;
       }
     }
   }

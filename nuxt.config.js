@@ -201,6 +201,17 @@ export default {
           warning: '#f05e23', // orange
           error: '#950714', // cranberry
           success: '#228b22', // forrest
+          background: '#fff',
+        },
+        dark: {
+          primary: '#0077be', //water
+          secondary: '#b7410e', // rust
+          accent: '#e1ad01', // mustard
+          info: '#759194', // stone
+          warning: '#f05e23', // orange
+          error: '#950714', // cranberry
+          success: '#228b22', // forrest
+          background: '#252525',
         }
       }
     }
