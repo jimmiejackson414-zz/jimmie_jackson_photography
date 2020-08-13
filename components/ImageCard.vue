@@ -139,5 +139,9 @@
         visibility: visible;
       }
     }
+
+    &.theme--dark {
+      background-color: var(--v-background-base,#121212)!important;
+    }
   }
 </style>
