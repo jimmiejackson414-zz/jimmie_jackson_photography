@@ -3,13 +3,23 @@
     <client-only>
       <page-title text="Portfolio" />
       <v-container>
-        <v-row>
-          <image-card
+        <v-row
+          v-masonry
+          class="mx-auto"
+          fit-width="true"
+          gutter="10"
+          transition-duration="0.2s"
+          item-selector=".child">
+          <div
             v-for="(gallery, index) in galleries"
             :key="index"
-            btn-text="Visit Gallery"
-            :item="gallery"
-            item-type="galleries" />
+            v-masonry-tile
+            class="child">
+            <image-card
+              btn-text="Visit Gallery"
+              :item="gallery"
+              item-type="galleries" />
+          </div>
         </v-row>
       </v-container>
     </client-only>
@@ -35,6 +45,13 @@
 
     head() {
       return {
+        script: [
+          {
+            async: true,
+            defer: true,
+            src: 'https://cdnjs.cloudflare.com/ajax/libs/masonry/4.0.0/masonry.pkgd.min.js',
+          }
+        ],
         title: 'Portfolio',
       }
     }

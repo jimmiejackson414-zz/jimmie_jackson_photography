@@ -21,7 +21,17 @@
         <v-carousel-item
           v-for="(img, i) in image.sources"
           :key="i">
+          <span
+            class="close-btn"
+            @click="closeModal">
+            <icon
+              name="multiply"
+              fill="white"
+              height="30px"
+              width="30px" />
+          </span>
           <i-k-image
+            class="w-100"
             :public-key="publicKey"
             :url-endpoint="urlEndpoint"
             :src="img.public_id"
@@ -61,6 +71,7 @@
 
     methods: {
       closeModal() {
+        console.log('close');
         this.$emit('handle-close-dialog');
       },
     },
@@ -90,5 +101,22 @@
 
   .ik-image {
     height: 100%;
+  }
+
+  .close-btn {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    transition: 0.2s opacity cubic-bezier(0.23, 1, 0.320, 1);
+  }
+
+  .v-dialog {
+    &:hover {
+      .close-btn {
+        opacity: 1;
+      }
+    }
   }
 </style>
