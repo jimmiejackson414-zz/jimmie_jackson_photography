@@ -1,48 +1,39 @@
 <template>
-  <client-only>
-    <v-col
-      cols="12"
-      sm="6"
-      md="6"
-      lg="4"
-      xl="3">
-      <v-card
-        class="image-card"
-        flat
-        nuxt
-        :ripple="false"
-        :to="imageLink">
-        <div class="overlay">
-          <h3
-            v-if="itemType === 'galleries'"
-            class="display-2 text--white gallery-name">
-            {{ item.title }}
-          </h3>
-          <div class="btn-wrapper">
-            <v-btn
-              depressed
-              :ripple="false"
-              color="primary"
-              class="visit-btn"
-              :to="imageLink">
-              {{ btnText }}
-            </v-btn>
-          </div>
-        </div>
+  <v-card
+    class="image-card"
+    flat
+    nuxt
+    :ripple="false"
+    :to="imageLink">
+    <div class="overlay">
+      <h3
+        v-if="itemType === 'galleries'"
+        class="display-2 text--white gallery-name">
+        {{ item.title }}
+      </h3>
+      <div class="btn-wrapper">
+        <v-btn
+          depressed
+          :ripple="false"
+          color="primary"
+          class="visit-btn"
+          :to="imageLink">
+          {{ btnText }}
+        </v-btn>
+      </div>
+    </div>
 
-        <i-k-image
-          :public-key="publicKey"
-          :url-endpoint="urlEndpoint"
-          :src="imageSrc"
-          :transformation="[
-            { progressive: true },
-            { cropMode: 'maintain_ratio' },
-            { width: '1000'}
-          ]"
-          @contextmenu.prevent />
-      </v-card>
-    </v-col>
-  </client-only>
+    <i-k-image
+      :public-key="publicKey"
+      :url-endpoint="urlEndpoint"
+      :src="imageSrc"
+      :transformation="[
+        { progressive: true },
+        { cropMode: 'maintain_ratio' },
+        { width: '400' },
+      ]"
+      @contextmenu.prevent />
+  </v-card>
 </template>
 
 <script>

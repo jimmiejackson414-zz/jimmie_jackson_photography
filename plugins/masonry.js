@@ -1,4 +1,4 @@
 import Vue from 'vue';
-import VueMasonry from 'vue-masonry-css';
+import { VueMasonryPlugin } from 'vue-masonry';
 
-Vue.use(VueMasonry);
+Vue.use(VueMasonryPlugin);

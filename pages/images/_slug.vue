@@ -37,7 +37,7 @@
                 </v-btn>
                 <client-only>
                   <i-k-image
-                    class="pointer"
+                    class="pointer w-100"
                     :public-key="publicKey"
                     :url-endpoint="urlEndpoint"
                     :src="imageSrc"
@@ -45,8 +45,8 @@
                     :lqip="{ active: true, threshold: 10 }"
                     :transformation="[
                       { progressive: true },
-                      { cm: 'maintain_ratio' },
-                      { width: '1000' },
+                      { cropMode: 'maintain_ratio' },
+                      { width: '800' },
                       { f: 'auto' },
                       { dpr: 'auto' }
                     ]"
