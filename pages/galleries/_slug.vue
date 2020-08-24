@@ -5,16 +5,28 @@
         <page-title
           :text="pageTitle"
           :back-slug="backSlug" />
-        <v-container>
-          <v-row>
-            <image-card
+      </v-container>
+      <v-container>
+        <client-only>
+          <v-row
+            v-masonry
+            class="mx-auto"
+            fit-width="true"
+            gutter="10"
+            transition-duration="0.2s"
+            item-selector=".child">
+            <div
               v-for="(image, index) in gallery.images"
               :key="index"
-              btn-text="View"
-              :item="image"
-              item-type="images" />
+              v-masonry-tile
+              class="child">
+              <image-card
+                btn-text="View"
+                :item="image"
+                item-type="images" />
+            </div>
           </v-row>
-        </v-container>
+        </client-only>
       </v-container>
       <v-container>
         <v-row
@@ -118,6 +130,13 @@
 
     head() {
       return {
+        script: [
+          {
+            async: true,
+            defer: true,
+            src: 'https://cdnjs.cloudflare.com/ajax/libs/masonry/4.0.0/masonry.pkgd.min.js'
+          }
+        ],
         title: this.pageTitle
       }
     }
