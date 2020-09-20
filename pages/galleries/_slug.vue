@@ -149,5 +149,9 @@
   .prev-next-wrapper {
     display: flex;
     justify-content: space-between;
+
+    .v-btn {
+      font-size: 1.2rem;
+    }
   }
 </style>
