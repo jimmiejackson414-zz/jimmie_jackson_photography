@@ -114,17 +114,7 @@
     }
 
     .back-wrapper {
-      align-items: center;
-      display: flex;
-      justify-content: flex-start;
-      margin-bottom: 1rem;
-      left: 0;
-      position: absolute;
-
-      @include breakpoint(desktop) {
-        left: auto;
-        margin-bottom: 0;
-      }
+      align-self: flex-start;
 
       p {
         margin: 0;
