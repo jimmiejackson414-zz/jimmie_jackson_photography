@@ -9,7 +9,8 @@
           fit-width="true"
           gutter="10"
           transition-duration="0.2s"
-          item-selector=".child">
+          item-selector=".child"
+          :style="{ 'max-width': '100%' }">
           <div
             v-for="(gallery, index) in galleries"
             :key="index"
