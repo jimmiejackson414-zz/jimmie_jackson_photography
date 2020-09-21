@@ -71,7 +71,6 @@
 
     methods: {
       closeModal() {
-        console.log('close');
         this.$emit('handle-close-dialog');
       },
     },
@@ -85,12 +84,14 @@
 <style lang="scss">
   .dialog-wrapper.v-dialog {
     border-radius: 0;
+    box-shadow: none;
 
     &.v-dialog:not(.v-dialog--fullscreen) {
       max-height: fit-content;
     }
 
     .v-card {
+      background-color: transparent;
       min-height: fit-content;
 
       .v-img {
