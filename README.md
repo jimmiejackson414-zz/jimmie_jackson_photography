@@ -1,6 +1,6 @@
 # jimmie_jackson_photography
 
-> Portfolio for Jimmie Jackson Photography using Vue/NuxtJS
+> Portfolio for Jimmie Jackson Photography using Vue/NuxtJS and Strapi GraphQL backend for content.
 
 ## Build Setup
 
